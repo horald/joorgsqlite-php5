@@ -1,0 +1,32 @@
+<?php
+define('_JEXEC', 1);
+echo "<html>";
+echo "<head>";
+echo "  <meta charset='utf-8'>";
+echo "  <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>";
+echo "  <title>Joorgsqlite</title>";
+
+//      <!-- Bootstrap -->
+echo "  <link href='includes/bootstrap/css/bootstrap.min.css' rel='stylesheet'>";
+
+echo "</head>";
+include("classes/checkupgrade.php");
+echo "<body>";
+$check=checkupgrade();
+if ($check=="ok") {
+  echo "<div>";
+  echo "<h1 align='center'>Joorgportal</h1>";
+  $db = new SQLite3('data/joorgsqlite.db');
+  $results = $db->query("SELECT * FROM tblmenu_liste WHERE fldview='J' ORDER BY fldsort");
+  while ($row = $results->fetchArray()) {
+    if ($row['fldlink']<>"") {
+      echo "<a href='".$row['fldlink']."' class='btn btn-default btn-lg btn-block' role='button'>".$row['fldbez']."</a>"; 
+    } else {
+      echo "<a href='classes/showtab.php?menu=".$row['fldmenu']."' class='btn btn-default btn-lg btn-block' role='button'>".$row['fldbez']."</a>"; 
+    }
+  }	
+  echo "</div>";
+}  
+echo "</body>";
+echo "</html>";
+?>
