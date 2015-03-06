@@ -1,0 +1,1 @@
+ALTER TABLE tbleinkaufsliste RENAME TO tblEinkauf_liste
