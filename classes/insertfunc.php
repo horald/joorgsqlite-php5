@@ -48,7 +48,11 @@ function insertinput($listarray,$idwert,$menu) {
         }
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
-        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
+        echo "<div class='input-group date form_date col-md-2' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input2' data-link-format='yyyy-mm-dd'>";
+        echo "<dd><input class='form-control' size='8' type='text' name='".$arrelement['dbfield']."' value='".$default."' ></dd>";
+		  echo "<span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>";
+        echo "</div>";
+		  echo "<input type='hidden' id='dtp_input2' value='' /><br/>";
         echo "</dl>";
       break;
       }

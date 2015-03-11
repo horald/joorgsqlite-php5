@@ -109,12 +109,20 @@ $filterarray = array (
                                'seldbfield' => 'fldbez',
                                'dbfield' => 'fldstatus' ),
                        array ( 'label' => 'Kategorie:',
-                               'name' => 'kategorie', 
+                               'name' => 'fltkategorie', 
                                'width' => 10, 
                                'type' => 'select',
                                'sign' => '=',
                                'dbtable' => 'tblkategorie',
                                'seldbfield' => 'fldbez',
+                               'dbfield' => 'fldcategory' ),
+                       array ( 'label' => 'Prior:',
+                               'name' => 'fltprior', 
+                               'width' => 10, 
+                               'type' => 'select',
+                               'sign' => '=',
+                               'dbtable' => 'tblprior',
+                               'seldbfield' => 'fldprior',
                                'dbfield' => 'fldcategory' ));
 
 

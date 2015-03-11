@@ -20,9 +20,9 @@ if ($check=="ok") {
   $results = $db->query("SELECT * FROM tblmenu_liste WHERE fldview='J' ORDER BY fldsort");
   while ($row = $results->fetchArray()) {
     if ($row['fldlink']<>"") {
-      echo "<a href='".$row['fldlink']."' class='btn btn-default btn-lg btn-block' role='button'>".$row['fldbez']."</a>"; 
+      echo "<a href='".$row['fldlink']."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
     } else {
-      echo "<a href='classes/showtab.php?menu=".$row['fldmenu']."' class='btn btn-default btn-lg btn-block' role='button'>".$row['fldbez']."</a>"; 
+      echo "<a href='classes/showtab.php?menu=".$row['fldmenu']."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
     }
   }	
   echo "</div>";

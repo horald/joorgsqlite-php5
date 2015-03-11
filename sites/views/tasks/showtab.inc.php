@@ -109,7 +109,7 @@ $filterarray = array (
                                'seldbfield' => 'fldbez',
                                'dbfield' => 'fldstatus' ),
                        array ( 'label' => 'Kategorie:',
-                               'name' => 'kategorie', 
+                               'name' => 'fltkategorie', 
                                'width' => 10, 
                                'type' => 'select',
                                'sign' => '=',
@@ -123,7 +123,7 @@ $filterarray = array (
                                'sign' => '=',
                                'dbtable' => 'tblprior',
                                'seldbfield' => 'fldprior',
-                               'dbfield' => 'fldcategory' ));
+                               'dbfield' => 'fldprior' ));
 
 
 $pararray = array ( 'headline' => 'Erledigungen',

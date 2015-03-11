@@ -8,7 +8,7 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
     $arr=$row;
   }	
   echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
-  echo "<form class='form-horizontal' method='post' action='update.php?update=1&menu=".$menu."'>";
+  echo "<form class='form-horizontal' method='post' action='update.php?update=1&menu=".$menu."' role='form'>";
 
   foreach ( $listarray as $arrelement ) {
     switch ( $arrelement['type'] )
@@ -45,7 +45,11 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
       case 'date':
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
-        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
+        echo "<div class='input-group date form_date col-md-2' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input2' data-link-format='yyyy-mm-dd'>";
+        echo "<dd><input class='form-control' size='8' type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."' readonly></dd>";
+		  echo "<span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>";
+        echo "</div>";
+		  echo "<input type='hidden' id='dtp_input2' value='' /><br/>";
         echo "</dl>";
       break;
     }

@@ -9,8 +9,11 @@ bootstrapbegin($pararray['headline']);
 echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
 $leeren = $_GET['leeren'];
 if ($leeren==1) {
+  $show = $_POST['chkanzeigen'];
   leerensave($pararray);
-  echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
+  if ($show<>"anzeigen") {
+    echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
+  }
 } else {
   leereninput($menu);
 }  

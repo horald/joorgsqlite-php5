@@ -13,9 +13,11 @@ function checkupgrade() {
   }
   //echo $arr['fldversion']."=dbvers<br>";
   if ($arr['fldversion']<$versnr) {
+    echo "<h1 align='left'>Joorgportal</h1>";
     echo "<div class='alert alert-warning'>";
-    echo "Upgrade für Vers.-Nr ".$versnr.". Erst Datensätze anpassen.";
+    echo "Upgrade für Vers.-Nr ".$versnr." erkannt. Erst Datensätze anpassen.";
     echo "</div>";
+    echo "<a href='classes/upgrade.php' class='btn btn-primary btn-sm active' role='button'>Update durchführen</a>"; 
     $check="upgrade";
   } else {
   	 $check="ok";
