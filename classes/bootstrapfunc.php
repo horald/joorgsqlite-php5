@@ -9,6 +9,20 @@ echo "<meta name='viewport' content='width=device-width, initial-scale=1.0, user
 echo "<link href='../includes/bootstrap/css/bootstrap.css' rel='stylesheet'>";
 echo "<link href='../includes/bootstrap/datetime/css/bootstrap-datetimepicker.min.css' rel='stylesheet' media='screen'>";
 echo "<script src='../includes/bootstrap/js/jquery-latest.js'></script>";
+      //echo "  <script type='text/javascript'>";
+      //echo "      $(function () {";
+      //echo "          $('#dtpicker1').datetimepicker();";
+      //echo "      });";
+      //echo "  </script>";
+
+//fullcalendar
+echo "<link href='../includes/fullcalendar/fullcalendar/fullcalendar.css' rel='stylesheet' />";
+echo "<link href='../includes/fullcalendar/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />";
+echo "<script src='../includes/fullcalendar/lib/jquery.min.js'></script>";
+echo "<script src='../includes/fullcalendar/lib/jquery-ui.custom.min.js'></script>";
+echo "<script src='../includes/fullcalendar/fullcalendar/fullcalendar.min.js'></script>";
+echo "<script src='../includes/fullcalendar/js/jsoncalendar.js'></script>";
+
 echo "<title>Joorgsqlite</title>";
 echo "</head>";
 }
@@ -18,7 +32,9 @@ function bootstrapbegin($headline,$showheadline) {
   echo "<div class='row-fluid'>";
   echo "<div class='span12'>";
   //echo "<h1 align='center'>".$headline."</h1>";
-  echo "<legend>".$headline."</legend>";
+  if ($headline<>"") {
+    echo "<legend>".$headline."</legend>";
+  }
 }
 
 function bootstrapend() {

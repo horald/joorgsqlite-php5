@@ -42,13 +42,14 @@ function stammuebernehmen() {
         //echo $query."<br>"; 
         $results = $db->query($query);
         while ($row = $results->fetchArray()) {
-          $qryins="INSERT INTO tblEinkauf_liste (fldBez,fldort,fldanz,fldpreis,fldStatus,fldEinkaufDatum) VALUES('$row[fldBez]','$row[fldOrt]','$row[fldAnz]','$row[fldPreis]','offen','$datum')";
+          $qryins="INSERT INTO tblEinkauf_liste (fldBez,fldort,fldanz,fldpreis,fldStatus,fldEinkaufDatum,fldKonto) VALUES('$row[fldBez]','$row[fldOrt]','$row[fldAnz]','$row[fldPreis]','offen','$datum','$row[fldKonto]')";
           //echo $qryins."=ins<br>"; 
           $db->exec($qryins);
        }	
       }
     }
     echo "<div class='alert alert-success'>";
+    //echo $db->lastErrorMsg()."<br>";
     echo $cnt." Stammdaten wurden übernommen.";
     echo "</div>";
   }

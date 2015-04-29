@@ -1,0 +1,12 @@
+<?php
+include("bootstrapfunc.php");
+bootstraphead();
+bootstrapbegin("Verbrauch");
+$id=$_GET['id'];
+echo "<a href='../index.php?id=".$id."'  class='btn btn-primary btn-sm active' role='button'>Menü</a><br><br> ";
+
+$verbrauch=10.35;
+echo "<img src='verbrauchfunc.php?verbrauch=".$verbrauch."' usemap='#verbrauch' />"; 
+
+bootstrapend();
+?>

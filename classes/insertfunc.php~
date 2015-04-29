@@ -3,7 +3,7 @@ header("content-type: text/html; charset=utf-8");
 
 function insertinput($listarray,$idwert,$menu) {
   $db = new SQLite3('../data/joorgsqlite.db');
-  echo "<a href='showtab.php?menu=shopping' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
+  echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
   echo "<form class='form-horizontal' method='post' action='insert.php?insert=1&menu=".$menu."'>";
 
   foreach ( $listarray as $arrelement ) {
@@ -11,6 +11,15 @@ function insertinput($listarray,$idwert,$menu) {
     if ($arrelement['default']!="") {
       $default=$arrelement['default'];
     }
+    $defwert='';
+    if ($arrelement['name']<>"") {
+//      if ($arrelement['getdefault']=="true") {
+//        $defquery="SELECT * FROM tblfilter WHERE fldmaske='".strtoupper($menu)."_DEFAULT' AND fldName='".$arrelement['name']."'";
+//        $defresult = $db->query($defquery);
+//        $defline = $defresult->fetchArray();
+//        $defwert=$defline['fldwert'];
+//      }  
+    }  
     switch ( $arrelement['type'] )
     {
       case 'text':
@@ -19,15 +28,45 @@ function insertinput($listarray,$idwert,$menu) {
         echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
         echo "</dl>";
       break;
+      case 'calc':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
+        echo "</dl>";
+      break;
+      case 'calcsum':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
+        echo "</dl>";
+      break;
+      case 'zahl':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
+        echo "</dl>";
+      break;
       case 'select':
-        $sql="SELECT * FROM ".$arrelement['dbtable'];
+        if ($defwert<>'') {
+          $wert=$defwert;
+        }
+        $seldbwhere="";
+        if ($arrelement['seldbwhere']<>"") {
+          $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+        }
+        $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
         $results = $db->query($sql);
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
         echo "<select name='".$arrelement['name']."' size='1'>";
         echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
         while ($row = $results->fetchArray()) {
-          echo "<option style='background-color:#c0c0c0;' >".$row[$arrelement['seldbfield']]."</option>";
+          $strstatus = $row[$arrelement['seldbfield']];
+          if ($wert == $strstatus) {
+            echo "<option style='background-color:#c0c0c0;' selected>".$row[$arrelement['seldbfield']]."</option>";
+          } else {
+            echo "<option style='background-color:#c0c0c0;' >".$row[$arrelement['seldbfield']]."</option>";
+          }
         }
         echo "</select> ";
         echo "</dl>";
@@ -46,12 +85,6 @@ function insertinput($listarray,$idwert,$menu) {
         if ($default=="now()") {
           $default = date('Y-m-d');
         }
-//        echo "<dl>";
-//        echo "<dt><label >".$arrelement['label'].":</label></dt>";
-//        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
-//        echo "</dl>";
-        
-        
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
         echo "<div class='input-group date form_date col-md-2' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input2' data-link-format='yyyy-mm-dd'>";

@@ -41,7 +41,13 @@ $listarray = array ( array ( 'label' => 'Datum',
                              'name' => 'bar',
                              'width' => 100, 
                              'type' => 'calcsum',
-                             'dbfield' => 'fldBetrag' ));
+                             'dbfield' => 'fldBetrag' ),
+                     array ( 'label' => 'Fix',
+                             'name' => 'fix',
+                             'fieldhide' => 'true',
+                             'width' => 70, 
+                             'type' => 'zahl',
+                             'dbfield' => 'fldFix' ));
 
 $filterarray = array ( array ( 'label' => 'Kontoinhaber:',
                                'name' => 'fltkontoinhaber', 

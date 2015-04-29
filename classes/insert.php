@@ -5,7 +5,7 @@ $menu=$_GET['menu'];
 //echo $menu."<br>";
 include("../sites/views/".$menu."/showtab.inc.php");
 bootstraphead();
-bootstrapbegin("Einkaufsliste");
+bootstrapbegin($pararray['headline']);
 $insert = $_GET['insert'];
 $idwert = $_GET['id'];
 if ($insert==1) {

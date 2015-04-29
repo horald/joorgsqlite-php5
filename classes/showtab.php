@@ -4,6 +4,7 @@ include("bootstrapfunc.php");
 include("showtabfunc.php");
 $menu=$_GET['menu'];
 $filter=$_GET['filter'];
+$id=$_GET['id'];
 //echo $menu."=menu<br>";
 include("../sites/views/".$menu."/showtab.inc.php");
 bootstraphead();
@@ -14,7 +15,7 @@ $db = new SQLite3('../data/joorgsqlite.db');
 $sql=showtabfilter($filter,$filterarray,$pararray,$menu);
 //echo $sql."=sql<br>";
 
-showtabfunc($menu,$sql);
+showtabfunc($menu,$sql,$id);
 
 $dbselarr=array();
 $results = $db->query($sql);
@@ -24,10 +25,16 @@ foreach ( $listarray as $arrelement ) {
   if ($arrelement['fieldhide']!="true") {
     switch ( $arrelement['type'] )
     {
+      case 'show':
+        echo "<th>".$arrelement['label']."</th>";
+      break;
       case 'text':
         echo "<th>".$arrelement['label']."</th>";
       break;
       case 'select':
+        echo "<th>".$arrelement['label']."</th>";
+      break;
+      case 'selectid':
         echo "<th>".$arrelement['label']."</th>";
       break;
       case 'time':
@@ -61,11 +68,38 @@ while ($row = $results->fetchArray()) {
     if ($arrelement['fieldhide']!="true") {
       switch ( $arrelement['type'] )
       {
-        case 'text':
+        case 'show':
           echo "<td>".$row[$arrelement['dbfield']]."</td>";
+        break;
+        case 'text':
+          if ($arrelement['grafiklink']=="J") {
+            echo "<td><a href='grafik.php?id=".$id."&etagenid=".$row['fldindex']."'>".$row[$arrelement['dbfield']]."</a></td>";
+          } else {	
+            echo "<td>".$row[$arrelement['dbfield']]."</td>";
+          }
         break;
         case 'select':
           echo "<td>".$row[$arrelement['dbfield']]."</td>";
+        break;
+        case 'selectid':
+          $id=$row[$arrelement['dbfield']];
+          if ($id=="") {
+            $id='0';          
+          }
+          $sqlsel = "SELECT * FROM ".$arrelement['dbtable']." WHERE fldindex=".$id;
+          //echo $sqlsel."<br>";           
+          $ressel = $db->query($sqlsel);
+          $arrsel=array();
+          while ($rowsel = $ressel->fetchArray()) {
+          	$arrsel=$rowsel;
+          }	
+          if (isset($arrsel)) {
+          	$bez=$arrsel['fldbez'];
+          } else {
+          	$bez="";
+          }
+          //echo $bez."=bez<br>";	
+          echo "<td>".$bez."</td>";
         break;
         case 'time':
           echo "<td>".$row[$arrelement['dbfield']]."</td>";

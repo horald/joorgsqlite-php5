@@ -24,7 +24,7 @@ $listarray = array ( array ( 'label' => 'Nr',
                              'type' => 'select',
                              'dbtable' => 'tblorte',
                              'seldbfield' => 'fldBez',
-//                             'seldbwhere' => "fldo01typ='FREMD'",
+                             'seldbwhere' => "fldo01typ='FREMD'",
                              'dbfield' => 'fldOrt' ),
                      array ( 'label' => 'Abteilung',
                              'name' => 'abteilung', 
@@ -92,7 +92,7 @@ $filterarray = array (
                                'type' => 'select',
                                'sign' => '=',
                                'dbtable' => 'tblorte',
-                               'selwhere' => "fldo01typ='FREMD'",
+                               'seldbwhere' => "fldo01typ='FREMD'",
                                'seldbfield' => 'fldBez',
                                'dbfield' => 'fldort' ));
 

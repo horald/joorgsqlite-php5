@@ -19,8 +19,18 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
         echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
         echo "</dl>";
       break;
+      case 'selectid':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
+        echo "</dl>";
+      break;
       case 'select':
-        $sql="SELECT * FROM ".$arrelement['dbtable'];
+        $seldbwhere="";
+        if ($arrelement['seldbwhere']<>"") {
+          $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+        }
+        $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
         $results = $db->query($sql);
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
@@ -47,9 +57,22 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
         echo "<div class='input-group date form_date col-md-2' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input2' data-link-format='yyyy-mm-dd'>";
         echo "<dd><input class='form-control' size='8' type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."' readonly></dd>";
+        //echo "<dd><input class='form-control' size='8' type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."' ></dd>";
 		  echo "<span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>";
         echo "</div>";
 		  echo "<input type='hidden' id='dtp_input2' value='' /><br/>";
+        echo "</dl>";
+      break;
+      case 'calc':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
+        echo "</dl>";
+      break;
+      case 'zahl':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
         echo "</dl>";
       break;
     }
@@ -75,6 +98,12 @@ function updatesave($pararray,$listarray,$menu) {
       switch ( $arrelement['type'] )
       {
         case 'text':
+          $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
+        break;
+        case 'zahl':
+          $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
+        break;
+        case 'selectid':
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
         case 'select':

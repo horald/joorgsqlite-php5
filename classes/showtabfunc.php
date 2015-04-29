@@ -1,7 +1,7 @@
 <?php
 
-function showtabfunc($menu,$sql) {
-echo "<a href='../index.php'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
+function showtabfunc($menu,$sql,$id) {
+echo "<a href='../index.php?id=".$id."'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
 echo "<a href='insert.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Einfügen</a> ";
 echo "<a href='import.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>import</a> ";
 echo "<a href='export.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Export</a> ";
@@ -80,7 +80,12 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
   //echo $anzfilter."=anz<br>";
   echo "<form class='form-horizontal' method='post' action='showtab.php?filter=1&menu=".$menu."'>";
   foreach ( $filterarray as $arrelement ) {
-    $sql="SELECT * FROM ".$arrelement['dbtable'];
+  	 //echo $arrelement['seldbindex']."=index<br>";
+    $seldbwhere="";
+    if ($arrelement['seldbwhere']<>"") {
+      $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+    }
+    $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
     $results = $db->query($sql);
     echo $arrelement['label'];
     echo "<select name='".$arrelement['name']."' size='1'>";
@@ -92,7 +97,6 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       } else {
         $wert=$selarr[$arrelement['dbfield']];
       }
-      //if ($selarr[$arrelement['dbfield']]==$row[$arrelement['seldbfield']]) {
       if ($wert==$row[$arrelement['seldbfield']]) {
         echo "<option style='background-color:#c0c0c0;' selected>".$row[$arrelement['seldbfield']]."</option>";
       } else {
@@ -109,6 +113,13 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
   $dborder="";
   if ($pararray['orderby']<>"") {
     $dborder=" ORDER BY ".$pararray['orderby'];
+  }
+  if ($pararray['dbwhere']<>"") {
+    if ($dbwhere<>"") {
+      $dbwhere=$dbwhere." AND ".$pararray['dbwhere'];
+    } else {
+      $dbwhere=" WHERE ".$pararray['dbwhere'];
+    }
   }
   $sql="SELECT * FROM ".$dbtable.$dbwhere.$dborder;
   //echo $sql."<br>";
