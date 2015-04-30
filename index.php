@@ -10,9 +10,31 @@ echo "  <title>Joorgsqlite</title>";
 echo "  <link href='includes/bootstrap/css/bootstrap.min.css' rel='stylesheet'>";
 
 echo "</head>";
+$dir=getcwd();
+$dirdata=$dir."/data";
+$dbjoorgsqlite=$dirdata."/joorgsqlite.db";
+if (!file_exists($dirdata)) {
+  mkdir($dirdata, 0777, true);
+  if (!file_exists($dirdata)) {
+    echo "<div class='alert alert-success'>";
+    echo "Bitte erzeugen Sie das Unterverzeichnis 'data' im Verzeichnis '".$dir."' mit Schreibrechten und rufen diese Seite zur weiteren Installation erneut auf.";
+    echo "</div>";
+    echo "<a href='index.php' class='btn btn-primary btn-sm active' role='button'>Neustart</a><br>"; 
+  } else {
+    include("classes/install.php");
+  }
+} else {
+  if (!file_exists($dbjoorgsqlite)) {
+    include("classes/install.php");
+  }
+}
 include("classes/checkupgrade.php");
 echo "<body>";
-$check=checkupgrade();
+if ($_GET['weiter']=="J") {
+  $check="ok";
+} else {
+  $check=checkupgrade();
+}
 if ($check=="ok") {
   echo "<div>";
   echo "<h1 align='center'>Joorgportal</h1>";

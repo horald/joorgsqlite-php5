@@ -17,10 +17,11 @@ function checkupgrade() {
     echo "<div class='alert alert-warning'>";
     echo "Upgrade für Vers.-Nr ".$versnr." erkannt. Erst Datensätze anpassen.";
     echo "</div>";
-    echo "<a href='classes/upgrade.php' class='btn btn-primary btn-sm active' role='button'>Update durchführen</a>"; 
+    echo "<a href='classes/upgrade.php' class='btn btn-primary btn-sm active' role='button'>Update durchführen</a> "; 
+    echo "<a href='index.php?weiter=J' class='btn btn-primary btn-sm active' role='button'>Trotzdem weiter</a> "; 
     $check="upgrade";
   } else {
-  	 $check="ok";
+    $check="ok";
   }
   return $check;
 }
