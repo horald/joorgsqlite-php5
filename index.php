@@ -16,6 +16,7 @@ $dbjoorgsqlite=$dirdata."/joorgsqlite.db";
 if (!file_exists($dirdata)) {
   mkdir($dirdata, 0777, true);
   if (!file_exists($dirdata)) {
+    echo "<h1 align='left'>Joorgportal</h1>";
     echo "<div class='alert alert-success'>";
     echo "Bitte erzeugen Sie das Unterverzeichnis 'data' im Verzeichnis '".$dir."' mit Schreibrechten und rufen diese Seite zur weiteren Installation erneut auf.";
     echo "</div>";
