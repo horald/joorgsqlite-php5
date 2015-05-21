@@ -34,7 +34,9 @@ echo "<body>";
 if ($_GET['weiter']=="J") {
   $check="ok";
 } else {
-  $check=checkupgrade();
+  check_version();
+//  $check=checkupgrade();
+  $check="ok";
 }
 if ($check=="ok") {
   echo "<div>";

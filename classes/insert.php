@@ -11,7 +11,7 @@ $idwert = $_GET['id'];
 if ($insert==1) {
   $show = $_POST['chkanzeigen'];
   //echo $show."=show<br>"; 
-  insertsave($pararray,$listarray,$menu);
+  insertsave($pararray,$listarray,$menu,$show);
   if ($show<>"anzeigen") {
     echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
   }

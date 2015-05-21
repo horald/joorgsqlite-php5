@@ -5,7 +5,7 @@ include("../sites/update/sqlstruc.inc.php");
 bootstraphead();
 bootstrapbegin("Update");
 echo "<a href='../index.php' class='btn btn-primary btn-sm active' role='button'>Startseite</a>"; 
-checktables();
+//checktables($tablearray);
 $ini_array = parse_ini_file("../version.txt");
 $versnr=$ini_array['versnr'];
 $versdat=$ini_array['versdat'];

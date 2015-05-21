@@ -1,5 +1,17 @@
 <?php
 
+function getactvers() {
+  $db = new SQLite3('data/joorgsqlite.db');
+  $sql="SELECT * FROM tblversion ORDER BY fldversion";
+  $results = $db->query($sql);
+  while ($row = $results->fetchArray()) {
+    $arr=$row;
+  }
+  $versnr=$arr['fldversion'];
+  $db->close();	
+  return $versnr;
+}
+
 function checkupgrade() {
   $db = new SQLite3('data/joorgsqlite.db');
   //echo "checkupgrade<br>";
@@ -24,6 +36,17 @@ function checkupgrade() {
     $check="ok";
   }
   return $check;
+}
+
+function check_version() {
+  $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
+  $versnr=$ini_array['versnr'];
+  $actvers=getactvers();	
+  if ($actvers<$versnr) {
+    echo "<div class='alert alert-info'>";
+    echo "<a href='classes/checkupdate.php?actvers=".$actvers."'>Neue Version ".$versnr." verfügbar</a>";
+    echo "</div>";
+  }  
 }
 
 ?>

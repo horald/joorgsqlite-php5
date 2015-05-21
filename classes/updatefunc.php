@@ -89,12 +89,13 @@ function updatepreis() {
 //  echo "updatepreis";
 }
 
-function updatesave($pararray,$listarray,$menu) {
+function updatesave($pararray,$listarray,$menu,$show) {
   echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 
   $sql="UPDATE ".$pararray['dbtable']." SET ";
   foreach ( $listarray as $arrelement ) {
+  	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )
       {
         case 'text':
@@ -116,6 +117,7 @@ function updatesave($pararray,$listarray,$menu) {
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
       }
+    }  
   }
 
   $sql=substr($sql,0,-2);
@@ -126,9 +128,13 @@ function updatesave($pararray,$listarray,$menu) {
     $rowid=$_POST['id'];
     updatepreis($rowid);
   }
+  if ($show=="anzeigen") {
+    echo "<div class='alert alert-success'>";
+    echo $db->lastErrorMsg()."<br>";
+    echo $sql."<br>";
+    echo "</div>";
+  }
   echo "<div class='alert alert-success'>";
-  echo $db->lastErrorMsg()."<br>";
-  echo $sql."<br>";
   echo "Daten '".$_POST['fldbez']."' aktualisiert.";
   echo "</div>";
 }

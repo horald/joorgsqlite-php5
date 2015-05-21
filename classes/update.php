@@ -10,7 +10,7 @@ $update = $_GET['update'];
 $idwert = $_GET['id'];
 if ($update==1) {
   $show = $_POST['chkanzeigen'];
-  updatesave($pararray,$listarray,$menu);
+  updatesave($pararray,$listarray,$menu,$show);
   if ($show<>"anzeigen") {
     echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
   } 

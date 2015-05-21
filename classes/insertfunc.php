@@ -13,12 +13,13 @@ function insertinput($listarray,$idwert,$menu) {
     }
     $defwert='';
     if ($arrelement['name']<>"") {
-//      if ($arrelement['getdefault']=="true") {
-//        $defquery="SELECT * FROM tblfilter WHERE fldmaske='".strtoupper($menu)."_DEFAULT' AND fldName='".$arrelement['name']."'";
-//        $defresult = $db->query($defquery);
+      if ($arrelement['getdefault']=="true") {
+        $defquery="SELECT * FROM tblfilter WHERE fldmaske='".strtoupper($menu)."_DEFAULT' AND fldName='".$arrelement['name']."'";
+//echo $defquery."<br>";
+        $defresult = $db->query($defquery);
 //        $defline = $defresult->fetchArray();
 //        $defwert=$defline['fldwert'];
-//      }  
+      }  
     }  
     switch ( $arrelement['type'] )
     {
@@ -100,34 +101,34 @@ function insertinput($listarray,$idwert,$menu) {
 function updatepreis($rowid) {
   $db = new SQLite3('../data/joorgsqlite.db');
   $sql = "SELECT * FROM tblartikel WHERE fldBez='".$_POST['fldBez']."' AND fldOrt='".$_POST['fldort']."'";
-  echo $sql."<br>";
+//  echo $sql."<br>";
   $results = $db->query($sql);
   $count=0;
   while ($row = $results->fetchArray()) {
     $count=$count+1;
     $arr=$row;
   }	
-  echo $count."=count<br>";
+  //echo $count."=count<br>";
   if ($count==1) {
-    echo $arr['fldPreis']."<br>";
+    //echo $arr['fldPreis']."<br>";
     $sql="UPDATE tblEinkauf_liste SET fldpreis='".$arr['fldPreis']."' WHERE fldindex=".$rowid;
-    echo $sql."<br>";
+    //echo $sql."<br>";
     $db->exec($sql);
-  echo $db->lastErrorMsg()."<br>";
+    //echo $db->lastErrorMsg()."<br>";
 
   }
   if ($count==0) {
     if ($_POST['fldpreis']<>"") {
       if ($_POST['fldort']<>"") {  
         $sql="INSERT INTO tblartikel (fldBez,fldPreis,fldOrt) VALUES ('".$_POST['fldBez']."','".$_POST['fldpreis']."','".$_POST['fldort']."')";
-        echo $sql."<br>";
+        //echo $sql."<br>";
         $db->exec($sql);
       }
     }
   }
 }
 
-function insertsave($pararray,$listarray,$menu) {
+function insertsave($pararray,$listarray,$menu,$show) {
   echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 //  echo $db->lastErrorMsg()."<br>";
@@ -179,7 +180,11 @@ function insertsave($pararray,$listarray,$menu) {
     $rowid=$row[0]; 
     echo $rowid."=rowid<br>"; 
   }
-  echo $db->lastErrorMsg()."<br>";
+  if ($show=="anzeigen") {
+    echo "<div class='alert alert-success'>";
+    echo $db->lastErrorMsg()."<br>";
+    echo "</div>";
+  }  
   $db->close();
   echo $pararray['chkpreis']."=chkpreis<br>"; 
   if ($pararray['chkpreis']=="J") {
