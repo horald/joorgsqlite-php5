@@ -7,6 +7,7 @@ function insertinput($listarray,$idwert,$menu) {
   echo "<form class='form-horizontal' method='post' action='insert.php?insert=1&menu=".$menu."'>";
 
   foreach ( $listarray as $arrelement ) {
+  	 if ($arrelement['fieldsave']<>"NO") {
     $default="";
     if ($arrelement['default']!="") {
       $default=$arrelement['default'];
@@ -15,10 +16,7 @@ function insertinput($listarray,$idwert,$menu) {
     if ($arrelement['name']<>"") {
       if ($arrelement['getdefault']=="true") {
         $defquery="SELECT * FROM tblfilter WHERE fldmaske='".strtoupper($menu)."_DEFAULT' AND fldName='".$arrelement['name']."'";
-echo $defquery."<br>";
         $defresult = $db->query($defquery);
-//        $defline = $defresult->fetchArray();
-//        $defwert=$defline['fldwert'];
       }  
     }  
     switch ( $arrelement['type'] )
@@ -90,6 +88,7 @@ echo $defquery."<br>";
         echo "</dl>";
       break;
       }
+    }
   }
 
   echo "<input type='checkbox' name='chkanzeigen' value='anzeigen'> Speichern anzeigen<br>";
@@ -136,6 +135,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
   $dbtable=$pararray['dbtable'];
   $sql="INSERT INTO ".$dbtable." (";
   foreach ( $listarray as $arrelement ) {
+  	 if (<$arrelement['fieldsave']>"NO") {
       switch ( $arrelement['type'] )
       {
         case 'text':
@@ -151,9 +151,11 @@ function insertsave($pararray,$listarray,$menu,$show) {
           $sql=$sql.$arrelement['dbfield'].",";
         break;
       }
+    }  
   }
   $sql=substr($sql,0,-1).") VALUES (";
   foreach ( $listarray as $arrelement ) {
+  	 if (<$arrelement['fieldsave']>"NO") {
       switch ( $arrelement['type'] )
       {
         case 'text':
@@ -169,6 +171,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
           $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
         break;
       }
+    }
   }
   $sql=substr($sql,0,-1).")";
 

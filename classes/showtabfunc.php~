@@ -80,8 +80,12 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
   //echo $anzfilter."=anz<br>";
   echo "<form class='form-horizontal' method='post' action='showtab.php?filter=1&menu=".$menu."'>";
   foreach ( $filterarray as $arrelement ) {
-  	 echo $arrelement['seldbindex']."=index<br>";
-    $sql="SELECT * FROM ".$arrelement['dbtable'];
+  	 //echo $arrelement['seldbindex']."=index<br>";
+    $seldbwhere="";
+    if ($arrelement['seldbwhere']<>"") {
+      $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+    }
+    $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
     $results = $db->query($sql);
     echo $arrelement['label'];
     echo "<select name='".$arrelement['name']."' size='1'>";

@@ -1,9 +1,15 @@
 <?php
 $menu=$_GET['dbtable'];
+$dbwhere=$_GET['dbwhere'];
+$dbwert=$_GET['dbwert'];
 include("../sites/views/".$menu."/showtab.inc.php");
 ini_set("allow_url_include", true);
 $db = new SQLite3('../data/joorgsqlite.db');
-$sql="SELECT * FROM ".$pararray['dbtable'];
+if ($dbwhere<>"") {
+  $sql="SELECT * FROM ".$pararray['dbtable']." WHERE ".$dbwhere."'".$dbwert."'";
+} else {
+  $sql="SELECT * FROM ".$pararray['dbtable'];
+}
 $results = $db->query($sql);
 $datarr = array();
 $fldarr = array();

@@ -11,6 +11,7 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
   echo "<form class='form-horizontal' method='post' action='update.php?update=1&menu=".$menu."' role='form'>";
 
   foreach ( $listarray as $arrelement ) {
+  	 if ($arrelement['fieldsave']<>"NO") {
     switch ( $arrelement['type'] )
     {
       case 'text':
@@ -76,6 +77,7 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
         echo "</dl>";
       break;
     }
+    }
   }
 
   echo "<input type='hidden' name='id' value=".$idwert.">";
@@ -122,7 +124,6 @@ function updatesave($pararray,$listarray,$menu,$show) {
 
   $sql=substr($sql,0,-2);
   $sql=$sql." WHERE fldindex=".$_POST['id'];
-//  echo $sql."<br>";
   $query = $db->exec($sql);
   if ($pararray['chkpreis']=="J") {
     $rowid=$_POST['id'];

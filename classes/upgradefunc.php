@@ -2,7 +2,7 @@
 
 function checktables($tablearray) {
   echo "<br>";
-  $db = new SQLite3('../data/joorgsqlite-handy.db');
+  $db = new SQLite3('../data/joorgsqlite.db');
   foreach ( $tablearray as $arrelement ) {
   	 echo $arrelement['tablename']."<br>";
   	 $sql="SELECT name FROM sqlite_master WHERE type='table' AND name='".$arrelement['tablename']."'";

@@ -41,11 +41,19 @@ function checkupgrade() {
 function check_version() {
   $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
   $versnr=$ini_array['versnr'];
+  $ini_locarr = parse_ini_file("http://localhost/android/own/joorgsqlite/version.txt");
+  $locvers=$ini_locarr['versnr'];
   $actvers=getactvers();	
-  if ($actvers<$versnr) {
+  if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
-    echo "<a href='classes/checkupdate.php?actvers=".$actvers."'>Neue Version ".$versnr." verfügbar</a>";
+    echo "<a href='classes/checkupdate.php?actvers=".$locvers."'>Neue Version ".$versnr." verfügbar</a>";
     echo "</div>";
+  } else {  
+    if ($actvers<$versnr) {
+      echo "<div class='alert alert-info'>";
+      echo "<a href='classes/installupdate.php?newvers=".$versnr."'>Auf neue Version ".$versnr." aktualisieren</a>";
+      echo "</div>";
+    }
   }  
 }
 

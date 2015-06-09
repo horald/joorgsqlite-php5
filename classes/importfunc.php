@@ -2,6 +2,8 @@
 
 function importfunc($importpfad) {
   $count = $_POST['count'];
+  $ktotyp = $_POST['ktotyp'];
+  echo "=ktotyp<br>";
   if ($count>0) {
     for($zaehl = 1; $zaehl <= $count; $zaehl++)
     {
@@ -35,6 +37,18 @@ function importabfrage($menu,$importpfad) {
   echo "Importpfad:".$pfad;
   echo "</div>";
   echo "<form method='post' action='import.php?import=1&menu=".$menu."'>";
+
+  $db = new SQLite3('../data/joorgsqlite.db');
+  $fquery = "SELECT * FROM tblktotyp";
+  $fresult = $db->query($fquery);
+  echo "<select name='ktotyp' size='1'>";
+  while ($fline = $fresult->fetchArray()) {
+    $strindex = $fline[fldindex];
+    $strbez = $fline[fldbez];
+    echo "<option style='background-color:#c0c0c0;' value=".$strindex." >".$strbez."</option>";
+  }
+  echo "</select>";
+
   echo "<table class='table table-hover'>";
   echo "<thead>";
   echo "<th width='5'><input type='checkbox' name='cbuttonAll' value='1'></th>";

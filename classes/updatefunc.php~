@@ -95,6 +95,7 @@ function updatesave($pararray,$listarray,$menu,$show) {
 
   $sql="UPDATE ".$pararray['dbtable']." SET ";
   foreach ( $listarray as $arrelement ) {
+  	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )
       {
         case 'text':
@@ -116,11 +117,12 @@ function updatesave($pararray,$listarray,$menu,$show) {
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
       }
+    }  
   }
 
   $sql=substr($sql,0,-2);
   $sql=$sql." WHERE fldindex=".$_POST['id'];
-//  echo $sql."<br>";
+  echo $sql."<br>";
   $query = $db->exec($sql);
   if ($pararray['chkpreis']=="J") {
     $rowid=$_POST['id'];

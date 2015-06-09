@@ -2,7 +2,9 @@
 
 function datenauswahl($menu) {
   echo "<form class='form-horizontal' method='post' action='empfangen.php?empfangen=1&menu=".$menu."'>";
-  echo "<dd><input type='text' name='urladr' value=''/></dd>";
+  echo "<dd>Url:<input type='text' name='urladr' value=''/></dd>";
+  echo "<dd>Where:<input type='text' name='dbwhere' value=''/></dd>";
+  echo "<dd>Wert:<input type='text' name='dbwert' value=''/></dd>";
   echo "<dd><input type='submit' value='Daten holen' /></dd>";
   echo "<input type='hidden' name='menu' value='".$menu."' />";
   echo "</form>";
@@ -16,7 +18,7 @@ function datenholentest($menu) {
 
   $website="http://".$urladr.":8080/own/joorgsqlite/classes/senden.php?dbtable=".$menu;
   ob_start();
-  define('DBTABLE','tblfahr');
+  //define('DBTABLE','tblfahr');
   include($website);
   flush();
   $json=ob_get_contents();
@@ -28,13 +30,20 @@ function datenholentest($menu) {
 function datenholen($menu) {
   //echo "datenholen";
   $urladr=$_POST['urladr'];
+  $dbwhere=$_POST['dbwhere'];
+  $dbwert=$_POST['dbwert'];
   echo "<div class='alert alert-success'>";
   echo "Daten von ".$urladr." holen.";
   echo "</div>";
 
-  $website="http://".$urladr.":8080/own/joorgsqlite/classes/senden.php?dbtable=".$menu;
+  if ($dbwhere<>"") {
+    $website="http://".$urladr.":8080/own/joorgsqlite/classes/senden.php?dbtable=".$menu."&dbwhere=".$dbwhere."&dbwert=".$dbwert;
+  } else {  
+    $website="http://".$urladr.":8080/own/joorgsqlite/classes/senden.php?dbtable=".$menu;
+  }
+  //echo $website."<br>";
   ob_start();
-  define('DBTABLE','tblfahr');
+  //define('DBTABLE','tblfahr');
   include($website);
   flush();
   $json=ob_get_contents();

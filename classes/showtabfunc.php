@@ -7,6 +7,7 @@ echo "<a href='import.php?menu=".$menu."' class='btn btn-primary btn-sm active' 
 echo "<a href='export.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Export</a> ";
 echo "<a href='leeren.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Leeren</a> ";
 echo "<a href='preis.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Preis</a> ";
+echo "<a href='buchen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Buchen</a> ";
 echo "<a href='stamm.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Stammdaten</a> ";
 echo "<a href='schicken.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
 echo "<a href='empfangen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
