@@ -39,9 +39,12 @@ function checkupgrade() {
 }
 
 function check_version() {
+  //$servername=$_SERVER['SERVER_NAME'];
+  $servername=$_SERVER['HTTP_HOST'];
+  //echo $servername."<br>";
   $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
   $versnr=$ini_array['versnr'];
-  $ini_locarr = parse_ini_file("http://localhost/android/own/joorgsqlite/version.txt");
+  $ini_locarr = parse_ini_file("http://".$servername."/android/own/joorgsqlite/version.txt");
   $locvers=$ini_locarr['versnr'];
   $actvers=getactvers();	
   if ($locvers<$versnr) {

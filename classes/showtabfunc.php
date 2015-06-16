@@ -1,16 +1,24 @@
 <?php
 
 function showtabfunc($menu,$sql,$id) {
-echo "<a href='../index.php?id=".$id."'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
-echo "<a href='insert.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Einfügen</a> ";
-echo "<a href='import.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>import</a> ";
-echo "<a href='export.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Export</a> ";
-echo "<a href='leeren.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Leeren</a> ";
-echo "<a href='preis.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Preis</a> ";
-echo "<a href='buchen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Buchen</a> ";
-echo "<a href='stamm.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Stammdaten</a> ";
-echo "<a href='schicken.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
-echo "<a href='empfangen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
+  echo "<a href='../index.php?id=".$id."'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
+  echo "<a href='insert.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Einfügen</a> ";
+  echo "<a href='import.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>import</a> ";
+  echo "<a href='export.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Export</a> ";
+  echo "<a href='leeren.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Leeren</a> ";
+  $db = new SQLite3('../data/joorgsqlite.db');
+  $sql="SELECT * FROM tblfunc WHERE fldMenuID='".$menu."' ORDER BY fldName";
+  //echo $sql."<br>";
+  $results = $db->query($sql);
+  while ($row = $results->fetchArray()) {
+    //echo $row['fldBez']."<br>";  
+    echo "<a href='".$row['fldphp']."?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>".$row['fldBez']."</a> ";
+  }  
+  //echo "<a href='preis.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Preis</a> ";
+  //echo "<a href='buchen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Buchen</a> ";
+  //echo "<a href='stamm.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Stammdaten</a> ";
+  echo "<a href='schicken.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
+  echo "<a href='empfangen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
 }
 
 function showtabfilter($filter,$filterarray,$pararray,$menu) {

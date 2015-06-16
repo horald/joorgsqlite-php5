@@ -1,7 +1,6 @@
 <?php
 include("bootstrapfunc.php");
 $menu=$_GET['menu'];
-//echo $menu."=menu<br>";
 include("../sites/views/".$menu."/showtab.inc.php");
 bootstraphead();
 bootstrapbegin($pararray['headline']);
@@ -13,7 +12,7 @@ echo "<br>";
 //echo $sql."<br>";
 $results = $db->query($sql);
 while ($row = $results->fetchArray()) {
-  $sqlpreis="SELECT * FROM tblartikel WHERE fldBez = '".$row['fldBez']."' and fldOrt='".$row['fldort']."'";
+  $sqlpreis="SELECT * FROM tblartikel WHERE fldBez = '".$row['fldBez']."' and fldOrt='".$row['fldOrt']."'";
   //echo $sqlpreis."<br>";
   $respreis = $db->query($sqlpreis);
   $count=0;
@@ -27,13 +26,14 @@ while ($row = $results->fetchArray()) {
     echo "</div>";
   }
   if ($count==0) {
-    if (floatval($row['fldpreis'])<>0) {
-      $sqlinsert="INSERT INTO tblartikel (fldBez,fldOrt,fldAnz,fldPreis) VALUES ('".$row['fldBez']."','".$row['fldort']."',1,'".$row['fldpreis']."')";
-      $db->exec($sqlinsert);
-      echo "<div class='alert alert-success'>";
-      echo $sqlinsert."<br>";
-      echo "</div>";
-    }
+    echo $count."=count<br>";
+//    if (floatval($row['fldpreis'])<>0) {
+//      $sqlinsert="INSERT INTO tblartikel (fldBez,fldOrt,fldAnz,fldPreis) VALUES ('".$row['fldBez']."','".$row['fldort']."',1,'".$row['fldpreis']."')";
+//      $db->exec($sqlinsert);
+//      echo "<div class='alert alert-success'>";
+//      echo $sqlinsert."<br>";
+//      echo "</div>";
+//    }
   }
 }	
 bootstrapend();

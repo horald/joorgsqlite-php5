@@ -73,7 +73,7 @@ while ($row = $results->fetchArray()) {
         break;
         case 'text':
           if ($arrelement['grafiklink']=="J") {
-            echo "<td><a href='grafik.php?etagenid=".$row['fldindex']."'>".$row[$arrelement['dbfield']]."</a></td>";
+            echo "<td><a href='grafik.php?id=".$id."&etagenid=".$row['fldindex']."'>".$row[$arrelement['dbfield']]."</a></td>";
           } else {	
             echo "<td>".$row[$arrelement['dbfield']]."</td>";
           }
@@ -160,6 +160,7 @@ while ($row = $results->fetchArray()) {
   echo "<td><a href='update.php?menu=".$menu."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>U</a></td> ";
   echo "<td><a href='delete.php?menu=".$menu."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>D</a></td>";
   echo "</tr>";
+  echo $row[$pararray['fldindex']].",".$pararray['fldindex']."=<br>";
   $menge = array_push ( $dbselarr, $row[$pararray['fldindex']] );
 }
 $_SESSION['DBSELARR']=$dbselarr;
