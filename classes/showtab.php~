@@ -25,6 +25,9 @@ foreach ( $listarray as $arrelement ) {
   if ($arrelement['fieldhide']!="true") {
     switch ( $arrelement['type'] )
     {
+      case 'nummer':
+        echo "<th>".$arrelement['label']."</th>";
+      break;
       case 'show':
         echo "<th>".$arrelement['label']."</th>";
       break;
@@ -62,18 +65,23 @@ foreach ( $listarray as $arrelement ) {
   }
 }
 echo "</tr>";
+$nummer=0;
 while ($row = $results->fetchArray()) {
   echo "<tr>";
   foreach ( $listarray as $arrelement ) {
     if ($arrelement['fieldhide']!="true") {
       switch ( $arrelement['type'] )
       {
+        case 'nummer':
+          $nummer=$nummer+1;
+          echo "<td>".$nummer."</td>";
+        break;
         case 'show':
           echo "<td>".$row[$arrelement['dbfield']]."</td>";
         break;
         case 'text':
           if ($arrelement['grafiklink']=="J") {
-            echo "<td><a href='grafik.php?id=".$id."&etagenid=".$row['fldindex']."'>".$row[$arrelement['dbfield']]."</a></td>";
+            echo "<td><a href='".$arrelement['grafikurl']."?id=".$id."&etagenid=".$row['fldindex']."&typ=".$arrelement['roomtyp']."'>".$row[$arrelement['dbfield']]."</a></td>";
           } else {	
             echo "<td>".$row[$arrelement['dbfield']]."</td>";
           }
@@ -86,7 +94,7 @@ while ($row = $results->fetchArray()) {
           if ($id=="") {
             $id='0';          
           }
-          $sqlsel = "SELECT * FROM ".$arrelement['dbtable']." WHERE fldindex=".$id;
+          $sqlsel = "SELECT * FROM ".$arrelement['dbtable']." WHERE ".$arrelement['seldbindex']."=".$id;
           //echo $sqlsel."<br>";           
           $ressel = $db->query($sqlsel);
           $arrsel=array();
@@ -94,7 +102,7 @@ while ($row = $results->fetchArray()) {
           	$arrsel=$rowsel;
           }	
           if (isset($arrsel)) {
-          	$bez=$arrsel['fldbez'];
+          	$bez=$arrsel[$arrelement['seldbfield']];
           } else {
           	$bez="";
           }
@@ -160,7 +168,6 @@ while ($row = $results->fetchArray()) {
   echo "<td><a href='update.php?menu=".$menu."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>U</a></td> ";
   echo "<td><a href='delete.php?menu=".$menu."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>D</a></td>";
   echo "</tr>";
-  echo $row[$pararray['fldindex']].",".$pararray['fldindex']."=<br>";
   $menge = array_push ( $dbselarr, $row[$pararray['fldindex']] );
 }
 $_SESSION['DBSELARR']=$dbselarr;
@@ -169,6 +176,9 @@ foreach ( $listarray as $arrelement ) {
   if ($arrelement['fieldhide']!="true") {
     switch ( $arrelement['type'] )
     {
+      case 'nummer':
+        echo "<td></td>";
+      break;
       case 'text':
         echo "<td></td>";
       break;

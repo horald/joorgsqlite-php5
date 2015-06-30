@@ -1,7 +1,7 @@
 <?php
 
-function getactvers() {
-  $db = new SQLite3('data/joorgsqlite.db');
+function getactvers($pfad) {
+  $db = new SQLite3($pfad.'joorgsqlite.db');
   $sql="SELECT * FROM tblversion ORDER BY fldversion";
   $results = $db->query($sql);
   while ($row = $results->fetchArray()) {
@@ -48,9 +48,10 @@ function check_version() {
   //echo $serverpfad."<br>";
   $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
   $versnr=$ini_array['versnr'];
+  $versdat=$ini_array['versdat'];
   $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
-  $actvers=getactvers();	
+  $actvers=getactvers("data/");	
   if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
     echo "<a href='classes/checkupdate.php?actvers=".$locvers."'>Neue Version ".$versnr." verfügbar</a>";
@@ -58,7 +59,7 @@ function check_version() {
   } else {  
     if ($actvers<$versnr) {
       echo "<div class='alert alert-info'>";
-      echo "<a href='classes/installupdate.php?newvers=".$versnr."'>Auf neue Version ".$versnr." aktualisieren</a>";
+      echo "<a href='classes/installupdate.php?newvers=".$versnr."&oldvers=".$actvers."&versdat=".$versdat."'>Auf neue Version ".$versnr." aktualisieren</a>";
       echo "</div>";
     }
   }  

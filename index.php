@@ -30,6 +30,7 @@ if (!file_exists($dirdata)) {
   }
 }
 include("classes/checkupgrade.php");
+include("classes/dbtool.php");
 echo "<body>";
 if ($_GET['weiter']=="J") {
   $check="ok";
@@ -41,15 +42,18 @@ if ($_GET['weiter']=="J") {
 if ($check=="ok") {
   echo "<div>";
   echo "<h1 align='center'>Joorgportal</h1>";
-  $db = new SQLite3('data/joorgsqlite.db');
+  $db = dbopen('','data/joorgsqlite.db');
+  //$db = new SQLite3('data/joorgsqlite.db');
   $parentid=$_GET['id'];
   if ($parentid=="") {
   	 $parentid='0';
   } else {
     echo "<h2 align='center'>Privat</h2>";
   }
-  $results = $db->query("SELECT * FROM tblmenu_liste WHERE fldview='J' AND fldid_parent='".$parentid."' ORDER BY fldsort");
-  while ($row = $results->fetchArray()) {
+  //$results = $db->query("SELECT * FROM tblmenu_liste WHERE fldview='J' AND fldid_parent='".$parentid."' ORDER BY fldsort");
+  $results = dbquery('',$db,"SELECT * FROM tblmenu_liste WHERE fldview='J' AND fldid_parent='".$parentid."' ORDER BY fldsort");
+//  while ($row = $results->fetchArray()) {
+  while ($row = dbfetch('',$results)) {
   	 if ($row['fldmenu']=="SUBMENU") {
       echo "<a href='index.php?id=".$row['fldindex']."&lastid=".$parentid."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
   	 } else {	

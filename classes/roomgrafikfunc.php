@@ -1,28 +1,48 @@
 <?php
 header("Content-type: image/png");
+include("dbtool.php");
 
 $db = new SQLite3('../data/joorgsqlite.db');
+//$db = dbopen('../','../data/joorgsqlite.db');
 
 $etagenid='0';
 if (isset($_GET['etagenid'])) {
   $etagenid=$_GET['etagenid'];
 }
 
-$sql="SELECT * FROM tbletagen WHERE fldindex=".$etagenid;
-$results = $db->query($sql);
-while ($row = $results->fetchArray()) {
-  $bez=$row['fldbez'];
-}
-
-$sql="SELECT * FROM tblorte WHERE fldid_zimmer=".$etagenid." AND fldview='J'";
-$results = $db->query($sql);
 $index='0';
 if (isset($_GET['index'])) {
   $index=$_GET['index'];
 }
 if ($index<>'0') {
-  $bez="Waschkeller";
+  $bez="unbekannt";
 }
+
+$roomtyp='';
+if (isset($_GET['roomtyp'])) {
+  $roomtyp=$_GET['roomtyp'];
+}
+if ($roomtyp=="ETAGEN") {
+  $newroomtyp="ZIMMER";
+  $sql="SELECT * FROM tbletagen WHERE fldindex=".$etagenid;
+  $results = $db->query($sql);
+  while ($row = $results->fetchArray()) {
+    $bez=$row['fldbez'].",".$roomtyp;
+  }
+  $sql="SELECT * FROM tblorte WHERE fldid_etage=".$etagenid." AND fldview='J' AND fldo01typ='ZIMMER'";
+} 
+
+if ($roomtyp=="ZIMMER") {
+  $newroomtyp="MOEBEL";
+  $sql="SELECT * FROM tblorte WHERE fldindex=".$index;
+  $results = $db->query($sql);
+  while ($row = $results->fetchArray()) {
+    $bez=$row['fldBez'].",".$roomtyp;
+  }
+  $sql="SELECT * FROM tblorte WHERE fldid_zimmer=".$index." AND fldview='J' AND fldo01typ='MOEBEL'";
+} 
+
+$results = $db->query($sql);
 
 // erstellen eines leeren Bildes mit 400px Breite und 300px Höhe
 $breite=600;
@@ -45,11 +65,21 @@ imagefilledrectangle ($bild, $breite-5, 25, $breite, $hoehe, $schwarz);
 ImageString ($bild, 5, 5, 5, $bez, $schwarz);
 
 while ($row = $results->fetchArray()) {
+  $proz=$row['fldproz'];
+  if ($proz=="") {
+    $proz=0;
+  }
+  $proz=$proz * 2.5;  
+  $rot=255-$proz;
+  $gruen=$proz;
+  $raumfarbe = imagecolorallocate($bild, $rot, $gruen, 0);
+  imagefilledrectangle ($bild, $row['fldxkoor'], $row['fldykoor'], $row['fldxkoor']+$row['fldbreite'], $row['fldykoor']+$row['fldhoehe'], $raumfarbe);
   imageline ($bild,$row['fldxkoor'],$row['fldykoor'],$row['fldxkoor'],$row['fldykoor']+$row['fldhoehe'],$schwarz);
   imageline ($bild,$row['fldxkoor'],$row['fldykoor'],$row['fldxkoor']+$row['fldbreite'],$row['fldykoor'],$schwarz);
   imageline ($bild,$row['fldxkoor']+$row['fldbreite'],$row['fldykoor'],$row['fldxkoor']+$row['fldbreite'],$row['fldykoor']+$row['fldhoehe'],$schwarz);
   imageline ($bild,$row['fldxkoor'],$row['fldykoor']+$row['fldhoehe'],$row['fldxkoor']+$row['fldbreite'],$row['fldykoor']+$row['fldhoehe'],$schwarz);
-  ImageString ($bild, 5, $row['fldxkoor']+5, $row['fldykoor']+5, $row['fldBez'], $schwarz);
+  $roombez=$row['fldBez']." (".$row['fldproz']."%)";
+  ImageString ($bild, 5, $row['fldxkoor']+5, $row['fldykoor']+5, $roombez, $schwarz);
 }
 
 

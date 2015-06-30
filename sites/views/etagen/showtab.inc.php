@@ -4,6 +4,8 @@ $listarray = array ( array ( 'label' => 'Bez',
                              'width' => 100, 
                              'type' => 'text',
                              'grafiklink' => 'J',
+                             'grafikurl' => 'roomgrafik.php',
+                             'roomtyp' => 'ETAGEN',
                              'dbfield' => 'fldbez' ));
 
 $pararray = array ( 'headline' => 'Stockwerke',

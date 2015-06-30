@@ -2,7 +2,7 @@
 include("bootstrapfunc.php");
 bootstraphead();
 bootstrapbegin('Make SQL-Structure');
-echo "<a href='../admin' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
+echo "<a href='../admin' class='btn btn-primary btn-sm active' role='button'>Zurück</a><br>"; 
 
 $pfad=$_SERVER['DOCUMENT_ROOT']."/android/own/joorgsqlite/sites/update/";
 //echo $_SERVER['DOCUMENT_ROOT']."<br>";
@@ -10,6 +10,9 @@ $pfad=$_SERVER['DOCUMENT_ROOT']."/android/own/joorgsqlite/sites/update/";
 
 $filename = $pfad.'sqlstruc.inc.php';
 $somecontent = "Füge dies Datei hinzu\n";
+echo "<div class='alert alert-success'>";
+echo "Datei:".$filename."<br>";
+echo "</div>";
 
 // Sichergehen, dass die Datei existiert und beschreibbar ist
 if (is_writable($filename)) {
@@ -33,7 +36,9 @@ if (is_writable($filename)) {
      $pos = strpos($sql, '(', 0);
      $column="'".substr($sql,$pos+1,-1)."'"; 
      $column=str_replace(",","','",$column);
-     echo $column."<br>";
+     //echo "<div class='alert alert-success'>";
+     //echo $column."<br>";
+     //echo "</div>";
      fwrite($handle,"'column' => array(".$column.")),\n");
      $count=$count+1;
    }	

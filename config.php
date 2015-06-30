@@ -1,0 +1,3 @@
+<?php
+$dbtyp="SQLITE3";
+?>

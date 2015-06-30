@@ -1,7 +1,7 @@
 <?php
 
-function getactvers() {
-  $db = new SQLite3('data/joorgsqlite.db');
+function getactvers($pfad) {
+  $db = new SQLite3($pfad.'joorgsqlite.db');
   $sql="SELECT * FROM tblversion ORDER BY fldversion";
   $results = $db->query($sql);
   while ($row = $results->fetchArray()) {
@@ -39,22 +39,27 @@ function checkupgrade() {
 }
 
 function check_version() {
-  //$servername=$_SERVER['SERVER_NAME'];
   $servername=$_SERVER['HTTP_HOST'];
-  echo $servername."<br>";
+  $serverpfad=$_SERVER['REQUEST_URI'];
+  $file = strrchr($serverpfad, '/');
+  $file = ($file===false) ? $serverpfad : (($file==='/') ? '' : substr($file, 1));
+  $serverpfad = ($file==='') ? $serverpfad : substr($serverpfad, 0, -strlen($file));
+  //echo $servername."<br>";
+  //echo $serverpfad."<br>";
   $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
   $versnr=$ini_array['versnr'];
-  $ini_locarr = parse_ini_file("http://".$servername."/android/own/joorgsqlite/version.txt");
+  $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
-  $actvers=getactvers();	
+  $actvers=getactvers("data/");	
   if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
     echo "<a href='classes/checkupdate.php?actvers=".$locvers."'>Neue Version ".$versnr." verfügbar</a>";
     echo "</div>";
   } else {  
     if ($actvers<$versnr) {
+    	$versdatum=$ini_locarr['versdat'];
       echo "<div class='alert alert-info'>";
-      echo "<a href='classes/installupdate.php?newvers=".$versnr."'>Auf neue Version ".$versnr." aktualisieren</a>";
+      echo "<a href='classes/installupdate.php?newvers=".$versnr."&oldvers=".$actvers."&versdat=".$versdatum."'>Auf neue Version ".$versnr." aktualisieren</a>";
       echo "</div>";
     }
   }  

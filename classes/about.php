@@ -17,7 +17,7 @@ echo "<pre>";
 echo "<table>";
 echo "<tr><td>Stand</td>  <td>: ".$versdat."</td></tr>";
 echo "<tr><td>Version</td><td>: ".$versnr."</td></tr>";
-echo "<tr><td>Sqlite</td><td>: ".$sqlite."</td></tr>";
+//echo "<tr><td>Sqlite</td><td>: ".$sqlite."</td></tr>";
 echo "<tr><td>Sourcecode unter</td><td>: <a href='https://github.com/horald/joorgsqlite' target='_blank'>github:joorgsqlite</a></td></tr>";
 echo "</table>";
 echo "</pre>";

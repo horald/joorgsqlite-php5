@@ -1,0 +1,1 @@
+UPDATE tblversion SET fldversion='' WHERE fldversion=''

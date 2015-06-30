@@ -10,6 +10,9 @@ $pfad=$_SERVER['DOCUMENT_ROOT']."/android/own/joorgsqlite/sites/update/";
 
 $filename = $pfad.'sqlstruc.inc.php';
 $somecontent = "Füge dies Datei hinzu\n";
+echo "<div class='alert alert-success'>";
+echo "Datei:".$filename."<br>";
+echo "</div>";
 
 // Sichergehen, dass die Datei existiert und beschreibbar ist
 if (is_writable($filename)) {
@@ -32,7 +35,10 @@ if (is_writable($filename)) {
      fwrite($handle,"'sql' => '".$sql."',\n");
      $pos = strpos($sql, '(', 0);
      $column="'".substr($sql,$pos+1,-1)."'"; 
-     echo $column."<br>";
+     $column=str_replace(",","','",$column);
+     //echo "<div class='alert alert-success'>";
+     //echo $column."<br>";
+     //echo "</div>";
      fwrite($handle,"'column' => array(".$column.")),\n");
      $count=$count+1;
    }	

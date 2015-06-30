@@ -21,9 +21,29 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
         echo "</dl>";
       break;
       case 'selectid':
+//        echo "<dl>";
+//        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+//        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
+//        echo "</dl>";
+
+        $seldbwhere="";
+        if ($arrelement['seldbwhere']<>"") {
+          $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+        }
+        $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
+        $results = $db->query($sql);
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
-        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
+        echo "<select name='".$arrelement['name']."' size='1'>";
+        echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
+        while ($row = $results->fetchArray()) {
+          if ($arr[$arrelement['dbfield']]==$row[$arrelement['seldbindex']]) {
+            echo "<option style='background-color:#c0c0c0;' selected value=".$row[$arrelement['seldbindex']].">".$row[$arrelement['seldbfield']]."</option>";
+          } else {
+            echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']].">".$row[$arrelement['seldbfield']]."</option>";
+          }
+        }
+        echo "</select> ";
         echo "</dl>";
       break;
       case 'select':
@@ -107,7 +127,7 @@ function updatesave($pararray,$listarray,$menu,$show) {
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
         case 'selectid':
-          $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
+          $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['name']]."', ";
         break;
         case 'select':
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['name']]."', ";
