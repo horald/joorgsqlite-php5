@@ -52,4 +52,22 @@ function dbfetch($pfad,$result) {
   return $row;
 }  
 
+function dbexecute($pfad,$db,$sql) {
+  include($pfad."config.php");
+  switch($dbtyp)
+  {
+    case 'SQLITE2';
+      if(!$db->queryExec($sql, $error)) {
+        die($error);
+      }  
+      break;
+    case 'SQLITE3';
+      $query = $db->exec($sql);
+      break;
+    default;
+        echo 'Unbekannter dbtyp '.$dbtyp;
+    break;
+  }
+}
+
 ?>

@@ -39,6 +39,26 @@ function insertinput($listarray,$idwert,$menu) {
         echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
         echo "</dl>";
       break;
+      case 'selectid':
+        if ($defwert<>'') {
+          $wert=$defwert;
+        }
+        $seldbwhere="";
+        if ($arrelement['seldbwhere']<>"") {
+          $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+        }
+        $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
+        $results = $db->query($sql);
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<select name='".$arrelement['name']."' size='1'>";
+        echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
+        while ($row = $results->fetchArray()) {
+          echo "<option style='background-color:#c0c0c0;'  value=".$row[$arrelement['seldbindex']].">".$row[$arrelement['seldbfield']]."</option>";
+        }
+        echo "</select> ";
+        echo "</dl>";
+      break;
       case 'select':
         if ($defwert<>'') {
           $wert=$defwert;
@@ -87,6 +107,12 @@ function insertinput($listarray,$idwert,$menu) {
 		  echo "<input type='hidden' id='dtp_input2' value='' /><br/>";
         echo "</dl>";
       break;
+      case 'prozref':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
+        echo "</dl>";
+      break;
       }
     }
   }
@@ -132,6 +158,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
   $db = new SQLite3('../data/joorgsqlite.db');
 //  echo $db->lastErrorMsg()."<br>";
 
+  $prozref="N"; 
   $dbtable=$pararray['dbtable'];
   $sql="INSERT INTO ".$dbtable." (";
   foreach ( $listarray as $arrelement ) {
@@ -142,6 +169,9 @@ function insertsave($pararray,$listarray,$menu,$show) {
           $sql=$sql.$arrelement['dbfield'].",";
         break;
         case 'select':
+          $sql=$sql.$arrelement['dbfield'].",";
+        break;
+        case 'selectid':
           $sql=$sql.$arrelement['dbfield'].",";
         break;
         case 'time':
@@ -161,6 +191,9 @@ function insertsave($pararray,$listarray,$menu,$show) {
         case 'text':
           $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
         break;
+        case 'selectid':
+          $sql=$sql."'".$_POST[$arrelement['name']]."',";
+        break;
         case 'select':
           $sql=$sql."'".$_POST[$arrelement['name']]."',";
         break;
@@ -170,31 +203,59 @@ function insertsave($pararray,$listarray,$menu,$show) {
         case 'date':
           $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
         break;
+        case 'prozref':
+          $prozref="J";
+          $dbfield=$arrelement['dbfield'];
+        break;
       }
     }
   }
   $sql=substr($sql,0,-1).")";
 
-  echo $sql."<br>";
+  //echo $sql."<br>";
   $db->exec($sql);
   $sql = "SELECT last_insert_rowid() as lastid FROM ".$pararray['dbtable'];
   $results = $db->query($sql);
   if ($row = $results->fetchArray()) {
     $rowid=$row[0]; 
-    echo $rowid."=rowid<br>"; 
+    //echo $rowid."=rowid<br>"; 
   }
   if ($show=="anzeigen") {
     echo "<div class='alert alert-success'>";
     echo $db->lastErrorMsg()."<br>";
     echo "</div>";
   }  
+  if ($prozref=="J") {
+    $sqlfil="SELECT * FROM tblfilter WHERE fldtablename='tblorte' AND fldfeld='fldid_suchobj'";
+    $resfil = $db->query($sqlfil);
+    if ($rowfil = $resfil->fetchArray()) {
+     	if ($rowfil['fldwert']<>"(ohne)") {
+        $sqlsuch="SELECT * FROM tblsuchobj WHERE fldbez='".$rowfil['fldwert']."'";
+        $ressuch = $db->query($sqlsuch);
+        if ($rowsuch = $ressuch->fetchArray()) {
+          $refwhere="fldid_suchobj=".$rowsuch['fldindex']." AND fldid_orte=".$rowid;
+          $sqlref="SELECT * FROM tblrefsuchobj WHERE ".$refwhere;
+          $resref = $db->query($sqlref);
+          if ($rowref = $resref->fetchArray()) {
+            $sqlupdref="UPDATE tblrefsuchobj SET ".$dbfield."=".$_POST[$dbfield]." WHERE ".$refwhere;          
+          } else {
+            $sqlupdref="INSERT INTO tblrefsuchobj (fldid_suchobj,fldid_orte,".$dbfield.") VALUES(".$rowsuch['fldindex'].",".$rowid.",'".$_POST[$dbfield]."')";          
+          }	
+        }  
+      }  
+    }  
+    echo "<div class='alert alert-success'>";
+    echo $sqlupdref."=prozref";
+    echo "</div>";
+    $reserr = $db->exec($sqlupdref);
+  }
   $db->close();
-  echo $pararray['chkpreis']."=chkpreis<br>"; 
+  //echo $pararray['chkpreis']."=chkpreis<br>"; 
   if ($pararray['chkpreis']=="J") {
     updatepreis($rowid);
   }
   echo "<div class='alert alert-success'>";
-  echo "Daten '".$_POST['fldBez']."' eingefügt.";
+  echo "Daten '".$_POST['fldBez']."' mit rowid=".$rowid." eingefügt.";
   echo "</div>";
 }
 

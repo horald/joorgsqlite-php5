@@ -25,6 +25,12 @@ foreach ( $listarray as $arrelement ) {
       case 'date':
         $fldarr[]=$arrelement['dbfield'];
       break;
+      case 'time':
+        $fldarr[]=$arrelement['dbfield'];
+      break;
+      case 'calc':
+        $fldarr[]=$arrelement['dbfield'];
+      break;
     }
 }
 while ($row = $results->fetchArray()) {

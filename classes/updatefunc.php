@@ -21,11 +21,6 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
         echo "</dl>";
       break;
       case 'selectid':
-//        echo "<dl>";
-//        echo "<dt><label >".$arrelement['label'].":</label></dt>";
-//        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
-//        echo "</dl>";
-
         $seldbwhere="";
         if ($arrelement['seldbwhere']<>"") {
           $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
@@ -73,6 +68,12 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
         echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
         echo "</dl>";
       break;
+      case 'calc':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
+        echo "</dl>";
+      break;
       case 'date':
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
@@ -82,6 +83,29 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
 		  echo "<span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>";
         echo "</div>";
 		  echo "<input type='hidden' id='dtp_input2' value='' /><br/>";
+        echo "</dl>";
+      break;
+      case 'prozref':
+        $proz="0";
+        $sqlfil="SELECT * FROM tblfilter WHERE fldtablename='tblorte' AND fldfeld='fldid_suchobj'";
+        $resfil = $db->query($sqlfil);
+        if ($rowfil = $resfil->fetchArray()) {
+          if ($rowfil['fldwert']<>"(ohne)") {
+            $sqlsuch="SELECT * FROM tblsuchobj WHERE fldbez='".$rowfil['fldwert']."'";
+            $ressuch = $db->query($sqlsuch);
+            if ($rowsuch = $ressuch->fetchArray()) {
+              $refwhere="fldid_suchobj=".$rowsuch['fldindex']." AND fldid_orte=".$arr['fldindex'];
+              $sqlref="SELECT * FROM tblrefsuchobj WHERE ".$refwhere;
+              $resref = $db->query($sqlref);
+              if ($rowref = $resref->fetchArray()) {
+                $proz=$rowref[$arrelement['dbfield']];
+              }
+            }
+          }
+        }        
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$proz."'/></dd>";
         echo "</dl>";
       break;
       case 'calc':
@@ -137,6 +161,33 @@ function updatesave($pararray,$listarray,$menu,$show) {
         break;
         case 'date':
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
+        break;
+        case 'calc':
+          $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
+        break;
+        case 'prozref':
+          $sqlfil="SELECT * FROM tblfilter WHERE fldtablename='tblorte' AND fldfeld='fldid_suchobj'";
+          $resfil = $db->query($sqlfil);
+          if ($rowfil = $resfil->fetchArray()) {
+          	if ($rowfil['fldwert']<>"(ohne)") {
+              $sqlsuch="SELECT * FROM tblsuchobj WHERE fldbez='".$rowfil['fldwert']."'";
+              $ressuch = $db->query($sqlsuch);
+              if ($rowsuch = $ressuch->fetchArray()) {
+                $refwhere="fldid_suchobj=".$rowsuch['fldindex']." AND fldid_orte=".$_POST['id'];
+                $sqlref="SELECT * FROM tblrefsuchobj WHERE ".$refwhere;
+                $resref = $db->query($sqlref);
+                if ($rowref = $resref->fetchArray()) {
+                  $sqlupdref="UPDATE tblrefsuchobj SET ".$arrelement['dbfield']."=".$_POST[$arrelement['dbfield']].",fldtyp='".$arrelement['reftyp']."',fldid_moebel=".$_POST['moebel'].",fldid_zimmer=".$_POST['zimmer']." AND fldid_etage=".$_POST['etage']." WHERE ".$refwhere;          
+                } else {
+                  $sqlupdref="INSERT INTO tblrefsuchobj (fldid_suchobj,fldid_orte,".$arrelement['dbfield'].",fldtyp) VALUES(".$rowsuch['fldindex'].",".$_POST['id'].",'".$_POST[$arrelement['dbfield']]."','".$arrelement['reftyp']."')";          
+                }	
+                echo "<div class='alert alert-success'>";
+                echo $sqlupdref."=prozref";
+                echo "</div>";
+                $reserr = $db->exec($sqlupdref);
+              }  
+            }  
+          }  
         break;
       }
     }  

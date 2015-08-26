@@ -33,7 +33,7 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
     foreach ( $filterarray as $arrelement ) {
       $wert=$_POST[$arrelement['name']];
       //echo $arrelement['dbfield']."=".$wert."<br>";
-      if ($wert<>"(ohne)") {
+      if (($wert<>"(ohne)") && ($arrelement['type']<>"prozref")) {
         if ($dbwhere=="") {
           $dbwhere=" WHERE ".$arrelement['dbfield']."='".$wert."'";
         } else {
@@ -74,7 +74,7 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       }	
       if (isset($arr['fldwert'])) {
         //echo $arr['fldfeld'].",".$arr['fldtablename'].",".$pararray['dbtable'].",".$arrelement['dbfield']."<br>";
-        if ($arr['fldwert']<>"(ohne)") {
+        if (($arr['fldwert']<>"(ohne)") && ($arrelement['type']<>"prozref")) {
           if ($dbwhere=="") { 
             $dbwhere=" WHERE ".$arrelement['dbfield']."='".$arr['fldwert']."'";
           } else {
@@ -106,10 +106,18 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       } else {
         $wert=$selarr[$arrelement['dbfield']];
       }
-      if ($wert==$row[$arrelement['seldbfield']]) {
-        echo "<option style='background-color:#c0c0c0;' selected>".$row[$arrelement['seldbfield']]."</option>";
+      if ($arrelement['type']=="selectid") {
+        if ($wert==$row[$arrelement['seldbindex']]) {
+          echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']]." selected>".$row[$arrelement['seldbfield']]."</option>";
+        } else {
+          echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']].">".$row[$arrelement['seldbfield']]."</option>";
+        }
       } else {
-        echo "<option style='background-color:#c0c0c0;' >".$row[$arrelement['seldbfield']]."</option>";
+        if ($wert==$row[$arrelement['seldbfield']]) {
+          echo "<option style='background-color:#c0c0c0;' selected>".$row[$arrelement['seldbfield']]."</option>";
+        } else {
+          echo "<option style='background-color:#c0c0c0;' >".$row[$arrelement['seldbfield']]."</option>";
+        }
       }
     }
     echo "</select> ";

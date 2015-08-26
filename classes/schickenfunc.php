@@ -45,6 +45,12 @@ function schickendaten($pararray,$listarray,$menu) {
       if ($arrelement[type]=='date') {
         $weiter='J';
       }
+      if ($arrelement[type]=='time') {
+        $weiter='J';
+      }
+      if ($arrelement[type]=='calc') {
+        $weiter='J';
+      }
       if ($weiter=='J') {
         echo "<input type='hidden' name='".$arrelement['name']."arr".$i."' value='".$datarr[$i][$arrelement['dbfield']]."'/>";
       }

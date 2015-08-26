@@ -17,6 +17,12 @@
     if ($arrelement[type]=='date') {
       $weiter='J';
     }
+    if ($arrelement[type]=='time') {
+      $weiter='J';
+    }
+    if ($arrelement[type]=='calc') {
+      $weiter='J';
+    }
     if ($weiter=='J') {
       if ($fields=="") {
         $fields="'".$arrelement['dbfield']."'";
@@ -47,6 +53,12 @@
         if ($arrelement[type]=='date') {
           $weiter='J';
         }
+        if ($arrelement[type]=='time') {
+          $weiter='J';
+        }
+        if ($arrelement[type]=='calc') {
+          $weiter='J';
+        }
         if ($weiter=='J') {
           if ($daten=="") {
             $daten=$arrelement['dbfield']."='".$_POST[$arrelement['name'].'arr'.$i]."'";
@@ -66,6 +78,12 @@
           $weiter='J';
         }
         if ($arrelement[type]=='date') {
+          $weiter='J';
+        }
+        if ($arrelement[type]=='time') {
+          $weiter='J';
+        }
+        if ($arrelement[type]=='calc') {
           $weiter='J';
         }
         if ($weiter=='J') {

@@ -68,12 +68,12 @@ $listarray = array ( array ( 'label' => 'Nr',
                              'type' => 'date',
                              'fieldhide' => 'true',
                              'default' => 'now()',
-                             'dbfield' => 'fldEinkaufDatum' ),
-                     array ( 'label' => '',
+                             'dbfield' => 'fldEinkaufDatum' ));
+                     array ( 'label' => 'P',
                              'width' => 5, 
                              'type' => 'icon',
-                             'func' => 'mark.php',
-                             'dbfield' => 'icon-book' ) );
+                             'func' => 'preisspeichern.php?menu=shopping',
+                             'dbfield' => 'icon-book' ));
 
 $filterarray = array ( 
                        array ( 'label' => 'Status:',
@@ -94,7 +94,15 @@ $filterarray = array (
                                'dbtable' => 'tblorte',
                                'seldbwhere' => "fldo01typ='FREMD'",
                                'seldbfield' => 'fldBez',
-                               'dbfield' => 'fldort' ));
+                               'dbfield' => 'fldort' ),
+                       array ( 'label' => ' Konto:',
+                               'name' => 'fltkonto', 
+                               'width' => 10, 
+                               'type' => 'select',
+                               'sign' => '=',
+                               'dbtable' => 'tblktokonten',
+                               'seldbfield' => 'fldKurz',
+                               'dbfield' => 'fldKonto' ));
 
 $pararray = array ( 'headline' => 'Einkaufsliste',
                     'dbtable' => 'tblEinkauf_liste',

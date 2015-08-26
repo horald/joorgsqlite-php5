@@ -69,11 +69,11 @@ $listarray = array ( array ( 'label' => 'Nr',
                              'fieldhide' => 'true',
                              'default' => 'now()',
                              'dbfield' => 'fldEinkaufDatum' ),
-                     array ( 'label' => '',
+                     array ( 'label' => 'P',
                              'width' => 5, 
                              'type' => 'icon',
-                             'func' => 'mark.php',
-                             'dbfield' => 'icon-book' ) );
+                             'func' => 'preisspeichern.php?menu=shopping',
+                             'dbfield' => 'icon-book' ));
 
 $filterarray = array ( 
                        array ( 'label' => 'Status:',

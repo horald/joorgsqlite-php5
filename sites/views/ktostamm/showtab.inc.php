@@ -49,17 +49,8 @@ $listarray = array ( array ( 'label' => 'Datum',
                              'type' => 'zahl',
                              'dbfield' => 'fldFix' ));
 
-$filterarray = array ( array ( 'label' => 'Kontoinhaber:',
-                               'name' => 'fltkontoinhaber', 
-                               'width' => 10, 
-                               'type' => 'select',
-                               'sign' => '=',
-                               'dbtable' => 'tblktoinhaber',
-                               'seldbfield' => 'fldBez',
-                               'dbfield' => 'fldInhaber' ));
-
-$pararray = array ( 'headline' => 'Buchführung',
-                    'dbtable' => 'tblktosal',
+$pararray = array ( 'headline' => 'Buchführung - Stammdaten',
+                    'dbtable' => 'tblktostamm',
                     'orderby' => 'fldDatum',
                     'strwhere' => '',
                     'fldindex' => 'fldindex');
