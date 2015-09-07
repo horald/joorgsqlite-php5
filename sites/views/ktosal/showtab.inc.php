@@ -56,11 +56,20 @@ $filterarray = array ( array ( 'label' => 'Kontoinhaber:',
                                'sign' => '=',
                                'dbtable' => 'tblktoinhaber',
                                'seldbfield' => 'fldBez',
-                               'dbfield' => 'fldInhaber' ));
+                               'dbfield' => 'fldInhaber' ),
+                       array ( 'label' => ' Konto:',
+                               'name' => 'fltkonto', 
+                               'width' => 10, 
+                               'type' => 'select',
+                               'sign' => '=',
+                               'dbtable' => 'tblktokonten',
+                               'seldbfield' => 'fldKurz',
+                               'dbfield' => 'fldKonto' ));
 
 $pararray = array ( 'headline' => 'Buchführung',
                     'dbtable' => 'tblktosal',
                     'orderby' => 'fldDatum',
                     'strwhere' => '',
+                    'markseldb' => 'J',
                     'fldindex' => 'fldindex');
 ?>

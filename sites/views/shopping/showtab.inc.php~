@@ -68,7 +68,7 @@ $listarray = array ( array ( 'label' => 'Nr',
                              'type' => 'date',
                              'fieldhide' => 'true',
                              'default' => 'now()',
-                             'dbfield' => 'fldEinkaufDatum' ));
+                             'dbfield' => 'fldEinkaufDatum' ),
                      array ( 'label' => 'P',
                              'width' => 5, 
                              'type' => 'icon',

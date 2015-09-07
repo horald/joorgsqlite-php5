@@ -29,8 +29,9 @@ if (!file_exists($dirdata)) {
     include("classes/install.php");
   }
 }
-include("classes/checkupgrade.php");
+//include("classes/checkupgrade.php");
 include("classes/dbtool.php");
+$check="ok";
 echo "<body>";
 if ($_GET['weiter']=="J") {
   $check="ok";
@@ -51,7 +52,7 @@ if ($check=="ok") {
     echo "<h2 align='center'>Privat</h2>";
   }
   //$results = $db->query("SELECT * FROM tblmenu_liste WHERE fldview='J' AND fldid_parent='".$parentid."' ORDER BY fldsort");
-  $results = dbquery('',$db,"SELECT * FROM tblmenu_liste WHERE fldview='J' ORDER BY fldsort");
+  $results = dbquery('',$db,"SELECT * FROM tblmenu_liste WHERE fldview='J' AND fldid_parent='".$parentid."' ORDER BY fldsort");
 //  while ($row = $results->fetchArray()) {
   while ($row = dbfetch('',$results)) {
   	 if ($row['fldmenu']=="SUBMENU") {

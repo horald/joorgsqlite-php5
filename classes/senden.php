@@ -31,6 +31,9 @@ foreach ( $listarray as $arrelement ) {
       case 'calc':
         $fldarr[]=$arrelement['dbfield'];
       break;
+      case 'zahl':
+        $fldarr[]=$arrelement['dbfield'];
+      break;
     }
 }
 while ($row = $results->fetchArray()) {

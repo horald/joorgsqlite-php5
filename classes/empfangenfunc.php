@@ -10,23 +10,6 @@ function datenauswahl($menu) {
   echo "</form>";
 }
 
-function datenholentest($menu) {
-  $urladr=$_POST['urladr'];
-  echo "<div class='alert alert-success'>";
-  echo "Daten von ".$urladr." holen.";
-  echo "</div>";
-
-  $website="http://".$urladr.":8080/own/joorgsqlite/classes/senden.php?dbtable=".$menu;
-  ob_start();
-  //define('DBTABLE','tblfahr');
-  include($website);
-  flush();
-  $json=ob_get_contents();
-  ob_end_clean();  
-  $obj=json_decode($json,true);
-  var_dump($obj);
-}
-
 function datenholen($menu) {
   //echo "datenholen";
   $urladr=$_POST['urladr'];

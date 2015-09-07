@@ -9,7 +9,7 @@ function fuellask($menu,$filterarray) {
   echo "<dt><label >Felder:</label></dt>";
   echo "<select name='fuell' size='1'>";
   for ( $x = 0; $x < $count; $x++ ) {
-    echo "<option style='background-color:#c0c0c0;' value='".$filterarray[$x]['dbfield]."'>".$filterarray[$x]['label']."</option>";
+    echo "<option style='background-color:#c0c0c0;' value='".$filterarray[$x]['dbfield']."'>".$filterarray[$x]['label']."</option>";
   }
   echo "</select> ";
   echo "</dl>";

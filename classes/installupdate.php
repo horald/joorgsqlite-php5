@@ -13,8 +13,8 @@ echo "<div class='alert alert-danger'>";
 echo "Noch nicht fertig!";
 echo "</div>";
 
-checktables($tablearray);
-checkupdatefiles($newvers,$oldvers);
-updatedbversion($newvers,$versdat);
+//checktables($tablearray);
+//checkupdatefiles($newvers,$oldvers);
+//updatedbversion($newvers,$versdat);
 bootstrapend();
 ?>

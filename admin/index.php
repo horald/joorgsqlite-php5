@@ -17,6 +17,7 @@ echo "<a href='../classes/showtab.php?menu=menu' class='btn btn-default btn-lg b
 echo "<a href='../classes/mksqlstruc.php' class='btn btn-default btn-lg btn-block' role='button'>Make SQL-Struc</a>"; 
 echo "<a href='../classes/showtab.php?menu=version' class='btn btn-default btn-lg btn-block' role='button'>Version</a>"; 
 echo "<a href='../classes/showtab.php?menu=func' class='btn btn-default btn-lg btn-block' role='button'>Funktionen</a>"; 
+echo "<a href='../classes/showtab.php?menu=table' class='btn btn-default btn-lg btn-block' role='button'>Tables</a>"; 
 echo "</div>";
 echo "</body>";
 echo "</html>";

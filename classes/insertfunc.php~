@@ -180,6 +180,9 @@ function insertsave($pararray,$listarray,$menu,$show) {
         case 'date':
           $sql=$sql.$arrelement['dbfield'].",";
         break;
+        case 'calc':
+          $sql=$sql.$arrelement['dbfield'].",";
+        break;
       }
     }  
   }
@@ -201,6 +204,9 @@ function insertsave($pararray,$listarray,$menu,$show) {
           $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
         break;
         case 'date':
+          $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
+        break;
+        case 'calc':
           $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
         break;
         case 'prozref':
@@ -247,8 +253,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
     echo "<div class='alert alert-success'>";
     echo $sqlupdref."=prozref";
     echo "</div>";
-//                $reserr = $db->exec($sqlupdref);
-  
+    $reserr = $db->exec($sqlupdref);
   }
   $db->close();
   //echo $pararray['chkpreis']."=chkpreis<br>"; 

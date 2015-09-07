@@ -13,7 +13,6 @@ bootstrapbegin($pararray['headline']);
 $db = new SQLite3('../data/joorgsqlite.db');
 
 $sql=showtabfilter($filter,$filterarray,$pararray,$menu);
-//echo $sql."=sql<br>";
 
 showtabfunc($menu,$sql,$id);
 
@@ -74,8 +73,23 @@ echo "</tr>";
 $nummer=0;
 $prozsum=0;
 $count=0;
+$summe=0;
 while ($row = $results->fetchArray()) {
-  echo "<tr>";
+  if ($pararray['markseldb']=="J") {
+  	 $summe=$summe+$row['fldBetrag'];
+  	 //echo "#".number_format($row['fldFix'],2).",".$summe."#<br>";
+    if ($row['fldFix']<>"") {
+      if (number_format($row['fldFix'],2)==number_format($summe,2)) {
+        echo "<tr bgcolor=#00ff00>";
+      } else {  
+        echo "<tr bgcolor=#ff6699>";
+      }  
+    } else {
+      echo "<tr>";
+    }
+  } else {  
+    echo "<tr>";
+  }  
   foreach ( $listarray as $arrelement ) {
     if ($arrelement['fieldhide']!="true") {
       switch ( $arrelement['type'] )

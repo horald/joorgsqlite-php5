@@ -180,6 +180,9 @@ function insertsave($pararray,$listarray,$menu,$show) {
         case 'date':
           $sql=$sql.$arrelement['dbfield'].",";
         break;
+        case 'calc':
+          $sql=$sql.$arrelement['dbfield'].",";
+        break;
       }
     }  
   }
@@ -203,6 +206,9 @@ function insertsave($pararray,$listarray,$menu,$show) {
         case 'date':
           $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
         break;
+        case 'calc':
+          $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
+        break;
         case 'prozref':
           $prozref="J";
           $dbfield=$arrelement['dbfield'];
@@ -214,14 +220,15 @@ function insertsave($pararray,$listarray,$menu,$show) {
 
   //echo $sql."<br>";
   $db->exec($sql);
-  $sql = "SELECT last_insert_rowid() as lastid FROM ".$pararray['dbtable'];
-  $results = $db->query($sql);
+  $sqlid = "SELECT last_insert_rowid() as lastid FROM ".$pararray['dbtable'];
+  $results = $db->query($sqlid);
   if ($row = $results->fetchArray()) {
     $rowid=$row[0]; 
     //echo $rowid."=rowid<br>"; 
   }
   if ($show=="anzeigen") {
     echo "<div class='alert alert-success'>";
+    echo $sql."<br>";
     echo $db->lastErrorMsg()."<br>";
     echo "</div>";
   }  
