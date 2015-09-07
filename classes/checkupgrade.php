@@ -1,14 +1,15 @@
 <?php
 
 function getactvers($pfad) {
-  $db = new SQLite3($pfad.'joorgsqlite.db');
-  $sql="SELECT * FROM tblversion ORDER BY fldversion";
-  $results = $db->query($sql);
-  while ($row = $results->fetchArray()) {
-    $arr=$row;
-  }
-  $versnr=$arr['fldversion'];
-  $db->close();	
+//  $db = new SQLite3($pfad.'joorgsqlite.db');
+//  $sql="SELECT * FROM tblversion ORDER BY fldversion";
+//  $results = $db->query($sql);
+//  while ($row = $results->fetchArray()) {
+//    $arr=$row;
+//  }
+//  $versnr=$arr['fldversion'];
+//  $db->close();	
+  $versnr="0.0";
   return $versnr;
 }
 
@@ -46,9 +47,20 @@ function check_version() {
   $serverpfad = ($file==='') ? $serverpfad : substr($serverpfad, 0, -strlen($file));
   //echo $servername."<br>";
   //echo $serverpfad."<br>";
-  $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
-  $versnr=$ini_array['versnr'];
-  $versdat=$ini_array['versdat'];
+
+  ob_start();
+  include("http://horald.github.io/joorgsqlite/classes/sendversion.php");
+  flush();
+  $json=ob_get_contents();
+  ob_end_clean();  
+  $obj=json_decode($json,true);
+  $versnr=$obj['versnr'];
+  $versdat=$obj['versdat'];
+
+//  $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
+//  $versnr=$ini_array['versnr'];
+//  $versdat=$ini_array['versdat'];
+
   $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
   $actvers=getactvers("data/");	
