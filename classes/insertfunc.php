@@ -166,7 +166,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
 
   $prozref="N"; 
   $dbtable=$pararray['dbtable'];
-  $sql="INSERT INTO ".$dbtable." (".$pararray['fldindex'].",";
+  $sql="INSERT INTO ".$dbtable." (";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )
@@ -192,7 +192,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
       }
     }  
   }
-  $sql=substr($sql,0,-1).") VALUES (".$newrowid.",";
+  $sql=substr($sql,0,-1).") VALUES (";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )

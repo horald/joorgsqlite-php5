@@ -161,7 +161,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
   $sqlid = "select ".$pararray['fldindex']." from ".$pararray['dbtable']." order by ".$pararray['fldindex']." desc limit 1";
   $results = $db->query($sqlid);
   if ($row = $results->fetchArray()) {
-    $newrowid=($row[$pararray['fldindex']] + 1) * 10 + 1;
+    $newrowid=$row[$pararray['fldindex']] + 10;
   }
 
   $prozref="N"; 
