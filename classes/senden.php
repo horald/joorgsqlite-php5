@@ -5,10 +5,18 @@ $dbwert=$_GET['dbwert'];
 include("../sites/views/".$menu."/showtab.inc.php");
 ini_set("allow_url_include", true);
 $db = new SQLite3('../data/joorgsqlite.db');
+
+$sql="SELECT * FROM tblsyncstatus WHERE fldtable='".$pararray['dbtable']."'";
+$results = $db->query($sql);
+if ($row = $results->fetchArray()) {
+  $syncwhere=" WHERE fldtimestamp>".$row['fldtimestamp'];
+} else {
+  $syncwhere="";	
+}
 if ($dbwhere<>"") {
   $sql="SELECT * FROM ".$pararray['dbtable']." WHERE ".$dbwhere."'".$dbwert."'";
 } else {
-  $sql="SELECT * FROM ".$pararray['dbtable'];
+  $sql="SELECT * FROM ".$pararray['dbtable'].$syncwhere;
 }
 $results = $db->query($sql);
 $datarr = array();

@@ -27,7 +27,11 @@ function deletesave($pararray,$idwert,$fldbez,$menu) {
 //echo $idwert."=idwert<br>";
 //  echo $db->lastErrorMsg()."<br>";
   $dbtable=$pararray['dbtable'];
-  $sql="DELETE FROM ".$dbtable." WHERE fldindex=".$idwert;
+  if ($pararray['dellogical']=="J") {
+  	 $sql="UPDATE ".$dbtable." SET flddel='J' WHERE fldindex=".$idwert;
+  } else {
+    $sql="DELETE FROM ".$dbtable." WHERE fldindex=".$idwert;
+  }  
   $db->exec($sql);
 //  echo $db->lastErrorMsg()."<br>";
   echo "<div class='alert alert-success'>";

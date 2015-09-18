@@ -10,6 +10,9 @@ function schickenauswahl($menu) {
 
 function schickendaten($pararray,$listarray,$menu) {
   $db = new SQLite3('../data/joorgsqlite.db');
+//  $sql="SELECT * FROM tblsyncstatus WHERE fldtable='".$pararray['dbtable']."'";
+//  $results = $db->query($sql);
+
   $sql="SELECT * FROM ".$pararray['dbtable'];
   $results = $db->query($sql);
   $datarr = array();

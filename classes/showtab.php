@@ -66,14 +66,25 @@ foreach ( $listarray as $arrelement ) {
       case 'prozref':
         echo "<th>".$arrelement['label']."</th>";
       break;
+      case 'proz':
+        echo "<th>".$arrelement['label']."</th>";
+      break;
     }
   }
 }
 echo "</tr>";
+
+$sqlbetrag="SELECT sum(fld) FROM ".$pararray['dbtable']." WHERE ";
+
+
 $nummer=0;
 $prozsum=0;
 $count=0;
-$summe=0;
+$calcsum=0;
+//$calcsum=8.16;
+$sum=$calcsum;
+$summe=$sum;
+$sumdiff=0;
 while ($row = $results->fetchArray()) {
   if ($pararray['markseldb']=="J") {
   	 $summe=$summe+$row['fldBetrag'];
@@ -160,6 +171,7 @@ while ($row = $results->fetchArray()) {
             $wert=$wert - strval($row[$arrelement['calcfield']]);
             $wert=$wert * strval($arrelement['calcfix']);
           }
+          $sumdiff=$sumdiff+$wert;
           echo "<td style='text-align:right;padding-right:10px;' width='".$arrelement['width']."'>".sprintf("%.".$nachkomma."f",$wert)."</td>";
         break;
         case 'calcdiff':
@@ -216,6 +228,17 @@ while ($row = $results->fetchArray()) {
           echo "<div style='float:left; background-color:lightgreen; color:white; height:16px; width:".$prozposdif."px; top:0; left:0;' align=center></div>";
           echo sprintf("%.".$nachkomma."f",$wert)."</td>";
         break;
+        case 'proz':
+          $nachkomma=1;
+          $count=$count+1;
+          $wert=strval($row[$arrelement['dbfield']]);
+          $prozsum=$prozsum+$wert;
+          $prozposdif=100-$wert;
+          echo "<td style='text-align:right;padding-right:10px;' width='".$arrelement['width']."'>";
+          echo "<div style='float:left; background-color:darkgreen; color:lightgreen; height:16px; width:".$wert."px; top:0; left:0;' align=center></div>";
+          echo "<div style='float:left; background-color:lightgreen; color:white; height:16px; width:".$prozposdif."px; top:0; left:0;' align=center></div>";
+          echo sprintf("%.".$nachkomma."f",$wert)."</td>";
+        break;
       }
     }
   }
@@ -250,7 +273,8 @@ foreach ( $listarray as $arrelement ) {
         echo "<td></td>";
       break;
       case 'calcdiffsum':
-        echo "<td></td>";
+        $nachkomma=2;
+        echo "<td style='text-align:right;padding-right:10px;'>".sprintf("%.".$nachkomma."f",$sumdiff)."</td>";
       break;
       case 'calcdiff':
         echo "<td></td>";
@@ -264,6 +288,15 @@ foreach ( $listarray as $arrelement ) {
         echo "<td style='text-align:right;padding-right:10px;'>".sprintf("%.".$nachkomma."f",$sumadd)."</td>";
       break;
       case 'prozref':
+        $nachkomma=1;
+        $wert=$prozsum / $count;
+        $prozposdif=100-$wert;
+        echo "<td style='text-align:right;padding-right:10px;' width='".$arrelement['width']."'>";
+        echo "<div style='float:left; background-color:darkgreen; color:lightgreen; height:16px; width:".$wert."px; top:0; left:0;' align=center></div>";
+        echo "<div style='float:left; background-color:lightgreen; color:white; height:16px; width:".$prozposdif."px; top:0; left:0;' align=center></div>";
+        echo sprintf("%.".$nachkomma."f",$wert)."</td>";
+      break;
+      case 'proz':
         $nachkomma=1;
         $wert=$prozsum / $count;
         $prozposdif=100-$wert;

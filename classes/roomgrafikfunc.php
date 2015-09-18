@@ -28,10 +28,11 @@ if (isset($_GET['roomtyp'])) {
 if ($roomtyp=="ETAGEN") {
   $newroomtyp="ZIMMER";
   $bez="unbekannt";
-  $sql="SELECT * FROM tbletagen WHERE fldindex=".$etagenid;
+//  $sql="SELECT * FROM tbletagen WHERE fldindex=".$etagenid;
+  $sql="SELECT * FROM tblorte WHERE fldindex=".$etagenid;
   $results = dbquery('../',$db,$sql);
   while ($row = dbfetch('../',$results)) {
-    $bez=$row['fldbez'].",".$roomtyp;
+    $bez=$row['fldBez'].",".$roomtyp;
   }
   $anzbez="0 Moebel";
   $sql="SELECT * FROM tblorte WHERE fldid_etage=".$etagenid." AND fldview='J' AND fldo01typ='ZIMMER'";

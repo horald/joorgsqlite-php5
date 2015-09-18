@@ -158,9 +158,15 @@ function insertsave($pararray,$listarray,$menu,$show) {
   $db = new SQLite3('../data/joorgsqlite.db');
 //  echo $db->lastErrorMsg()."<br>";
 
+  $sqlid = "select ".$pararray['fldindex']." from ".$pararray['dbtable']." order by ".$pararray['fldindex']." desc limit 1";
+  $results = $db->query($sqlid);
+  if ($row = $results->fetchArray()) {
+    $newrowid=$row[$pararray['fldindex']] + 10;
+  }
+
   $prozref="N"; 
   $dbtable=$pararray['dbtable'];
-  $sql="INSERT INTO ".$dbtable." (";
+  $sql="INSERT INTO ".$dbtable." (".$pararray['fldindex'].",";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )
@@ -186,7 +192,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
       }
     }  
   }
-  $sql=substr($sql,0,-1).") VALUES (";
+  $sql=substr($sql,0,-1).") VALUES (".$newrowid.",";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )

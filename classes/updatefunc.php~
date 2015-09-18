@@ -1,6 +1,17 @@
 <?php
 header("content-type: text/html; charset=utf-8");
 
+
+?>
+<script type="text/javascript">
+function myfunc() {
+var e = document.getElementByName("etage");
+var strUser = e.options[e.selectedIndex].value;
+alert(strUser);
+}
+</script>
+<?php        	
+
 function updateinput($pararray,$listarray,$idwert,$menu) {
   $db = new SQLite3('../data/joorgsqlite.db');
   $results = $db->query("SELECT * FROM ".$pararray['dbtable']." WHERE fldindex=".$idwert);
@@ -22,14 +33,22 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
       break;
       case 'selectid':
         $seldbwhere="";
+        if ($arrelement['name']=="zimmer") {
+//          $seldbwhere=" WHERE fldid_etage=(SELECT fldindex FROM tblorte WHERE fldBez='2. Stock')";
+        }
         if ($arrelement['seldbwhere']<>"") {
-          $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+        	 if ($seldbwhere<>"") {
+            $seldbwhere=$seldbwhere." AND ".$arrelement['seldbwhere'];
+        	 } else {
+            $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+          }
         }
         $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
+        //echo $sql."<br>";
         $results = $db->query($sql);
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
-        echo "<select name='".$arrelement['name']."' size='1'>";
+        echo "<select name='".$arrelement['name']."' size='1' onchange='myfunc()'>";
         echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
         while ($row = $results->fetchArray()) {
           if ($arr[$arrelement['dbfield']]==$row[$arrelement['seldbindex']]) {
@@ -63,6 +82,12 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
         echo "</dl>";
       break;
       case 'time':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
+        echo "</dl>";
+      break;
+      case 'calc':
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
         echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
@@ -108,6 +133,12 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
         echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$default."'/></dd>";
         echo "</dl>";
       break;
+      case 'proz':
+        echo "<dl>";
+        echo "<dt><label >".$arrelement['label'].":</label></dt>";
+        echo "<dd><input type='text' name='".$arrelement['dbfield']."' value='".$arr[$arrelement['dbfield']]."'/></dd>";
+        echo "</dl>";
+      break;
       case 'zahl':
         echo "<dl>";
         echo "<dt><label >".$arrelement['label'].":</label></dt>";
@@ -145,7 +176,11 @@ function updatesave($pararray,$listarray,$menu,$show) {
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
         case 'selectid':
-          $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['name']]."', ";
+          $wert=$_POST[$arrelement['name']];
+          if ($wert=="(ohne)") {
+          	$wert=0;
+          }
+          $sql=$sql.$arrelement['dbfield']."='".$wert."', ";
         break;
         case 'select':
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['name']]."', ";
@@ -159,8 +194,12 @@ function updatesave($pararray,$listarray,$menu,$show) {
         case 'calc':
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
+        case 'proz':
+          $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
+        break;
         case 'prozref':
           $sqlfil="SELECT * FROM tblfilter WHERE fldtablename='tblorte' AND fldfeld='fldid_suchobj'";
+          echo $sqlfil."<br>";
           $resfil = $db->query($sqlfil);
           if ($rowfil = $resfil->fetchArray()) {
           	if ($rowfil['fldwert']<>"(ohne)") {
@@ -178,7 +217,7 @@ function updatesave($pararray,$listarray,$menu,$show) {
                 echo "<div class='alert alert-success'>";
                 echo $sqlupdref."=prozref";
                 echo "</div>";
-                $reserr = $db->exec($sqlupdref);
+                //$reserr = $db->exec($sqlupdref);
               }  
             }  
           }  
@@ -200,8 +239,12 @@ function updatesave($pararray,$listarray,$menu,$show) {
     echo $sql."<br>";
     echo "</div>";
   }
+  $fldbez="fldbez";
+  if ($pararray['fldbez']<>"") {
+  	 $fldbez=$pararray['fldbez'];
+  }
   echo "<div class='alert alert-success'>";
-  echo "Daten '".$_POST['fldbez']."' aktualisiert.";
+  echo "Daten '".$_POST[$fldbez]."' aktualisiert.";
   echo "</div>";
 }
 ?>

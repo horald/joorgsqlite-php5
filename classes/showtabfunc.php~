@@ -14,9 +14,6 @@ function showtabfunc($menu,$sql,$id) {
     //echo $row['fldBez']."<br>";  
     echo "<a href='".$row['fldphp']."?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>".$row['fldBez']."</a> ";
   }  
-  //echo "<a href='preis.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Preis</a> ";
-  //echo "<a href='buchen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Buchen</a> ";
-  //echo "<a href='stamm.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Stammdaten</a> ";
   echo "<a href='schicken.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
   echo "<a href='empfangen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
 }
@@ -32,16 +29,23 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
     //echo "filter==1<br>";
     foreach ( $filterarray as $arrelement ) {
       $wert=$_POST[$arrelement['name']];
-      if ($arrelement['type']=="prozref") {
-        $wert="(ohne)";      
-      }  
       //echo $arrelement['dbfield']."=".$wert."<br>";
-      if ($wert<>"(ohne)") {
-        if ($dbwhere=="") {
-          $dbwhere=" WHERE ".$arrelement['dbfield']."='".$wert."'";
-        } else {
-          $dbwhere=$dbwhere." AND ".$arrelement['dbfield']."='".$wert."'";
-        }
+      if (($wert<>"(ohne)") && ($arrelement['type']<>"prozref")) {
+        $lweiter="J";
+        if ($arrelement['type']=="date") {
+        	 if ($wert=="") {
+        	 	$lweiter="N";
+        	 }
+        }	
+        //echo $arrelement['name']."<br>";
+        //echo $lweiter.",".$arrelement['type'].",".$wert;
+        if ($lweiter=="J") {	
+          if ($dbwhere=="") {
+            $dbwhere=" WHERE ".$arrelement['dbfield'].$arrelement['sign']."'".$wert."'";
+          } else {
+            $dbwhere=$dbwhere." AND ".$arrelement['dbfield'].$arrelement['sign']."'".$wert."'";
+          }
+        }  
       }
 
       $sql="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
@@ -76,15 +80,12 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
         $arr=$row;
       }	
       if (isset($arr['fldwert'])) {
-        if ($arrelement['type']=="prozref") {
-          $arr['fldwert']="(ohne)";        
-        }	
         //echo $arr['fldfeld'].",".$arr['fldtablename'].",".$pararray['dbtable'].",".$arrelement['dbfield']."<br>";
-        if ($arr['fldwert']<>"(ohne)") {
+        if (($arr['fldwert']<>"(ohne)") && ($arrelement['type']<>"prozref")) {
           if ($dbwhere=="") { 
-            $dbwhere=" WHERE ".$arrelement['dbfield']."='".$arr['fldwert']."'";
-          } else {
-            $dbwhere=$dbwhere." AND ".$arrelement['dbfield']."='".$arr['fldwert']."'";
+            $dbwhere=" WHERE ".$arrelement['dbfield'].$arrelement['sign']."'".$arr['fldwert']."'";
+         } else {
+            $dbwhere=$dbwhere." AND ".$arrelement['dbfield'].$arrelement['sign']."'".$arr['fldwert']."'";
           }
         }
         $selarr[$arrelement['dbfield']]=$arr['fldwert'];
@@ -95,38 +96,66 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
   //echo $anzfilter."=anz<br>";
   echo "<form class='form-horizontal' method='post' action='showtab.php?filter=1&menu=".$menu."'>";
   foreach ( $filterarray as $arrelement ) {
-  	 //echo $arrelement['seldbindex']."=index<br>";
-    $seldbwhere="";
-    if ($arrelement['seldbwhere']<>"") {
-      $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
-    }
-    $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
-    $results = $db->query($sql);
-    echo $arrelement['label'];
-    echo "<select name='".$arrelement['name']."' size='1'>";
-    echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
-    while ($row = $results->fetchArray()) {
-      //echo "<br>";
-      if ($filter==1) {
+    switch ( $arrelement['type'] )
+    {
+      case 'select':
+        $seldbwhere="";
+        if ($arrelement['seldbwhere']<>"") {
+          $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+        }
+        $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
+        $results = $db->query($sql);
+        echo $arrelement['label'];
+        echo "<select name='".$arrelement['name']."' size='1'>";
+        echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
+        while ($row = $results->fetchArray()) {
+          if ($filter==1) {
+            $wert=$_POST[$arrelement['name']];
+          } else {
+            $wert=$selarr[$arrelement['dbfield']];
+          }
+          if ($wert==$row[$arrelement['seldbfield']]) {
+            echo "<option style='background-color:#c0c0c0;' selected>".$row[$arrelement['seldbfield']]."</option>";
+          } else {
+            echo "<option style='background-color:#c0c0c0;' >".$row[$arrelement['seldbfield']]."</option>";
+          }
+        }
+        echo "</select> ";
+      break;
+      case 'selectid':
+        $seldbwhere="";
+        if ($arrelement['seldbwhere']<>"") {
+          $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
+        }
+        $sql="SELECT * FROM ".$arrelement['dbtable'].$seldbwhere;
+        $results = $db->query($sql);  
+        echo $arrelement['label'];
+        echo "<select name='".$arrelement['name']."' size='1'>";
+        echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
+        while ($row = $results->fetchArray()) {
+          if ($filter==1) {
+            $wert=$_POST[$arrelement['name']];
+          } else {
+            $wert=$selarr[$arrelement['dbfield']];
+          }
+          if ($wert==$row[$arrelement['seldbindex']]) {
+            echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']]." selected>".$row[$arrelement['seldbfield']]."</option>";
+          } else {
+            echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']].">".$row[$arrelement['seldbfield']]."</option>";
+          }
+        }  
+        echo "</select> ";
+      break;
+      case 'date':
         $wert=$_POST[$arrelement['name']];
-      } else {
-        $wert=$selarr[$arrelement['dbfield']];
-      }
-      if ($arrelement['type']=="selectid") {
-        if ($wert==$row[$arrelement['seldbindex']]) {
-          echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']]." selected>".$row[$arrelement['seldbfield']]."</option>";
-        } else {
-          echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']].">".$row[$arrelement['seldbfield']]."</option>";
-        }
-      } else {
-        if ($wert==$row[$arrelement['seldbfield']]) {
-          echo "<option style='background-color:#c0c0c0;' selected>".$row[$arrelement['seldbfield']]."</option>";
-        } else {
-          echo "<option style='background-color:#c0c0c0;' >".$row[$arrelement['seldbfield']]."</option>";
-        }
-      }
+        echo $arrelement['label'];
+        echo "<span class='form_date' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input2' data-link-format='yyyy-mm-dd'>";
+        echo "<input id='dtp_input2' size='8' type='text' name='".$arrelement['name']."' value='".$wert."' >";
+        echo "<button><span class='glyphicon glyphicon-calendar'></span></button>";
+        echo "</span>";
+
+      break;
     }
-    echo "</select> ";
   }
   if ($anzfilter>0) {
     echo "<button type='submit' name='submit' class='btn btn-primary'>Ok</button>";
@@ -146,6 +175,8 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
   }
   $sql="SELECT * FROM ".$dbtable.$dbwhere.$dborder;
   //echo $sql."<br>";
+  $retarr=array ( 'sqlfilter' => $sql,
+                  'sqlbetrag' => 'sqlbetrag',
   return $sql;
 }
 

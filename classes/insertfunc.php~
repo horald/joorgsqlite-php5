@@ -158,9 +158,15 @@ function insertsave($pararray,$listarray,$menu,$show) {
   $db = new SQLite3('../data/joorgsqlite.db');
 //  echo $db->lastErrorMsg()."<br>";
 
+  $sqlid = "select ".$pararray['fldindex']." from ".$pararray['dbtable']." order by ".$pararray['fldindex']." desc limit 1";
+  $results = $db->query($sqlid);
+  if ($row = $results->fetchArray()) {
+    $newrowid=($row[$pararray['fldindex']] + 1) * 10 + 1;
+  }
+
   $prozref="N"; 
   $dbtable=$pararray['dbtable'];
-  $sql="INSERT INTO ".$dbtable." (";
+  $sql="INSERT INTO ".$dbtable." (".$pararray['fldindex'].",";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )
@@ -186,7 +192,7 @@ function insertsave($pararray,$listarray,$menu,$show) {
       }
     }  
   }
-  $sql=substr($sql,0,-1).") VALUES (";
+  $sql=substr($sql,0,-1).") VALUES (".$newrowid.",";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )
@@ -220,14 +226,15 @@ function insertsave($pararray,$listarray,$menu,$show) {
 
   //echo $sql."<br>";
   $db->exec($sql);
-  $sql = "SELECT last_insert_rowid() as lastid FROM ".$pararray['dbtable'];
-  $results = $db->query($sql);
+  $sqlid = "SELECT last_insert_rowid() as lastid FROM ".$pararray['dbtable'];
+  $results = $db->query($sqlid);
   if ($row = $results->fetchArray()) {
     $rowid=$row[0]; 
     //echo $rowid."=rowid<br>"; 
   }
   if ($show=="anzeigen") {
     echo "<div class='alert alert-success'>";
+    echo $sql."<br>";
     echo $db->lastErrorMsg()."<br>";
     echo "</div>";
   }  
