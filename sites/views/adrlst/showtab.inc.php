@@ -1,0 +1,47 @@
+<?php
+$listarray = array ( array ( 'label' => 'Vorname',
+                             'name' => 'vorname', 
+                             'width' => 100, 
+                             'type' => 'text',
+                             'dbfield' => 'fldfirstname' ),
+                     array ( 'label' => 'Nachname',
+                             'name' => 'nachname', 
+                             'width' => 100, 
+                             'type' => 'text',
+                             'dbfield' => 'fldlastname' ),
+                     array ( 'label' => 'Gruppe',
+                             'name' => 'gruppe', 
+                             'width' => 100, 
+                             'type' => 'selectref',
+                             'dbtable' => 'tbladr_lstgrp',
+                             'fldindex' => 'fldid_liste',
+                             'dbindex' => 'fldindex',
+                             'reftable' => 'tbladr_group',
+                             'fldrefindex' => 'fldindex',
+                             'dbrefindex' => 'fldid_group',
+                             'dbfield' => 'fldbez' ),
+                     array ( 'label' => 'EMail',
+                             'name' => 'email', 
+                             'width' => 100, 
+                             'type' => 'text',
+                             'dbfield' => 'fldemail' ));
+
+$filterarray = array ( array ( 'label' => 'Gruppe:',
+                               'name' => 'fltgrp', 
+                               'width' => 10, 
+                               'type' => 'selectid',
+                               'sign' => '=',
+                               'dbtable' => 'tbladr_group',
+                               'seldbindex' => 'fldindex',
+                               'seldbfield' => 'fldbez',
+                               'dbfield' => 'fldid_group' ));
+
+$pararray = array ( 'headline' => 'Adressen',
+                    'dbtable' => 'tbladr_liste',
+                    'dbreftable' => 'tbladr_lstgrp',
+                    'dbrefindex' => 'fldid_liste',
+                    'orderby' => '',
+                    'strwhere' => '',
+                    'fldindex' => 'fldindex');
+
+?>

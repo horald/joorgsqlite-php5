@@ -5,11 +5,12 @@ function stammauswahl($menu) {
   $results = $db->query("SELECT * FROM tblartikel WHERE fldJN='J' ORDER BY fldOrt");
   echo "<form class='form-horizontal' method='post' action='stamm.php?stamm=1&menu=".$menu."'>";
   //echo "<input type='hidden' name='id' value=".$idwert.">";
-  echo "<table>";
+  echo "<table class='table table-hover'>";
   echo "<tr>";
   echo "<th>[]</th>";
   echo "<th>Bezeichnung </th>";
   echo "<th>Ort</th>";
+  echo "<th>Preis</th>";
   echo "</tr>";
   $cnt=0;
   while ($row = $results->fetchArray()) {
@@ -19,6 +20,7 @@ function stammauswahl($menu) {
     echo "<td><input type='checkbox' name='check".$cnt."' value='1'></td>";
     echo "<td>".$row['fldBez']." </td>";
     echo "<td>".$row['fldOrt']."</td>";
+    echo "<td>".$row['fldPreis']."</td>";
     echo "</tr>"; 
   }	
   echo "</table>";

@@ -4,7 +4,6 @@ session_start();
 
 function exportfunc($pfad,$pararray,$listarray,$menu) {
   $db = new SQLite3('../data/joorgsqlite.db');
-//  $datnam=$_POST['datnam'];
   $datnam="export";
   $slash="/";
   if (substr($_SERVER['DOCUMENT_ROOT'],-1)=="/") {
@@ -12,37 +11,34 @@ function exportfunc($pfad,$pararray,$listarray,$menu) {
   }
   $today = date('Y-m-d-H-i-s');
   $tmpfile = $pfad."mysql-in-".$pararray['dbtable']."-".$today.".tmp";
-  //echo $tmpfile."#<br>";
   $datei = fopen($tmpfile,"w");
 
   $col = "";
   $lincnt = 1;
-  $count=count($listarray);
-//  echo $count."=lincol<br>";
+  $count = 0;
 
-  foreach ( $listarray as $arrelement ) {
-    $tmpcol="";
-    switch ( $arrelement['type'] )
-    {
-      case 'text':
-        $tmpcol=$arrelement['dbfield'];
-      break;
-      case 'date':
-        $tmpcol=$arrelement['dbfield'];
-      break;
-    }
-    if ($tmpcol<>"") {
+  $results = $db->query("SELECT name,sql FROM sqlite_master WHERE type='table' AND name='".$pararray['dbtable']."'");
+  if ($row = $results->fetchArray()) {
+    $colstr=$row['sql'];
+    $pos = strpos($colstr, '(', 0);
+    $colstr=substr($colstr,$pos+1,-1); 
+    $colarr = explode(",", $colstr);
+    $count = count($colarr);
+    foreach ( $colarr as $arrstr ) {
+    	$arrstr=ltrim($arrstr);
+    	$pos=strpos($arrstr,' ',0);
+    	$colstr=substr($arrstr,0,$pos);
+      $colstr=str_replace('"','',$colstr);
       $lincnt = $lincnt + 1;
       if ($col=="") {
-        $col = $tmpcol;
-      } else {
-        $col = $col . "," . $tmpcol;
-      }     
+        $col=$colstr;
+      } else {	
+        $col=$col.",".$colstr;
+      }  
     }
-  }
+  }	
 
   $qryval = "SELECT ".$col." FROM ".$pararray['dbtable'];
-  //echo $qryval."<br>";
   $results = $db->query($qryval);
   $cnt=0;
   while ($linval = $results->fetchArray()) {
@@ -55,7 +51,7 @@ function exportfunc($pfad,$pararray,$listarray,$menu) {
         $val = $val . ",'".$linval[$lincount]."'";
       }
 
-      $qry = "INSERT INTO ".$pararray['dbtable']."(".$col.") VALUES (".$val.")";
+      $qry = "INSERT INTO ".$pararray['dbtable']."(".$col.") VALUES (".$val.");";
       echo $qry."<br>";
       fwrite($datei, $qry.";\n");
     }  

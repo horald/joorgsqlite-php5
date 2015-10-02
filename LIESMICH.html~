@@ -1,0 +1,29 @@
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<pre>
+<h1>Joorgportal</h1>
+php und sqlite basierte App als Groupware für Familien.
+
+Lizenz: <a href="LICENSE.txt">GNU GPL v3.0</a>
+
+<h3>Installation</h3>
+
+Installieren Sie das Programm indem Sie es in Ihren Webordner (z.B. /var/www/html/joorgsqlite/) kopieren und die Datei "index.php" in Ihrem Webbrowser aufrufen.
+
+Lesen Sie <a href="#">hier</a> wie Sie Joorgportal installieren können.
+
+<h3>System Requirements</h3>
+Sie benötigen PHP >= 5.3.0. und einen Sqlite3 Treiber für die Datenbankdatei. 
+
+<h3>Documentation</h3>
+Lesen Sie <a href="help/de-DE/documentation.html">hier</a> wie Joorgportal verwenden können.
+
+<h3>Kurzbeschreibung</h3>
+-Einkaufsliste: Hier können Sie Ihre Einkäufe erfassen. (Siehe auch <a href="#">hier</a>)
+
+</pre>
+</body>
+</html>

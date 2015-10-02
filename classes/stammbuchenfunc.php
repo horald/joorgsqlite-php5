@@ -27,8 +27,18 @@ function stammauswahl($menu) {
   echo "</form>";
 }
 
-function stammuebernehmen() {
+function stammuebernehmen($fldindex,$dbtable,$autoinc_start) {
   $db = new SQLite3('../data/joorgsqlite.db');
+  
+  $sqlid="SELECT * FROM tblindex WHERE fldtable='".$dbtable."'";
+  $results = $db->query($sqlid);
+  if ($row = $results->fetchArray()) {
+    $newrowid=$row['fldid'] + $autoinc_step;
+    //echo $newrowid."=newrowid<br>";
+  } else {
+    $newrowid=$autoinc_start;  
+  }
+  
   $count = $_POST['count'];
   $cnt=0;
   //echo $count."=count<br>";
@@ -53,7 +63,7 @@ function stammuebernehmen() {
         //echo $query."<br>"; 
         $results = $db->query($query);
         while ($row = $results->fetchArray()) {
-          $qryins="INSERT INTO tblktosal (fldBez,fldDatum,fldUhrzeit,fldBetrag,fldKonto,fldInhaber) VALUES('$row[fldBez]','$datum','$uhrzeit','$row[fldBetrag]','$row[fldKonto]','$inhaber')";
+          $qryins="INSERT INTO tblktosal (".$fldindex.",fldBez,fldDatum,fldUhrzeit,fldBetrag,fldKonto,fldInhaber,fldtimestamp) VALUES(".$newrowid.",'$row[fldBez]','$datum','$uhrzeit','$row[fldBetrag]','$row[fldKonto]','$inhaber',CURRENT_TIMESTAMP)";
           //echo $qryins."=ins<br>"; 
           $db->exec($qryins);
        }	

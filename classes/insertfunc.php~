@@ -1,10 +1,10 @@
 <?php
 header("content-type: text/html; charset=utf-8");
 
-function insertinput($listarray,$idwert,$menu) {
+function insertinput($listarray,$idwert,$menu,$menugrp) {
   $db = new SQLite3('../data/joorgsqlite.db');
-  echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
-  echo "<form class='form-horizontal' method='post' action='insert.php?insert=1&menu=".$menu."'>";
+  echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
+  echo "<form class='form-horizontal' method='post' action='insert.php?insert=1&menu=".$menu."&menugrp=".$menugrp."'>";
 
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
@@ -54,7 +54,14 @@ function insertinput($listarray,$idwert,$menu) {
         echo "<select name='".$arrelement['name']."' size='1'>";
         echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
         while ($row = $results->fetchArray()) {
-          echo "<option style='background-color:#c0c0c0;'  value=".$row[$arrelement['seldbindex']].">".$row[$arrelement['seldbfield']]."</option>";
+        	 $strdbfield=""; 
+        	 $arrdbfield = explode(",", $arrelement['seldbfield']);
+        	 $arrcnt=count($arrdbfield);
+        	 for ($i = 0; $i < $arrcnt; $i++) {
+            $strdbfield=$strdbfield.",".$row[$arrdbfield[$i]];
+          }
+        	 $strdbfield=$strdbfield."-".$arrcnt;
+          echo "<option style='background-color:#c0c0c0;'  value=".$row[$arrelement['seldbindex']].">".$strdbfield."</option>";
         }
         echo "</select> ";
         echo "</dl>";
@@ -153,15 +160,19 @@ function updatepreis($rowid) {
   }
 }
 
-function insertsave($pararray,$listarray,$menu,$show) {
-  echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
+function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_start,$menugrp) {
+  echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 //  echo $db->lastErrorMsg()."<br>";
 
-  $sqlid = "select ".$pararray['fldindex']." from ".$pararray['dbtable']." order by ".$pararray['fldindex']." desc limit 1";
+  //$sqlid = "select ".$pararray['fldindex']." from ".$pararray['dbtable']." order by ".$pararray['fldindex']." desc limit 1";
+  $sqlid="SELECT * FROM tblindex WHERE fldtable='".$pararray['dbtable']."'";
   $results = $db->query($sqlid);
   if ($row = $results->fetchArray()) {
-    $newrowid=$row[$pararray['fldindex']] + 10;
+    $newrowid=$row['fldid'] + $autoinc_step;
+    //echo $newrowid."=newrowid<br>";
+  } else {
+    $newrowid=$autoinc_start;  
   }
 
   $prozref="N"; 
@@ -189,6 +200,9 @@ function insertsave($pararray,$listarray,$menu,$show) {
         case 'calc':
           $sql=$sql.$arrelement['dbfield'].",";
         break;
+        case 'timestamp':
+          $sql=$sql.$arrelement['dbfield'].",";
+        break;
       }
     }  
   }
@@ -214,6 +228,9 @@ function insertsave($pararray,$listarray,$menu,$show) {
         break;
         case 'calc':
           $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
+        break;
+        case 'timestamp':
+          $sql=$sql."CURRENT_TIMESTAMP,";
         break;
         case 'prozref':
           $prozref="J";
@@ -262,6 +279,13 @@ function insertsave($pararray,$listarray,$menu,$show) {
     echo "</div>";
     $reserr = $db->exec($sqlupdref);
   }
+  if ($newrowid==$autoinc_start) {
+    $sqlupd="INSERT INTO tblindex (fldtable,fldid) VALUES('".$pararray['dbtable']."',".$newrowid.")";
+  } else {
+    $sqlupd="UPDATE tblindex SET fldid=".$newrowid."  WHERE fldtable='".$pararray['dbtable']."'";
+  }
+  //echo $sqlupd."<br>";
+  $resupd = $db->exec($sqlupd);
   $db->close();
   //echo $pararray['chkpreis']."=chkpreis<br>"; 
   if ($pararray['chkpreis']=="J") {

@@ -1,6 +1,10 @@
 <?php
 
-$listarray = array ( array ( 'label' => 'Sort',
+$listarray = array ( array ( 'label' => 'ID',
+                             'width' => 10, 
+                             'type' => 'show',
+                             'dbfield' => 'fldindex' ),
+                     array ( 'label' => 'Sort',
                              'name' => 'Sort',
                              'width' => 200, 
                              'type' => 'text',
@@ -35,7 +39,15 @@ $listarray = array ( array ( 'label' => 'Sort',
                              'default' => 'N',
                              'width' => 50, 
                              'type' => 'text',
-                             'dbfield' => 'fldview' ));
+                             'dbfield' => 'fldview' ),
+                     array ( 'label' => 'Menügruppe',
+                             'name' => 'menugrp',
+                             'width' => 20, 
+                             'type' => 'selectid',
+                             'dbtable' => 'tblmenu_grp',
+                             'seldbfield' => 'fldbez',
+                             'seldbindex' => 'fldindex',
+                             'dbfield' => 'fldid_menugrp' ));
 
 
 $pararray = array ( 'headline' => 'Menü',

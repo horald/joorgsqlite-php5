@@ -1,21 +1,21 @@
 <?php
 
-function showtabfunc($menu,$sql,$id) {
-  echo "<a href='../index.php?id=".$id."'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
-  echo "<a href='insert.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Einfügen</a> ";
-  echo "<a href='import.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>import</a> ";
-  echo "<a href='export.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Export</a> ";
-  echo "<a href='leeren.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Leeren</a> ";
+function showtabfunc($menu,$sql,$id,$menugrp) {
+  echo "<a href='../index.php?id=".$id."&menugrp=".$menugrp."'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
+  echo "<a href='insert.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Einfügen</a> ";
+  echo "<a href='import.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>import</a> ";
+  echo "<a href='export.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Export</a> ";
+  echo "<a href='leeren.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Leeren</a> ";
   $db = new SQLite3('../data/joorgsqlite.db');
   $sql="SELECT * FROM tblfunc WHERE fldMenuID='".$menu."' ORDER BY fldName";
   //echo $sql."<br>";
   $results = $db->query($sql);
   while ($row = $results->fetchArray()) {
     //echo $row['fldBez']."<br>";  
-    echo "<a href='".$row['fldphp']."?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>".$row['fldBez']."</a> ";
+    echo "<a href='".$row['fldphp']."?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>".$row['fldBez']."</a> ";
   }  
-  echo "<a href='schicken.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
-  echo "<a href='empfangen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
+  echo "<a href='schicken.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
+  echo "<a href='empfangen.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
 }
 
 function showtabfilter($filter,$filterarray,$pararray,$menu) {
@@ -166,6 +166,14 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
   if ($pararray['orderby']<>"") {
     $dborder=" ORDER BY ".$pararray['orderby'];
   }
+
+  $dbjoin="";
+  if ($pararray['dbreftable']<>"") {
+  	 if ($wert<>"(ohne)") {
+      $dbjoin=" LEFT JOIN ".$pararray['dbreftable']." ON ".$pararray['dbreftable'].".".$pararray['dbrefindex']." = ".$pararray['dbtable'].".".$pararray['fldindex'];  
+    }
+  }
+  
   if ($pararray['dbwhere']<>"") {
     if ($dbwhere<>"") {
       $dbwhere=$dbwhere." AND ".$pararray['dbwhere'];
@@ -173,7 +181,7 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       $dbwhere=" WHERE ".$pararray['dbwhere'];
     }
   }
-  $sql="SELECT * FROM ".$dbtable.$dbwhere.$dborder;
+  $sql="SELECT * FROM ".$dbtable.$dbjoin.$dbwhere.$dborder;
   //echo $sql."<br>";
   $retarr=array ( 'sqlfilter' => $sql,
                   'sqlbetrag' => 'sqlbetrag');

@@ -12,14 +12,51 @@ alert(strUser);
 </script>
 <?php        	
 
-function updateinput($pararray,$listarray,$idwert,$menu) {
+function updatepreis($rowid,$show) {
+  $db = new SQLite3('../data/joorgsqlite.db');
+  $sql = "SELECT * FROM tblartikel WHERE fldBez='".$_POST['fldBez']."' AND fldOrt='".$_POST['kaufort']."'";
+  //echo $sql."<br>";
+  $results = $db->query($sql);
+  $count=0;
+  while ($row = $results->fetchArray()) {
+    $count=$count+1;
+    $arr=$row;
+  }	
+  //echo $count."=count<br>";
+  if ($count==1) {
+    if ($_POST['fldPreis']<>"") {
+      if ($_POST['kaufort']<>"") {  
+        $sql="UPDATE tblartikel SET fldPreis='".$_POST['fldPreis']."' WHERE fldindex=".$arr['fldindex'];
+        $db->exec($sql);
+        if ($show=="anzeigen") {
+          echo "<div class='alert alert-success'>";
+          echo $db->lastErrorMsg()."<br>";
+          echo $sql."<br>";
+          echo "</div>";
+        }
+      }
+    }  
+  }
+  if ($count==0) {
+    if ($_POST['fldPreis']<>"") {
+      if ($_POST['kaufort']<>"") {  
+        $sql="INSERT INTO tblartikel (fldBez,fldKonto,fldPreis,fldOrt,fldAnz,fldJN) VALUES ('".$_POST['fldBez']."','".$_POST['fldKonto']."','".$_POST['fldPreis']."','".$_POST['kaufort']."','1','J')";
+        //echo $sql."<br>";
+        $db->exec($sql);
+        //echo $db->lastErrorMsg()."<br>";
+      }
+    }
+  }  
+}
+
+function updateinput($pararray,$listarray,$idwert,$menu,$menugrp) {
   $db = new SQLite3('../data/joorgsqlite.db');
   $results = $db->query("SELECT * FROM ".$pararray['dbtable']." WHERE fldindex=".$idwert);
   while ($row = $results->fetchArray()) {
     $arr=$row;
   }	
-  echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
-  echo "<form class='form-horizontal' method='post' action='update.php?update=1&menu=".$menu."' role='form'>";
+  echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
+  echo "<form class='form-horizontal' method='post' action='update.php?update=1&menu=".$menu."&menugrp=".$menugrp."' role='form'>";
 
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
@@ -150,18 +187,16 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
   }
 
   echo "<input type='hidden' name='id' value=".$idwert.">";
+  if ($pararray['chkpreis']=="J") {
+    echo "<input type='checkbox' name='chkpreis' value='preis' checked> Preis speichern<br>";
+  }
   echo "<input type='checkbox' name='chkanzeigen' value='anzeigen'> Speichern anzeigen<br>";
   echo "<dd><input type='submit' value='Speichern' /></dd>";
   echo "</form>";
 }
 
-function updatepreis() {
-  $db = new SQLite3('../data/joorgsqlite.db');
-//  echo "updatepreis";
-}
-
-function updatesave($pararray,$listarray,$menu,$show) {
-  echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
+function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp) {
+  echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 
   $sql="UPDATE ".$pararray['dbtable']." SET ";
@@ -233,8 +268,10 @@ function updatesave($pararray,$listarray,$menu,$show) {
   $sql=$sql." WHERE fldindex=".$_POST['id'];
   $query = $db->exec($sql);
   if ($pararray['chkpreis']=="J") {
-    $rowid=$_POST['id'];
-    updatepreis($rowid);
+    if ($chkpreis=="preis") {
+      $rowid=$_POST['id'];
+      updatepreis($rowid,$show);
+    }
   }
   if ($show=="anzeigen") {
     echo "<div class='alert alert-success'>";

@@ -11,15 +11,9 @@ array('tablename' => 'tblkategorie',
 array('tablename' => 'tblktokonten',
 'sql' => 'CREATE TABLE tblktokonten (fldindex INTEGER PRIMARY KEY AUTOINCREMENT, fldKurz TEXT, fldBez TEXT, fldTyp TEXT)',
 'column' => array('fldindex INTEGER PRIMARY KEY AUTOINCREMENT',' fldKurz TEXT',' fldBez TEXT',' fldTyp TEXT')),
-array('tablename' => 'tblEinkauf_liste',
-'sql' => 'CREATE TABLE tblEinkauf_liste (fldKonto TEXT, fldStatus TEXT, fldArchivDat TEXT, fldEinkaufDatum TEXT, fldOrt TEXT, fldPreis TEXT, fldAnz TEXT, fldindex INTEGER PRIMARY KEY, fldBez TEXT)',
-'column' => array('fldKonto TEXT',' fldStatus TEXT',' fldArchivDat TEXT',' fldEinkaufDatum TEXT',' fldOrt TEXT',' fldPreis TEXT',' fldAnz TEXT',' fldindex INTEGER PRIMARY KEY',' fldBez TEXT')),
 array('tablename' => 'tblktoinhaber',
 'sql' => 'CREATE TABLE tblktoinhaber (flindex INTEGER PRIMARY KEY AUTOINCREMENT, fldBez TEXT)',
 'column' => array('flindex INTEGER PRIMARY KEY AUTOINCREMENT',' fldBez TEXT')),
-array('tablename' => 'tblktosal',
-'sql' => 'CREATE TABLE tblktosal (fldindex INTEGER PRIMARY KEY, fldDatum TEXT, fldUhrzeit TEXT, fldBez TEXT, fldKonto TEXT, fldInhaber TEXT, fldBetrag TEXT, fldFix NUMERIC, "fldtyp" text NULL)',
-'column' => array('fldindex INTEGER PRIMARY KEY',' fldDatum TEXT',' fldUhrzeit TEXT',' fldBez TEXT',' fldKonto TEXT',' fldInhaber TEXT',' fldBetrag TEXT',' fldFix NUMERIC',' "fldtyp" text NULL')),
 array('tablename' => 'tblversion',
 'sql' => 'CREATE TABLE tblversion (fldindex INTEGER PRIMARY KEY, fldbez TEXT, fldversion TEXT, flddatum TEXT)',
 'column' => array('fldindex INTEGER PRIMARY KEY',' fldbez TEXT',' fldversion TEXT',' flddatum TEXT')),
@@ -29,9 +23,6 @@ array('tablename' => 'tblprior',
 array('tablename' => 'tblerledigungen',
 'sql' => 'CREATE TABLE tblerledigungen (fldprior TEXT, fldErledigDat TEXT, fldDatum TEXT, fldcategory TEXT, fldindex INTEGER PRIMARY KEY, fldbez TEXT, fldstatus TEXT)',
 'column' => array('fldprior TEXT',' fldErledigDat TEXT',' fldDatum TEXT',' fldcategory TEXT',' fldindex INTEGER PRIMARY KEY',' fldbez TEXT',' fldstatus TEXT')),
-array('tablename' => 'tblmenu_liste',
-'sql' => 'CREATE TABLE tblmenu_liste (fldid_parent NUMERIC, fldglyphicon TEXT, fldlink TEXT, fldsort TEXT, fldbez TEXT, fldindex INTEGER PRIMARY KEY, fldmenu TEXT, fldview TEXT)',
-'column' => array('fldid_parent NUMERIC',' fldglyphicon TEXT',' fldlink TEXT',' fldsort TEXT',' fldbez TEXT',' fldindex INTEGER PRIMARY KEY',' fldmenu TEXT',' fldview TEXT')),
 array('tablename' => 'tblartikel',
 'sql' => 'CREATE TABLE tblartikel (fldKonto TEXT, fldJN TEXT, fldAnz TEXT, fldindex INTEGER PRIMARY KEY, fldBez TEXT, fldPreis TEXT, fldOrt TEXT)',
 'column' => array('fldKonto TEXT',' fldJN TEXT',' fldAnz TEXT',' fldindex INTEGER PRIMARY KEY',' fldBez TEXT',' fldPreis TEXT',' fldOrt TEXT')),
@@ -50,9 +41,6 @@ array('tablename' => 'tblfunc',
 array('tablename' => 'tblktotyp',
 'sql' => 'CREATE TABLE tblktotyp (fldtyp TEXT, fldindex INTEGER PRIMARY KEY, fldbez TEXT)',
 'column' => array('fldtyp TEXT',' fldindex INTEGER PRIMARY KEY',' fldbez TEXT')),
-array('tablename' => 'tblorte',
-'sql' => 'CREATE TABLE tblorte (fldkurz TEXT, fldid_moebel NUMERIC, fldproz NUMERIC, fldid_etage NUMERIC, fldhoehe NUMERIC, fldbreite NUMERIC, fldykoor NUMERIC, fldxkoor NUMERIC, fldview TEXT, fldid_zimmer NUMERIC, fldindex INTEGER PRIMARY KEY, fldBez TEXT, fldo01typ TEXT)',
-'column' => array('fldkurz TEXT',' fldid_moebel NUMERIC',' fldproz NUMERIC',' fldid_etage NUMERIC',' fldhoehe NUMERIC',' fldbreite NUMERIC',' fldykoor NUMERIC',' fldxkoor NUMERIC',' fldview TEXT',' fldid_zimmer NUMERIC',' fldindex INTEGER PRIMARY KEY',' fldBez TEXT',' fldo01typ TEXT')),
 array('tablename' => 'tbletagen',
 'sql' => 'CREATE TABLE tbletagen (fldproz TEXT, fldindex INTEGER PRIMARY KEY, fldbez TEXT)',
 'column' => array('fldproz TEXT',' fldindex INTEGER PRIMARY KEY',' fldbez TEXT')),
@@ -76,6 +64,209 @@ array('tablename' => 'tblsession',
 'column' => array('
   "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
   "fldid" integer NOT NULL
+')),
+array('tablename' => 'tblEinkauf_liste',
+'sql' => 'CREATE TABLE "tblEinkauf_liste" (
+  "fldKonto" text NULL,
+  "fldStatus" text NULL,
+  "fldArchivDat" text NULL,
+  "fldEinkaufDatum" text NULL,
+  "fldEinkaufUhrzeit" text NULL,
+  "fldOrt" text NULL,
+  "fldPreis" text NULL,
+  "fldAnz" text NULL,
+  "fldindex" integer NULL PRIMARY KEY AUTOINCREMENT,
+  "fldBez" text NULL
+)',
+'column' => array('
+  "fldKonto" text NULL','
+  "fldStatus" text NULL','
+  "fldArchivDat" text NULL','
+  "fldEinkaufDatum" text NULL','
+  "fldEinkaufUhrzeit" text NULL','
+  "fldOrt" text NULL','
+  "fldPreis" text NULL','
+  "fldAnz" text NULL','
+  "fldindex" integer NULL PRIMARY KEY AUTOINCREMENT','
+  "fldBez" text NULL
+')),
+array('tablename' => 'tbltable',
+'sql' => 'CREATE TABLE "tbltable" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldbez" integer NOT NULL,
+  "fldtyp" integer NOT NULL
+)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldbez" integer NOT NULL','
+  "fldtyp" integer NOT NULL
+')),
+array('tablename' => 'tblorte',
+'sql' => 'CREATE TABLE "tblorte" (
+  "fldkurz" text NULL,
+  "fldid_moebel" numeric NULL,
+  "fldproz" numeric NULL,
+  "fldid_etagealt" numeric NULL,
+  "fldhoehe" numeric NULL,
+  "fldbreite" numeric NULL,
+  "fldykoor" numeric NULL,
+  "fldxkoor" numeric NULL,
+  "fldview" text NULL,
+  "fldid_zimmer" numeric NULL,
+  "fldindex" integer NULL PRIMARY KEY AUTOINCREMENT,
+  "fldBez" text NULL,
+  "fldo01typ" text NULL,
+  "fldid_etage" numeric NULL
+, "fldid_suchobj" numeric NULL)',
+'column' => array('
+  "fldkurz" text NULL','
+  "fldid_moebel" numeric NULL','
+  "fldproz" numeric NULL','
+  "fldid_etagealt" numeric NULL','
+  "fldhoehe" numeric NULL','
+  "fldbreite" numeric NULL','
+  "fldykoor" numeric NULL','
+  "fldxkoor" numeric NULL','
+  "fldview" text NULL','
+  "fldid_zimmer" numeric NULL','
+  "fldindex" integer NULL PRIMARY KEY AUTOINCREMENT','
+  "fldBez" text NULL','
+  "fldo01typ" text NULL','
+  "fldid_etage" numeric NULL
+',' "fldid_suchobj" numeric NULL')),
+array('tablename' => 'tblsuchtyp',
+'sql' => 'CREATE TABLE "tblsuchtyp" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldbez" text NOT NULL
+, "fldsort" text NULL)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldbez" text NOT NULL
+',' "fldsort" text NULL')),
+array('tablename' => 'tblktosal',
+'sql' => 'CREATE TABLE "tblktosal" (
+  "fldindex" integer NULL PRIMARY KEY AUTOINCREMENT,
+  "fldDatum" text NULL,
+  "fldUhrzeit" text NULL,
+  "fldBez" text NULL,
+  "fldKonto" text NULL,
+  "fldInhaber" text NULL,
+  "fldBetrag" text NULL,
+  "fldFix" numeric NULL,
+  "fldtyp" text NULL,
+  "flddel" text NULL DEFAULT 'N',
+  "fldtimestamp" text NULL
+)',
+'column' => array('
+  "fldindex" integer NULL PRIMARY KEY AUTOINCREMENT','
+  "fldDatum" text NULL','
+  "fldUhrzeit" text NULL','
+  "fldBez" text NULL','
+  "fldKonto" text NULL','
+  "fldInhaber" text NULL','
+  "fldBetrag" text NULL','
+  "fldFix" numeric NULL','
+  "fldtyp" text NULL','
+  "flddel" text NULL DEFAULT 'N'','
+  "fldtimestamp" text NULL
+')),
+array('tablename' => 'tblsyncstatus',
+'sql' => 'CREATE TABLE "tblsyncstatus" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldtable" text NOT NULL,
+  "fldtimestamp" text NOT NULL
+)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldtable" text NOT NULL','
+  "fldtimestamp" text NOT NULL
+')),
+array('tablename' => 'tblindex',
+'sql' => 'CREATE TABLE "tblindex" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldtable" text NOT NULL,
+  "fldid" integer NOT NULL
+)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldtable" text NOT NULL','
+  "fldid" integer NOT NULL
+')),
+array('tablename' => 'tblmenu_grp',
+'sql' => 'CREATE TABLE "tblmenu_grp" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldbez" text NOT NULL
+)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldbez" text NOT NULL
+')),
+array('tablename' => 'tblmenu_liste',
+'sql' => 'CREATE TABLE "tblmenu_liste" (
+  "fldid_parent" numeric NULL,
+  "fldglyphicon" text NULL,
+  "fldlink" text NULL,
+  "fldsort" text NULL,
+  "fldbez" text NULL,
+  "fldindex" integer NULL PRIMARY KEY AUTOINCREMENT,
+  "fldmenu" text NULL,
+  "fldview" text NULL
+)',
+'column' => array('
+  "fldid_parent" numeric NULL','
+  "fldglyphicon" text NULL','
+  "fldlink" text NULL','
+  "fldsort" text NULL','
+  "fldbez" text NULL','
+  "fldindex" integer NULL PRIMARY KEY AUTOINCREMENT','
+  "fldmenu" text NULL','
+  "fldview" text NULL
+')),
+array('tablename' => 'tblmenu_zuord',
+'sql' => 'CREATE TABLE "tblmenu_zuord" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldid_menu" integer NOT NULL,
+  "fldid_menugrp" integer NOT NULL
+)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldid_menu" integer NOT NULL','
+  "fldid_menugrp" integer NOT NULL
+')),
+array('tablename' => 'tbladr_liste',
+'sql' => 'CREATE TABLE "tbladr_liste" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldfirstname" text NOT NULL,
+  "fldlastname" text NOT NULL,
+  "fldemail" text NOT NULL
+)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldfirstname" text NOT NULL','
+  "fldlastname" text NOT NULL','
+  "fldemail" text NOT NULL
+')),
+array('tablename' => 'tbladr_group',
+'sql' => 'CREATE TABLE "tbladr_group" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldbez" text NOT NULL,
+  "fldtyp" text NOT NULL
+)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldbez" text NOT NULL','
+  "fldtyp" text NOT NULL
+')),
+array('tablename' => 'tbladr_lstgrp',
+'sql' => 'CREATE TABLE "tbladr_lstgrp" (
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+  "fldid_liste" integer NOT NULL,
+  "fldid_group" integer NOT NULL
+)',
+'column' => array('
+  "fldindex" integer NOT NULL PRIMARY KEY AUTOINCREMENT','
+  "fldid_liste" integer NOT NULL','
+  "fldid_group" integer NOT NULL
 ')),
 );
 ?>

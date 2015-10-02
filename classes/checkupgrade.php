@@ -45,8 +45,6 @@ function check_version() {
   $file = strrchr($serverpfad, '/');
   $file = ($file===false) ? $serverpfad : (($file==='/') ? '' : substr($file, 1));
   $serverpfad = ($file==='') ? $serverpfad : substr($serverpfad, 0, -strlen($file));
-  //echo $servername."<br>";
-  //echo $serverpfad."<br>";
 
   ob_start();
   include("http://horald.github.io/joorgsqlite/classes/sendversion.php");
@@ -57,14 +55,9 @@ function check_version() {
   $versnr=$obj['versnr'];
   $versdat=$obj['versdat'];
 
-//  $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
-//  $versnr=$ini_array['versnr'];
-//  $versdat=$ini_array['versdat'];
-
   $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
   $actvers=getactvers("data/");	
-//  echo $locvers.",".$versnr."<br>";
   if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
     echo "<a href='classes/checkupdate.php?actvers=".$locvers."'>Neue Version ".$versnr." verfügbar</a>";

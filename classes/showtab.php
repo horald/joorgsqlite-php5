@@ -5,6 +5,7 @@ include("showtabfunc.php");
 $menu=$_GET['menu'];
 $filter=$_GET['filter'];
 $id=$_GET['id'];
+$menugrp=$_GET['menugrp'];
 //echo $menu."=menu<br>";
 include("../sites/views/".$menu."/showtab.inc.php");
 bootstraphead();
@@ -14,7 +15,7 @@ $db = new SQLite3('../data/joorgsqlite.db');
 
 $sql=showtabfilter($filter,$filterarray,$pararray,$menu);
 
-showtabfunc($menu,$sql,$id);
+showtabfunc($menu,$sql,$id,$menugrp);
 
 $dbselarr=array();
 $results = $db->query($sql);
@@ -42,6 +43,9 @@ foreach ( $listarray as $arrelement ) {
       case 'selectid':
         echo "<th>".$arrelement['label']."</th>";
       break;
+      case 'selectref':
+        echo "<th>".$arrelement['label']."</th>";
+      break;
       case 'time':
         echo "<th>".$arrelement['label']."</th>";
       break;
@@ -67,6 +71,9 @@ foreach ( $listarray as $arrelement ) {
         echo "<th>".$arrelement['label']."</th>";
       break;
       case 'proz':
+        echo "<th>".$arrelement['label']."</th>";
+      break;
+      case 'timestamp':
         echo "<th>".$arrelement['label']."</th>";
       break;
     }
@@ -115,6 +122,9 @@ while ($row = $results->fetchArray()) {
         case 'show':
           echo "<td>".$row[$arrelement['dbfield']]."</td>";
         break;
+        case 'timestamp':
+          echo "<td>".$row[$arrelement['dbfield']]."</td>";
+        break;
         case 'text':
           if ($arrelement['grafiklink']=="J") {
             echo "<td><a href='".$arrelement['grafikurl']."?id=".$id."&etagenid=".$row[$arrelement['grafiketageid']]."&roomtyp=".$arrelement['roomtyp']."&menu=".$menu."'>".$row[$arrelement['dbfield']]."</a></td>";
@@ -138,12 +148,41 @@ while ($row = $results->fetchArray()) {
           	$arrsel=$rowsel;
           }	
           if (isset($arrsel)) {
-          	$bez=$arrsel[$arrelement['seldbfield']];
+          	//$bez=$arrsel[$arrelement['seldbfield']];
+            $arrdbfield = explode(",", $arrelement['seldbfield']);
+        	   $arrcnt=count($arrdbfield);
+            $bez=$arrsel[$arrdbfield[0]];
+        	   for ($i = 1; $i < $arrcnt; $i++) {
+              $bez=$bez.",".$arrsel[$arrdbfield[$i]];
+            }
           } else {
           	$bez="";
           }
           //echo $bez."=bez<br>";	
           echo "<td>".$bez."</td>";
+        break;
+        case 'selectref':
+          $pos = strpos($sql, "JOIN");
+          if ($pos !== false) {
+            $sqlsel = "SELECT * FROM ".$arrelement['dbtable']." WHERE ".$arrelement['fldindex']."=".$row[$arrelement['fldindex']];
+          } else {
+            $sqlsel = "SELECT * FROM ".$arrelement['dbtable']." WHERE ".$arrelement['fldindex']."=".$row[$arrelement['dbindex']];
+          }  
+          //echo $sqlsel."<br>";
+          $ressel = $db->query($sqlsel);
+          echo "<td>";
+          echo "<select name='".$arrelement['name']."' size='1'>";
+          while ($rowsel = $ressel->fetchArray()) {
+            $sqlref = "SELECT * FROM ".$arrelement['reftable']." WHERE ".$arrelement['fldrefindex']."=".$rowsel[$arrelement['dbrefindex']];
+            $resref = $db->query($sqlref);
+            $bez="<unbekannt>";
+            if ($rowref = $resref->fetchArray()) {
+              $bez=$rowref[$arrelement['dbfield']];
+            }
+            echo "<option style='background-color:#c0c0c0;' >".$bez."</option>";
+          }
+          echo "</select>";
+          echo "</td>";
         break;
         case 'time':
           echo "<td>".$row[$arrelement['dbfield']]."</td>";
@@ -242,9 +281,9 @@ while ($row = $results->fetchArray()) {
       }
     }
   }
-  echo "<td><a href='mark.php?menu=".$menu."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>OK</a></td> ";
-  echo "<td><a href='update.php?menu=".$menu."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>U</a></td> ";
-  echo "<td><a href='delete.php?menu=".$menu."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>D</a></td>";
+  echo "<td><a href='mark.php?menu=".$menu."&menugrp=".$menugrp."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>OK</a></td> ";
+  echo "<td><a href='update.php?menu=".$menu."&menugrp=".$menugrp."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>U</a></td> ";
+  echo "<td><a href='delete.php?menu=".$menu."&menugrp=".$menugrp."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>D</a></td>";
   echo "</tr>";
   $menge = array_push ( $dbselarr, $row[$pararray['fldindex']] );
 }

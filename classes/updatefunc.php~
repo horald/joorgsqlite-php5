@@ -12,6 +12,43 @@ alert(strUser);
 </script>
 <?php        	
 
+function updatepreis($rowid,$show) {
+  $db = new SQLite3('../data/joorgsqlite.db');
+  $sql = "SELECT * FROM tblartikel WHERE fldBez='".$_POST['fldBez']."' AND fldOrt='".$_POST['kaufort']."'";
+  //echo $sql."<br>";
+  $results = $db->query($sql);
+  $count=0;
+  while ($row = $results->fetchArray()) {
+    $count=$count+1;
+    $arr=$row;
+  }	
+  //echo $count."=count<br>";
+  if ($count==1) {
+    if ($_POST['fldPreis']<>"") {
+      if ($_POST['kaufort']<>"") {  
+        $sql="UPDATE tblartikel SET fldPreis='".$_POST['fldPreis']."' WHERE fldindex=".$arr['fldindex'];
+        $db->exec($sql);
+        if ($show=="anzeigen") {
+          echo "<div class='alert alert-success'>";
+          echo $db->lastErrorMsg()."<br>";
+          echo $sql."<br>";
+          echo "</div>";
+        }
+      }
+    }  
+  }
+  if ($count==0) {
+    if ($_POST['fldPreis']<>"") {
+      if ($_POST['kaufort']<>"") {  
+        $sql="INSERT INTO tblartikel (fldBez,fldKonto,fldPreis,fldOrt,fldAnz,fldJN) VALUES ('".$_POST['fldBez']."','".$_POST['fldKonto']."','".$_POST['fldPreis']."','".$_POST['kaufort']."','1','J')";
+        //echo $sql."<br>";
+        $db->exec($sql);
+        //echo $db->lastErrorMsg()."<br>";
+      }
+    }
+  }  
+}
+
 function updateinput($pararray,$listarray,$idwert,$menu) {
   $db = new SQLite3('../data/joorgsqlite.db');
   $results = $db->query("SELECT * FROM ".$pararray['dbtable']." WHERE fldindex=".$idwert);
@@ -150,17 +187,15 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
   }
 
   echo "<input type='hidden' name='id' value=".$idwert.">";
+  if ($pararray['chkpreis']=="J") {
+    echo "<input type='checkbox' name='chkpreis' value='preis' checked> Preis speichern<br>";
+  }
   echo "<input type='checkbox' name='chkanzeigen' value='anzeigen'> Speichern anzeigen<br>";
   echo "<dd><input type='submit' value='Speichern' /></dd>";
   echo "</form>";
 }
 
-function updatepreis() {
-  $db = new SQLite3('../data/joorgsqlite.db');
-//  echo "updatepreis";
-}
-
-function updatesave($pararray,$listarray,$menu,$show) {
+function updatesave($pararray,$listarray,$menu,$show,$chkpreis) {
   echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 
@@ -197,6 +232,9 @@ function updatesave($pararray,$listarray,$menu,$show) {
         case 'proz':
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
+        case 'timestamp':
+          $sql=$sql.$arrelement['dbfield']."=CURRENT_TIMESTAMP, ";
+        break;
         case 'prozref':
           $sqlfil="SELECT * FROM tblfilter WHERE fldtablename='tblorte' AND fldfeld='fldid_suchobj'";
           echo $sqlfil."<br>";
@@ -230,8 +268,10 @@ function updatesave($pararray,$listarray,$menu,$show) {
   $sql=$sql." WHERE fldindex=".$_POST['id'];
   $query = $db->exec($sql);
   if ($pararray['chkpreis']=="J") {
-    $rowid=$_POST['id'];
-    updatepreis($rowid);
+    if ($chkpreis=="preis") {
+      $rowid=$_POST['id'];
+      updatepreis($rowid,$show);
+    }
   }
   if ($show=="anzeigen") {
     echo "<div class='alert alert-success'>";

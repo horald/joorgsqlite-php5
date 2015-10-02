@@ -1,22 +1,27 @@
 <pre>
-<h1>Joorgportal</h1>
+<h4>Joorgportal</h4>
+
 php and sqlite based App as Groupware for Familys and private people.
 
 License: <a href="LICENSE.txt">GNU GPL v3.0</a>
 
 <a href="">english</a> <a href="LIESMICH.html">deutsch</a>
  
-<h3>Install</h3>
+</h3>Getting Started</h3>
+Install
+
 You may install by copying the App on your webspace and start index.php.
 
-Read how to <a href="#">install</a> Joorgportal
+Read how to install Joorgportal
 
-<h3>System Requirements</h3>
+System Requirements
+
 You need PHP >= 5.3.0. and Sqlite3 driver. 
 
-<h3>Documentation</h3>
-Read how to <a href="help/en-GB/documentation.html">use</a> Joorgportal
+Documentation
 
-<h3>Short description</h3> 
+Read how to use Joorgportal
+
+Short description 
 
 </pre>
