@@ -7,6 +7,7 @@ echo "<a href='../index.php' class='btn btn-primary btn-sm active' role='button'
 echo "<a href='about.php' class='btn btn-primary btn-sm active' role='button'>zurück</a> "; 
 $locvers=$_GET['locvers'];
 $versnr=$_GET['versnr'];
+$versdat=$_GET['versdat'];
 //$ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
 //$versnr=$ini_array['versnr'];
 //include("http://horald.github.io/joorgsqlite/update.php?locvers=".$locvers);
@@ -17,7 +18,7 @@ if ($locvers>=$versnr) {
 //  echo $actvers.",".$versnr."=actvers,versnr<br>";
   if ($actvers<$versnr) {
     echo "<div class='alert alert-info'>";
-    echo "<a href='installupdate.php?newvers=".$versnr."'>Auf neue Version ".$versnr." aktualisieren</a>";
+    echo "<a href='installupdate.php?newvers=".$versnr."&versdat=".$versdat."'>Auf neue Version ".$versnr." aktualisieren</a>";
     echo "</div>";
   } else {
     echo "<div class='alert alert-success'>";
