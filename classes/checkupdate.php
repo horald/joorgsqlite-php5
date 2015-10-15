@@ -8,6 +8,7 @@ echo "<a href='about.php' class='btn btn-primary btn-sm active' role='button'>zu
 $locvers=$_GET['actvers'];
 $ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
 $versnr=$ini_array['versnr'];
+echo $versnr."=versnr<br>";
 if ($locvers>=$versnr) {
   $actvers=getactvers("../data/");	
   if ($actvers<$versnr) {
@@ -24,7 +25,6 @@ if ($locvers>=$versnr) {
   }  
 } else {
   $url='https://github.com/horald/joorgsqlite/archive/gh-pages.zip';
-//  $url="";
   echo "<div class='alert alert-success'>";
   echo "Aktuelle Version: ".$actvers." <br>";
   echo "Neue Version....: ".$versnr." <br>";
