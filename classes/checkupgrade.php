@@ -2,14 +2,14 @@
 
 function getactvers($pfad) {
   $db = new SQLite3($pfad.'joorgsqlite.db');
-//  $sql="SELECT * FROM tblversion ORDER BY fldversion";
-//  $results = $db->query($sql);
-//  while ($row = $results->fetchArray()) {
-//    $arr=$row;
-//  }
-//  $versnr=$arr['fldversion'];
-//  $db->close();	
-  $versnr="0.0";
+  $sql="SELECT * FROM tblversion ORDER BY fldversion";
+  $results = $db->query($sql);
+  while ($row = $results->fetchArray()) {
+    $arr=$row;
+  }
+  $versnr=$arr['fldversion'];
+  $db->close();	
+//  $versnr="0.0";
   return $versnr;
 }
 

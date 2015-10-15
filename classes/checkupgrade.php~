@@ -1,7 +1,7 @@
 <?php
 
 function getactvers($pfad) {
-//  $db = new SQLite3($pfad.'joorgsqlite.db');
+  $db = new SQLite3($pfad.'joorgsqlite.db');
 //  $sql="SELECT * FROM tblversion ORDER BY fldversion";
 //  $results = $db->query($sql);
 //  while ($row = $results->fetchArray()) {
