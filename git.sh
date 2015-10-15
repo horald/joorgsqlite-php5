@@ -8,8 +8,7 @@ else
   echo "undocumented Changes of Version $version"
   git commit -m "undocumented Changes of Version $version"
 fi
-#git archive --format=zip --output=joorgsqlite1.011.zip sites/update/joorgsqlite1.011/ sites/update/joorgsqlite1.011/
-git archive -o sites/update/joorgsqlite.zip HEAD $(git diff --name-only HEAD^) 
+git archive -o sites/update/joorgsqlite1.011.zip HEAD $(git diff --name-only HEAD^) 
 #git push -u origin
 
 
