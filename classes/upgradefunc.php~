@@ -3,6 +3,7 @@
 function updatetable($newvers) {
   $pfad="../sites/update/";	
   $datei="Updatetable".$newvers.".sql";
+  echo $datei."<br>";
   $handfile = fopen($pfad.$datei, "r");
   if ($handfile) {
     $db = new SQLite3('../data/joorgsqlite.db');

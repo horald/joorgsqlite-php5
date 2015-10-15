@@ -1,4 +1,3 @@
-INSERT INTO tblmenu_liste (fldid_parent,fldglyphicon,fldlink,fldbez,fldview) VALUES(0,'glyphicon-calendar','classes/calendar.php','Kalender','J');
 CREATE TABLE tblfunc (fldindex INTEGER PRIMARY KEY, fldBez TEXT, fldphp TEXT, fldMenuID TEXT, fldTyp TEXT, fldTarget TEXT, fldParam TEXT, fldAktiv TEXT, fldName TEXT, fldtimestamp TEXT, fldversion TEXT);
 INSERT INTO "tblfunc" ("fldindex", "fldBez", "fldphp", "fldMenuID", "fldTyp", "fldTarget", "fldParam", "fldAktiv", "fldName", "fldtimestamp", "fldversion") VALUES (1,	'Preise holen',	'preisholen.php',	'shopping',	'',	'',	'',	NULL,	'',	NULL,	'');
 INSERT INTO "tblfunc" ("fldindex", "fldBez", "fldphp", "fldMenuID", "fldTyp", "fldTarget", "fldParam", "fldAktiv", "fldName", "fldtimestamp", "fldversion") VALUES (2,	'Stammdaten',	'stamm.php',	'shopping',	'',	'',	'',	NULL,	'',	NULL,	'');
