@@ -1,5 +1,27 @@
 <?php
 
+function updatetable($newvers) {
+  $pfad="../sites/update/";	
+  $datei="Updatetable".$newvers.".sql";
+  $handfile = fopen($pfad.$datei, "r");
+  if ($handfile) {
+    $db = new SQLite3('../data/joorgsqlite.db');
+    while (($line = fgets($handfile)) !== false) {
+     	$db->exec($line);
+      //echo $line."<br>";
+    }
+    $db->close();
+    fclose($handfile);
+    echo "<div class='alert alert-success'>";
+    echo "Daten von ".$datei." eingelesen!";
+    echo "</div>";
+  } else {
+    echo "<div class='alert alert-danger'>";
+    echo "Öffnen von ".$datei." fehlgeschlagen!";
+    echo "</div>";
+  } 
+}
+
 function checkupdatefiles($newvers,$oldvers) {
   $pfad="../sites/update/";	
   $handle=opendir ($pfad);

@@ -1,5 +1,12 @@
 <?php
 
+function updatetable($newvers) {
+  $pfad="../sites/update/";	
+  $handfile = fopen($pfad."Updatetable".$newvers.".sql", "r");
+  if ($handfile) {
+  } 
+}
+
 function checkupdatefiles($newvers,$oldvers) {
   $pfad="../sites/update/";	
   $handle=opendir ($pfad);
@@ -110,12 +117,12 @@ function checktables($tablearray) {
         for ( $x = 0; $x < $count; $x++ ) {
         	 $newcol[$x]=trim($newcol[$x]);
         } 
-        foreach ( $colarr as $colelement ) { 
-          echo $colelement.",".strlen($colelement)."=old<br>";
-        }       
+        //foreach ( $colarr as $colelement ) { 
+        //  echo $colelement.",".strlen($colelement)."=old<br>";
+        //}       
         foreach ( $newcol as $colelement ) { 
           if (in_array($colelement, $colarr)) {
-            echo $colelement.",ok=new<br>";
+            //echo $colelement.",ok=new<br>";
           } else {
             echo $colelement.",".strlen($colelement).",no=new<br>";
           }

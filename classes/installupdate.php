@@ -15,6 +15,7 @@ echo "</div>";
 
 //checktables($tablearray);
 //checkupdatefiles($newvers,$oldvers);
+updatetable($newvers);
 updatedbversion($newvers,$versdat);
 bootstrapend();
 ?>
