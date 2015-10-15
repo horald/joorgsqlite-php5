@@ -13,7 +13,7 @@ $sqlite=1;
 //$versnr="1.004";
 echo "<a href='../index.php' class='btn btn-primary btn-sm active' role='button'>Menü</a> "; 
 //echo "<a href='checkupdate.php?actvers=".$versnr."' class='btn btn-primary btn-sm active' role='button'>Update prüfen</a> ";
-$pfad="localhost/test/joorgsqlite/classes/checkupdate.php";
+$pfad="http://localhost/test/joorgsqlite/classes/checkupdate.php";
 echo $pfad."=pfad<br>";
 echo "<a href='http://community.codefor.de/spielplatzapp/update.php?locvers=".$versnr."&pfad=".$pfad."' class='btn btn-primary btn-sm active' role='button'>Update prüfen</a> ";
 echo "<pre>";
