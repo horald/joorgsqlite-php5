@@ -13,7 +13,8 @@ $versnr=$_GET['versnr'];
 //$versnr="1.011a";
 //echo $versnr."=versnr<br>";
 if ($locvers>=$versnr) {
-//  $actvers=getactvers("../data/");	
+  $actvers=getactvers("../data/");	
+  echo $actvers.",".$versnr."=actvers,versnr<br>";
 //  if ($actvers<$versnr) {
 //    echo "<div class='alert alert-info'>";
 //    echo "<a href='installupdate.php?newvers=".$versnr."'>Auf neue Version ".$versnr." aktualisieren</a>";
