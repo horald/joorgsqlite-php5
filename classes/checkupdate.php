@@ -31,6 +31,7 @@ if ($locvers>=$versnr) {
 } else {
   //$url='https://github.com/horald/joorgsqlite/archive/gh-pages.zip';
   $url='https://github.com/horald/joorgsqlite/blob/gh-pages/sites/update/joorgsqlite'.$versnr.'.tar.gz?raw=true';
+  //
   echo "<div class='alert alert-success'>";
   echo "Aktuelle Version: ".$locvers." <br>";
   echo "Neue Version....: ".$versnr." <br>";
