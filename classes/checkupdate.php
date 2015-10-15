@@ -14,19 +14,19 @@ $versnr=$_GET['versnr'];
 //echo $versnr."=versnr<br>";
 if ($locvers>=$versnr) {
   $actvers=getactvers("../data/");	
-  echo $actvers.",".$versnr."=actvers,versnr<br>";
-//  if ($actvers<$versnr) {
-//    echo "<div class='alert alert-info'>";
-//    echo "<a href='installupdate.php?newvers=".$versnr."'>Auf neue Version ".$versnr." aktualisieren</a>";
-//    echo "</div>";
-//  } else {
-//    echo "<div class='alert alert-success'>";
-//    echo "Sie haben die aktuelle Version. (".$locvers.")<br>";
-//    if ($locvers>$versnr) { 
-//      echo "Alte Version....: ".$versnr." <br>";
-//    }
-//    echo "</div>";
-//  }  
+//  echo $actvers.",".$versnr."=actvers,versnr<br>";
+  if ($actvers<$versnr) {
+    echo "<div class='alert alert-info'>";
+    echo "<a href='installupdate.php?newvers=".$versnr."'>Auf neue Version ".$versnr." aktualisieren</a>";
+    echo "</div>";
+  } else {
+    echo "<div class='alert alert-success'>";
+    echo "Sie haben die aktuelle Version. (".$locvers.")<br>";
+    if ($locvers>$versnr) { 
+      echo "Alte Version....: ".$versnr." <br>";
+    }
+    echo "</div>";
+  }  
 } else {
   $url='https://github.com/horald/joorgsqlite/archive/gh-pages.zip';
   echo "<div class='alert alert-success'>";
