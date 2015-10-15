@@ -5,13 +5,14 @@ bootstraphead();
 bootstrapbegin("Joorgportal<br>");
 echo "<a href='../index.php' class='btn btn-primary btn-sm active' role='button'>Menü</a> "; 
 echo "<a href='about.php' class='btn btn-primary btn-sm active' role='button'>zurück</a> "; 
-$locvers=$_GET['actvers'];
+$locvers=$_GET['locvers'];
+$versnr=$_GET['versnr'];
 //$ini_array = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
 //$versnr=$ini_array['versnr'];
-include("http://horald.github.io/joorgsqlite/update.php?locvers=".$locvers);
+//include("http://horald.github.io/joorgsqlite/update.php?locvers=".$locvers);
 //$versnr="1.011a";
 //echo $versnr."=versnr<br>";
-//if ($locvers>=$versnr) {
+if ($locvers>=$versnr) {
 //  $actvers=getactvers("../data/");	
 //  if ($actvers<$versnr) {
 //    echo "<div class='alert alert-info'>";
@@ -25,13 +26,13 @@ include("http://horald.github.io/joorgsqlite/update.php?locvers=".$locvers);
 //    }
 //    echo "</div>";
 //  }  
-//} else {
-//  $url='https://github.com/horald/joorgsqlite/archive/gh-pages.zip';
-//  echo "<div class='alert alert-success'>";
-//  echo "Aktuelle Version: ".$actvers." <br>";
-//  echo "Neue Version....: ".$versnr." <br>";
-//  echo "Bei Github verfügbar: <a href='".$url."'>Download</a>";
-//  echo "</div>";
-//}
+} else {
+  $url='https://github.com/horald/joorgsqlite/archive/gh-pages.zip';
+  echo "<div class='alert alert-success'>";
+  echo "Aktuelle Version: ".$locvers." <br>";
+  echo "Neue Version....: ".$versnr." <br>";
+  echo "Bei Github verfügbar: <a href='".$url."'>Download</a>";
+  echo "</div>";
+}
 bootstrapend();
 ?>
