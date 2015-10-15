@@ -5,6 +5,7 @@ $pfad=$_GET['pfad'];
 $dbtable=$_GET['dbtable'];
 $fldindex=$_GET['fldindex'];
 $nuranzeigen=$_GET['nuranzeigen'];
+$urladr=$_GET['urladr'];
 echo "<div class='alert alert-success'>";
 echo "Daten von ".$pfad." holen.";
 echo "</div>";
@@ -50,6 +51,7 @@ $website="http://".$pfad."sync.php?menu=".$menu;
 echo "<form class='form-horizontal' method='post' action='".$website."'>";
 echo "<input type='hidden' name='status' value='empfangen'/>"; 
 echo "<input type='hidden' name='nuranzeigen' value='".$nuranzeigen."'/>"; 
+echo "<input type='hidden' name='urladr' value='".$urladr."'/>"; 
 
 $qryval = "SELECT ".$col." FROM ".$dbtable." WHERE fldtimestamp>'".$timestamp."'";
 $results = $db->query($qryval);

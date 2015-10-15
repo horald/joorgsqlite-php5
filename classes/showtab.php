@@ -81,13 +81,49 @@ foreach ( $listarray as $arrelement ) {
 }
 echo "</tr>";
 
-$sqlbetrag="SELECT sum(fld) FROM ".$pararray['dbtable']." WHERE ";
+$filterwhere="";
+foreach ( $filterarray as $arrelement ) {
+  $wert="";	
+  $sqlfilter="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$pararray['dbtable']."'";
+  $resfilter = $db->query($sqlfilter);
+  if ($rowfilter = $resfilter->fetchArray()) {
+    $wert=$rowfilter['fldwert'];
+  }
+  if ($wert<>"(ohne)") { 
+    $sign=$arrelement['sign'];
+    if ($sign==">=") {
+      $sign="<";
+    }
+    if ($filterwhere=="") {
+      $filterwhere = " WHERE ".$arrelement['dbfield'].$sign."'".$wert."'";
+    } else {
+  	   $filterwhere = $filterwhere." AND ".$arrelement['dbfield'].$sign."'".$wert."'";
+    }
+  }  
+  //echo $sqlfilter."<br>";
+}
 
+$calcsum=0;
+if ($pararray['calcsum']=='J') {
+  if ($filterwhere<>"") {
+    if ($pararray['dellogical']=="J") {	
+      $filterwhere=$filterwhere." AND flddel='N'";
+    }  
+    $sqlbetrag="SELECT sum(fldBetrag) as sumbetrag FROM ".$pararray['dbtable'].$filterwhere;
+    //echo $sqlbetrag."<br>";
+    $resbetrag = $db->query($sqlbetrag);
+    if ($rowbetrag = $resbetrag->fetchArray()) {
+      $calcsum=$rowbetrag['sumbetrag'];
+    }
+  } 
+}   
+//echo $filterwhere."=filterwhere<br>";
+//echo $calcsum."=calcsum<br>";
 
 $nummer=0;
 $prozsum=0;
 $count=0;
-$calcsum=0;
+//$calcsum=0;
 //$calcsum=8.16;
 $sum=$calcsum;
 $summe=$sum;

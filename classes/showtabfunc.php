@@ -147,7 +147,16 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
         echo "</select> ";
       break;
       case 'date':
-        $wert=$_POST[$arrelement['name']];
+        if ($filter==1) {
+          $wert=$_POST[$arrelement['name']];
+        } else {
+          $sqlfilter="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
+          //echo $sql."<br>";
+          $resfilter = $db->query($sqlfilter);
+          if ($rowfilter = $resfilter->fetchArray()) {
+          	$wert=$rowfilter['fldwert'];
+          }
+        }  
         echo $arrelement['label'];
         echo "<span class='form_date' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input2' data-link-format='yyyy-mm-dd'>";
         echo "<input id='dtp_input2' size='8' type='text' name='".$arrelement['name']."' value='".$wert."' >";

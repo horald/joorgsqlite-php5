@@ -20,12 +20,13 @@ switch ( $status ) {
     syncremote($menu,$pararray['dbtable'],$urladr,$pfad,$fldindex,$nuranzeigen);
   break;
   case 'empfangen':
+    $urladr=$_POST['urladr'];
     $datcnt=$_POST['datcnt'];
     $nuranzeigen=$_POST['nuranzeigen'];
-    syncempfangen($menu,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen);
+    syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen);
   break;
-  case 'senden':
-    syncsenden();
+  case 'fertig':
+    syncfertig();
   break;
   default:
     syncauswahl($menu);
