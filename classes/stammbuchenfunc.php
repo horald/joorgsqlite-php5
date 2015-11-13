@@ -2,13 +2,24 @@
 
 function stammauswahl($menu) {
   $db = new SQLite3('../data/joorgsqlite.db');
-  $results = $db->query("SELECT * FROM tblktostamm");
+  $resflt = $db->query("SELECT * FROM tblfilter WHERE fldtablename='tblktosal' AND fldfeld='fldInhaber'");
+  if ($rowflt = $resflt->fetchArray()) {
+  	 //echo $rowflt['fldwert']."<br>";
+    $resinh = $db->query("SELECT * FROM tblktoinhaber WHERE fldBez='".$rowflt['fldwert']."'");
+    if ($rowinh = $resinh->fetchArray()) {
+    	$inhind=$rowinh['fldindex'];
+    	//echo $inhind."<br>";
+    }	
+  }	
+
+  $results = $db->query("SELECT * FROM tblktostamm AS st,tblktostamm_zuord AS zu WHERE zu.fldid_ktoinhaber=".$inhind." AND st.fldindex=zu.fldid_ktostamm");
   echo "<form class='form-horizontal' method='post' action='stammbuchen.php?stamm=1&menu=".$menu."'>";
   //echo "<input type='hidden' name='id' value=".$idwert.">";
   echo "<table class='table table-hover'>";
   echo "<tr>";
   echo "<th>[]</th>";
   echo "<th>Konto </th>";
+  echo "<th>Inhaber </th>";
   echo "<th>Betrag</th>";
   echo "</tr>";
   $cnt=0;
@@ -18,6 +29,7 @@ function stammauswahl($menu) {
     echo "<input type='hidden' name='idwert".$cnt."' value=".$row[fldindex].">";
     echo "<td><input type='checkbox' name='check".$cnt."' value='1'></td>";
     echo "<td>".$row['fldBez']." </td>";
+    echo "<td>".$row['fldInhaber']." </td>";
     echo "<td>".$row['fldBetrag']."</td>";
     echo "</tr>"; 
   }	
@@ -64,7 +76,7 @@ function stammuebernehmen($fldindex,$dbtable,$autoinc_start) {
         $results = $db->query($query);
         while ($row = $results->fetchArray()) {
           $qryins="INSERT INTO tblktosal (".$fldindex.",fldBez,fldDatum,fldUhrzeit,fldBetrag,fldKonto,fldInhaber,fldtimestamp) VALUES(".$newrowid.",'$row[fldBez]','$datum','$uhrzeit','$row[fldBetrag]','$row[fldKonto]','$inhaber',CURRENT_TIMESTAMP)";
-          //echo $qryins."=ins<br>"; 
+          echo $qryins."=ins<br>"; 
           $db->exec($qryins);
        }	
       }

@@ -6,14 +6,23 @@ bootstraphead();
 bootstrapbegin("Status");
 echo "<a href='showtab.php?menu=".$menu."'  class='btn btn-primary btn-sm active' role='button'>Liste</a><br><br>";
 $status = $_GET['status'];
-if ($status==1) {
+if ($status==2) {
   $vondatum = $_POST['vondatum'];	
   $bisdatum = $_POST['bisdatum'];	
   $vonstatus = $_POST['vonstatus'];	
   $nchstatus = $_POST['nchstatus'];	
-  statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus);
+  $vonort = $_POST['vonort'];	
+  $nchort = $_POST['nchort'];	
+  $auswahltyp = $_POST['auswahltyp'];
+  $rechdat=$_POST['rechdat'];
+  statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechdat,$vonort,$nchort);
 } else {
-  statusauswahl($menu);
+  if ($status==1) {
+  	 $auswahltyp=$_POST['auswahltyp'];
+    statusauswahl($menu,$auswahltyp);
+  } else {
+    statusvorauswahl($menu);
+  }  
 }  
 bootstrapend();
 ?>

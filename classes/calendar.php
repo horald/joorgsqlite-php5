@@ -4,16 +4,19 @@ include("calendarfunc.php");
 bootstraphead();
 bootstrapbegin("");
 $id=$_GET['id'];
+$heutejahr = date("Y");
+$heutemon = date("m");
+$heutetag = date("d");
 
 if (isset($_GET['aktjahr'])) {
   $aktjahr=$_GET['aktjahr'];
 } else {
-  $aktjahr=2015;
+  $aktjahr=$heutejahr;
 }  	
 if (isset($_GET['aktmon'])) {
   $aktmon=$_GET['aktmon'];
 } else {
-  $aktmon=10;
+  $aktmon=$heutemon;
 }  	
 if ($_GET['aktion']=="monatzurueck") {
   $aktmon=$aktmon-1;	
@@ -37,12 +40,12 @@ if ($_GET['aktion']=="jahrvor") {
   $aktjahr=$aktjahr+1;	
 }	
 echo "<a href='../index.php?id=".$id."'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
-echo "<a href='calendar.php'  class='btn btn-primary btn-sm active' role='button'>Neu</a> ";
+echo "<a href='insert.php?menu=termine'  class='btn btn-primary btn-sm active' role='button'>Neu</a> ";
 echo "<a href='calendar.php?aktion=jahrzurueck&aktjahr=".$aktjahr."'  class='btn btn-primary btn-sm active' role='button'><<</a> ";
 echo "<a href='calendar.php?aktion=jahrvor&aktjahr=".$aktjahr."'  class='btn btn-primary btn-sm active' role='button'>>></a> ";
 echo "<a href='calendar.php?aktion=monatzurueck&aktmon=".$aktmon."&aktjahr=".$aktjahr."'  class='btn btn-primary btn-sm active' role='button'><</a> ";
 echo "<a href='calendar.php?aktion=monatvor&aktmon=".$aktmon."&aktjahr=".$aktjahr."'  class='btn btn-primary btn-sm active' role='button'>></a> ";
 echo "<a href='calendar.php?aktion=heute'  class='btn btn-primary btn-sm active' role='button'>Heute</a><br><br> ";
-showcalendar($aktmon,$aktjahr);
+showcalendar($heutetag,$heutemon,$heutejahr,$aktmon,$aktjahr);
 bootstrapend();
 ?>

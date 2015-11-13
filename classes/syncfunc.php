@@ -22,10 +22,10 @@ function syncremote($menu,$dbtable,$urladr,$pfad,$fldindex,$nuranzeigen) {
   include($website);
 } 
 
-function syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen) {
+function syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen,$timestamp) {
   $db = new SQLite3('../data/joorgsqlite.db');
   echo "<div class='alert alert-success'>";
-  echo $datcnt." Datensätze empfangen.<br>";
+  echo $datcnt." Datensätze empfangen am ".$timestamp."<br>";
 //  echo $sql;
   echo "</div>";
 
@@ -125,21 +125,27 @@ function syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nura
 }
 
 
-function syncfertig() {
+function syncfertig($nuranzeigen,$dbtable) {
+  $db = new SQLite3('../data/joorgsqlite.db');
   $timestamp=$_POST['timestamp'];
-//if ($nuranzeigen<>"anzeigen") {
-//  if ($timestamp=="") {
-//    $sql="INSERT INTO tblsyncstatus (fldtable,fldtimestamp) VALUES ('".$dbtable."',CURRENT_TIMESTAMP)";
-//  } else {
-//    $sql="UPDATE tblsyncstatus SET fldtimestamp=CURRENT_TIMESTAMP WHERE fldtable='".$dbtable."'";
-//  }  
-//  $query = $db->exec($sql);
-//}
+  if ($nuranzeigen<>"anzeigen") {
+    if ($timestamp=="") {
+      $sql="INSERT INTO tblsyncstatus (fldtable,fldtimestamp) VALUES ('".$dbtable."',CURRENT_TIMESTAMP)";
+    } else {
+      $sql="UPDATE tblsyncstatus SET fldtimestamp=CURRENT_TIMESTAMP WHERE fldtable='".$dbtable."'";
+    }  
+    $query = $db->exec($sql);
+  }
   	
   echo "<div class='alert alert-success'>";
-  echo $timestamp."=timestamp<br>";
-  echo "Daten gesendet.";
-  echo "Datenaustausch abgeschlossen.";
+  //echo $nuranzeigen."=nuranzeigen<br>";
+  //echo $sql."=sql<br>";
+  if ($nuranzeigen<>"anzeigen") {
+    echo "Daten gesendet.<br>";
+    echo "Datenaustausch abgeschlossen am ".$timestamp;
+  } else {
+    echo "Datenaustausch angezeigt vom ".$timestamp;
+  }  
   echo "</div>";
 }
 

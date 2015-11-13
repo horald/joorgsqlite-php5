@@ -23,10 +23,12 @@ switch ( $status ) {
     $urladr=$_POST['urladr'];
     $datcnt=$_POST['datcnt'];
     $nuranzeigen=$_POST['nuranzeigen'];
-    syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen);
+    $timestamp=$_POST['timestamp'];
+    syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen,$timestamp);
   break;
   case 'fertig':
-    syncfertig();
+    $nuranzeigen=$_POST['nuranzeigen'];
+    syncfertig($nuranzeigen,$dbtable);
   break;
   default:
     syncauswahl($menu);

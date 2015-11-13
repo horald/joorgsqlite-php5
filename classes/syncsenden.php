@@ -14,6 +14,14 @@ echo "<div class='alert alert-success'>";
 echo $datcnt." Datensätze empfangen.<br>";
 echo "</div>";
 
+$website="http://".$pfad."sync.php?menu=".$menu;
+echo "<form class='form-horizontal' method='post' action='".$website."'>";
+echo "<input type='hidden' name='status' value='fertig'/>"; 
+echo "<input type='hidden' name='timestamp' value='".$timestamp."'/>"; 
+echo "<input type='hidden' name='nuranzeigen' value='".$nuranzeigen."'/>"; 
+echo "<dd><input type='submit' value='Datenaustausch abschliessen' /></dd>";
+echo "</form>";
+
 $db = new SQLite3('../data/joorgsqlite.db');
 
 for( $i=1; $i <= $datcnt; $i++ ) {
@@ -36,12 +44,5 @@ for( $i=1; $i <= $datcnt; $i++ ) {
   }  
 }
 
-$website="http://".$pfad."sync.php?menu=".$menu;
-echo "<form class='form-horizontal' method='post' action='".$website."'>";
-echo "<input type='hidden' name='status' value='fertig'/>"; 
-echo "<input type='hidden' name='timestamp' value='".$timestamp."'/>"; 
-echo "<input type='hidden' name='nuranzeigen' value='".$nuranzeigen."'/>"; 
-echo "<dd><input type='submit' value='Datenaustausch abschliessen' /></dd>";
-echo "</form>";
 bootstrapend();
 ?>

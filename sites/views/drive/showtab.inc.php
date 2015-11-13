@@ -82,10 +82,10 @@ $listarray = array (
                      array ( 'label' => 'RechDat',
                              'name' => 'rechdat',
                              'width' => 20, 
-                             'type' => 'text',
+                             'type' => 'selectid',
                              'dbtable' => 'tblrechdat',
-                             'seldbfield' => 'fldBez',
-                             'seldbindex' => 'fldIndex',
+                             'seldbfield' => 'flddatum',
+                             'seldbindex' => 'fldindex',
                              'dbfield' => 'fldind_datum' ));
                              
 
@@ -96,7 +96,16 @@ $filterarray = array ( array ( 'label' => 'Status:',
                                'sign' => '=',
                                'dbtable' => 'tblstatus',
                                'seldbfield' => 'fldbez',
-                               'dbfield' => 'fldStatus' ));
+                               'dbfield' => 'fldStatus' ),
+                       array ( 'label' => 'Rechdatum:',
+                               'name' => 'rechdatum', 
+                               'width' => 10, 
+                               'type' => 'selectid',
+                               'sign' => '=',
+                               'dbtable' => 'tblrechdat',
+                               'seldbfield' => 'flddatum',
+                               'seldbindex' => 'fldindex',
+                               'dbfield' => 'fldind_datum' ));
 
 
 $pararray = array ( 'headline' => 'Fahrtenbuch',

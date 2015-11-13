@@ -12,7 +12,7 @@ if ($stamm==1) {
   $dbtable=$pararray['dbtable'];
   $fldindex=$pararray['fldindex'];	
   stammuebernehmen($fldindex,$dbtable,$autoinc_start);
-  echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
+  //echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
 } else {
   stammauswahl($menu);
 }  

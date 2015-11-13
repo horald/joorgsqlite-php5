@@ -23,6 +23,9 @@ echo "<script src='../includes/fullcalendar/lib/jquery-ui.custom.min.js'></scrip
 echo "<script src='../includes/fullcalendar/fullcalendar/fullcalendar.min.js'></script>";
 echo "<script src='../includes/fullcalendar/js/jsoncalendar.js'></script>";
 
+//auswahl
+echo "<script src='auswahl.js'></script>";
+
 echo "<title>Joorgsqlite</title>";
 echo "</head>";
 }

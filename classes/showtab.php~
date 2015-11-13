@@ -2,6 +2,7 @@
 session_start();
 include("bootstrapfunc.php");
 include("showtabfunc.php");
+echo "<script src='auswahl.js'></script>";
 $menu=$_GET['menu'];
 $filter=$_GET['filter'];
 $id=$_GET['id'];
@@ -104,18 +105,20 @@ foreach ( $filterarray as $arrelement ) {
 }
 
 $calcsum=0;
-if ($filterwhere<>"") {
-  if ($pararray['dellogical']=="J") {	
-    $filterwhere=$filterwhere." AND flddel='N'";
-  }  
-  $sqlbetrag="SELECT sum(fldBetrag) as sumbetrag FROM ".$pararray['dbtable'].$filterwhere;
-  //echo $sqlbetrag."<br>";
-  $resbetrag = $db->query($sqlbetrag);
-  if ($rowbetrag = $resbetrag->fetchArray()) {
-    $calcsum=$rowbetrag['sumbetrag'];
-  }
-}  
-echo $filterwhere."=filterwhere<br>";
+if ($pararray['calcsum']=='J') {
+  if ($filterwhere<>"") {
+    if ($pararray['dellogical']=="J") {	
+      $filterwhere=$filterwhere." AND flddel='N'";
+    }  
+    $sqlbetrag="SELECT sum(fldBetrag) as sumbetrag FROM ".$pararray['dbtable'].$filterwhere;
+    //echo $sqlbetrag."<br>";
+    $resbetrag = $db->query($sqlbetrag);
+    if ($rowbetrag = $resbetrag->fetchArray()) {
+      $calcsum=$rowbetrag['sumbetrag'];
+    }
+  } 
+}   
+//echo $filterwhere."=filterwhere<br>";
 //echo $calcsum."=calcsum<br>";
 
 $nummer=0;

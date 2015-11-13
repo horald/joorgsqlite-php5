@@ -103,7 +103,7 @@ $filterarray = array ( array ( 'label' => 'Etage:',
                                'seldbindex' => 'fldindex',
                                'seldbfield' => 'fldBez',
                                'seldbwhere' => 'fldo01typ="ETAGEN"',
-                               'dbfield' => 'fldid_ort' ));
+                               'dbfield' => 'fldid_etage' ));
 
 
 $pararray = array ( 'headline' => 'Zimmer',

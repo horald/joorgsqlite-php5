@@ -52,6 +52,7 @@ echo "<form class='form-horizontal' method='post' action='".$website."'>";
 echo "<input type='hidden' name='status' value='empfangen'/>"; 
 echo "<input type='hidden' name='nuranzeigen' value='".$nuranzeigen."'/>"; 
 echo "<input type='hidden' name='urladr' value='".$urladr."'/>"; 
+echo "<input type='hidden' name='timestamp' value='".$timestamp."'/>"; 
 
 $qryval = "SELECT ".$col." FROM ".$dbtable." WHERE fldtimestamp>'".$timestamp."'";
 $results = $db->query($qryval);

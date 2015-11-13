@@ -1,6 +1,7 @@
 <?php
 
-function showcalendar($aktmon,$aktjahr) {
+function showcalendar($heutetag,$heutemon,$heutejahr,$aktmon,$aktjahr) {
+  $db = new SQLite3('../data/joorgsqlite.db');
   $lastmon = array(31,28,31,30,31,30,31,31,30,31,30,31);
   $monname = array('Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember');
   $wochentage = array('Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag');
@@ -50,17 +51,26 @@ function showcalendar($aktmon,$aktjahr) {
         	 $aktmon=1;
         }
     	}
-      if ($aktjahr==2015 AND $aktmon==10 AND $akttag==15) {
+      if ($aktjahr==$heutejahr AND $aktmon==$heutemon AND $akttag==$heutetag) {
         echo "<td class='danger'>";      
       } else {
         echo "<td>";      
       }
       echo $akttag."<br>";
-      if ($akttag==28 AND $aktmon==9) {
-        echo "<a href='calendar.php'  class='btn btn-primary btn-sm active' role='button'>Herbst</a>";
-      }
-      if ($akttag==29 AND $aktmon==9) {
-        echo "<a href='calendar.php'  class='btn btn-primary btn-sm active' role='button'>Eheabend Chris</a>";
+
+
+      $sql = "SELECT * FROM tbltermin_lst";
+      $results = $db->query($sql);
+      while ($row = $results->fetchArray()) {
+        $termin=$row['fldvondatum'];
+        $bez=$row['fldbez'];	
+        $termintag=substr($termin,-2);
+        $terminmon=substr($termin,5,2);
+        $terminjahr=substr($termin,0,4);
+        //echo "#".$terminmon."#";
+        if ($akttag==$termintag AND $aktmon==$terminmon AND $aktjahr=$terminjahr) {
+          echo "<a href='#'  class='btn btn-primary btn-sm active' role='button'>".$bez."</a>";
+        }
       }
       echo "</td>";
     	$akttag=$akttag+1;
