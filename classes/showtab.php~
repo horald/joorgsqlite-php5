@@ -2,7 +2,6 @@
 session_start();
 include("bootstrapfunc.php");
 include("showtabfunc.php");
-echo "<script src='auswahl.js'></script>";
 $menu=$_GET['menu'];
 $filter=$_GET['filter'];
 $id=$_GET['id'];
@@ -20,6 +19,7 @@ showtabfunc($menu,$sql,$id,$menugrp);
 
 $dbselarr=array();
 $results = $db->query($sql);
+echo $sql."<br>";
 echo "<table class='table table-hover'>";
 echo "<tr>";
 foreach ( $listarray as $arrelement ) {
@@ -130,6 +130,11 @@ $sum=$calcsum;
 $summe=$sum;
 $sumdiff=0;
 while ($row = $results->fetchArray()) {
+  if ($pararray['getindex']<>"") {	
+    $index=$row[$pararray['getindex']];	
+  } else {
+    $index=$row[$pararray['fldindex']];	
+  }  
   if ($pararray['markseldb']=="J") {
   	 $summe=$summe+$row['fldBetrag'];
   	 //echo "#".number_format($row['fldFix'],2).",".$summe."#<br>";
@@ -173,11 +178,11 @@ while ($row = $results->fetchArray()) {
           echo "<td>".$row[$arrelement['dbfield']]."</td>";
         break;
         case 'selectid':
-          $id=$row[$arrelement['dbfield']];
-          if ($id=="") {
-            $id='0';          
+          $selid=$row[$arrelement['dbfield']];
+          if ($selid=="") {
+            $selid='0';          
           }
-          $sqlsel = "SELECT * FROM ".$arrelement['dbtable']." WHERE ".$arrelement['seldbindex']."=".$id;
+          $sqlsel = "SELECT * FROM ".$arrelement['dbtable']." WHERE ".$arrelement['seldbindex']."=".$selid;
           //echo $sqlsel."<br>";           
           $ressel = $db->query($sqlsel);
           $arrsel=array();
@@ -318,9 +323,9 @@ while ($row = $results->fetchArray()) {
       }
     }
   }
-  echo "<td><a href='mark.php?menu=".$menu."&menugrp=".$menugrp."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>OK</a></td> ";
-  echo "<td><a href='update.php?menu=".$menu."&menugrp=".$menugrp."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>U</a></td> ";
-  echo "<td><a href='delete.php?menu=".$menu."&menugrp=".$menugrp."&id=".$row['fldindex']."' class='btn btn-primary btn-sm active' role='button'>D</a></td>";
+  echo "<td><a href='mark.php?menu=".$menu."&menugrp=".$menugrp."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>OK</a></td> ";
+  echo "<td><a href='update.php?menu=".$menu."&menugrp=".$menugrp."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>U</a></td> ";
+  echo "<td><a href='delete.php?menu=".$menu."&menugrp=".$menugrp."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>D</a></td>";
   echo "</tr>";
   $menge = array_push ( $dbselarr, $row[$pararray['fldindex']] );
 }

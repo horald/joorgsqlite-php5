@@ -11,8 +11,8 @@ $stamm = $_GET['stamm'];
 if ($stamm==1) {
   $dbtable=$pararray['dbtable'];
   $fldindex=$pararray['fldindex'];	
-  stammuebernehmen($fldindex,$dbtable,$autoinc_start);
-  //echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
+  stammuebernehmen($fldindex,$dbtable,$autoinc_start,$autoinc_step);
+  echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
 } else {
   stammauswahl($menu);
 }  

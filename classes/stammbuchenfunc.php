@@ -39,7 +39,7 @@ function stammauswahl($menu) {
   echo "</form>";
 }
 
-function stammuebernehmen($fldindex,$dbtable,$autoinc_start) {
+function stammuebernehmen($fldindex,$dbtable,$autoinc_start,$autoinc_step) {
   $db = new SQLite3('../data/joorgsqlite.db');
   
   $sqlid="SELECT * FROM tblindex WHERE fldtable='".$dbtable."'";
@@ -75,8 +75,8 @@ function stammuebernehmen($fldindex,$dbtable,$autoinc_start) {
         //echo $query."<br>"; 
         $results = $db->query($query);
         while ($row = $results->fetchArray()) {
-          $qryins="INSERT INTO tblktosal (".$fldindex.",fldBez,fldDatum,fldUhrzeit,fldBetrag,fldKonto,fldInhaber,fldtimestamp) VALUES(".$newrowid.",'$row[fldBez]','$datum','$uhrzeit','$row[fldBetrag]','$row[fldKonto]','$inhaber',CURRENT_TIMESTAMP)";
-          echo $qryins."=ins<br>"; 
+          $qryins="INSERT INTO tblktosal (".$fldindex.",fldBez,fldDatum,fldUhrzeit,fldBetrag,fldKonto,fldInhaber,fldtimestamp,flddbsyncnr) VALUES(".$newrowid.",'$row[fldBez]','$datum','$uhrzeit','$row[fldBetrag]','$row[fldKonto]','$inhaber',CURRENT_TIMESTAMP,$autoinc_start)";
+          //echo $qryins."=ins<br>"; 
           $db->exec($qryins);
        }	
       }
@@ -85,6 +85,14 @@ function stammuebernehmen($fldindex,$dbtable,$autoinc_start) {
     //echo $db->lastErrorMsg()."<br>";
     echo $cnt." Stammdaten wurden übernommen.";
     echo "</div>";
+    if ($newrowid==$autoinc_start) {
+      $sqlupd="INSERT INTO tblindex (fldtable,fldid) VALUES('".$dbtable."',".$newrowid.")";
+    } else {
+      $sqlupd="UPDATE tblindex SET fldid=".$newrowid."  WHERE fldtable='".$dbtable."'";
+    }
+    //echo $sqlupd."<br>";
+    $resupd = $db->exec($sqlupd);
+    
   }
 }
 

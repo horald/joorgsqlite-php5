@@ -49,15 +49,18 @@ function updatepreis($rowid,$show) {
   }  
 }
 
-function updateinput($pararray,$listarray,$idwert,$menu) {
+function updateinput($pararray,$listarray,$idwert,$menu,$menugrp) {
   $db = new SQLite3('../data/joorgsqlite.db');
-  $results = $db->query("SELECT * FROM ".$pararray['dbtable']." WHERE fldindex=".$idwert);
+  $sql="SELECT * FROM ".$pararray['dbtable']." WHERE fldindex=".$idwert;
+  echo $sql."<br>";
+  $results = $db->query($sql);
   while ($row = $results->fetchArray()) {
     $arr=$row;
   }	
-  echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
-  echo "<form class='form-horizontal' method='post' action='update.php?update=1&menu=".$menu."' role='form'>";
+  echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
+  echo "<form class='form-horizontal' method='post' action='update.php?update=1&menu=".$menu."&menugrp=".$menugrp."' role='form'>";
 
+  $count=sizeof($listarray);
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
     switch ( $arrelement['type'] )
@@ -195,8 +198,8 @@ function updateinput($pararray,$listarray,$idwert,$menu) {
   echo "</form>";
 }
 
-function updatesave($pararray,$listarray,$menu,$show,$chkpreis) {
-  echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
+function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc_start) {
+  echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 
   $sql="UPDATE ".$pararray['dbtable']." SET ";
@@ -265,6 +268,9 @@ function updatesave($pararray,$listarray,$menu,$show,$chkpreis) {
   }
 
   $sql=substr($sql,0,-2);
+  if ($pararray['dbsyncnr']=="J") {
+  	 $sql=$sql.",flddbsyncnr=".$autoinc_start;
+  }
   $sql=$sql." WHERE fldindex=".$_POST['id'];
   $query = $db->exec($sql);
   if ($pararray['chkpreis']=="J") {

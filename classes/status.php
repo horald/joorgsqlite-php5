@@ -2,6 +2,7 @@
 include("bootstrapfunc.php");
 include("statusfunc.php");
 $menu=$_GET['menu'];
+  include("../sites/views/".$menu."/showtab.inc.php");
 bootstraphead();
 bootstrapbegin("Status");
 echo "<a href='showtab.php?menu=".$menu."'  class='btn btn-primary btn-sm active' role='button'>Liste</a><br><br>";
@@ -13,15 +14,18 @@ if ($status==2) {
   $nchstatus = $_POST['nchstatus'];	
   $vonort = $_POST['vonort'];	
   $nchort = $_POST['nchort'];	
+  $vonkonto = $_POST['vonkonto'];	
+  $nchkonto = $_POST['nchkonto'];	
   $auswahltyp = $_POST['auswahltyp'];
   $rechdat=$_POST['rechdat'];
-  statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechdat,$vonort,$nchort);
+  statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechdat,$vonort,$nchort,$vonkonto,$nchkonto);
 } else {
   if ($status==1) {
   	 $auswahltyp=$_POST['auswahltyp'];
+  	 echo $auswahltyp."<br>";
     statusauswahl($menu,$auswahltyp);
   } else {
-    statusvorauswahl($menu);
+    statusvorauswahl($menu,$filterarray);
   }  
 }  
 bootstrapend();

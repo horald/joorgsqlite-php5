@@ -1,13 +1,17 @@
 <?php
 header("content-type: text/html; charset=utf-8");
 
-function statusvorauswahl($menu) {
+function statusvorauswahl($menu,$filterarray) {
   echo "<form class='form-horizontal' method='post' action='status.php?status=1&menu=".$menu."'>";
 
+  $count=sizeof($filterarray);
   echo "<select name='auswahltyp' size='1'>";
-  echo "<option style='background-color:#c0c0c0;' >Status</option>";
-  echo "<option style='background-color:#c0c0c0;' >Rechdatum</option>";
-  echo "<option style='background-color:#c0c0c0;' >Einkaufsort</option>";
+  for ( $x = 0; $x < $count; $x++ ) {
+    echo "<option style='background-color:#c0c0c0;' value='".$filterarray[$x]['dbfield']."'>".$filterarray[$x]['label']."</option>";
+  }
+//  echo "<option style='background-color:#c0c0c0;' >Status</option>";
+//  echo "<option style='background-color:#c0c0c0;' >Rechdatum</option>";
+//  echo "<option style='background-color:#c0c0c0;' >Einkaufsort</option>";
   echo "</select>";
 
   echo "<dd><input type='submit' value='Weiter' /></dd>";
@@ -110,13 +114,38 @@ function statusauswahl($menu,$auswahltyp) {
     echo "</select></td>";
     echo "</tr>";
   }
+  if ($auswahltyp=="fldKonto") {
+    $sql="SELECT * FROM tblktokonten ";
+    $results = $db->query($sql);
+    echo "<tr>";
+    echo "<td><label >Von Konto:</label></td>";
+    echo "<td><select name='vonkonto' size='1'>";
+    echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
+    while ($row = $results->fetchArray()) {
+      echo "<option style='background-color:#c0c0c0;' >".$row['fldKurz']."</option>";
+    }
+    echo "</select></td>";
+    echo "</tr>";
+
+    $results = $db->query($sql);
+    echo "<tr>";
+    echo "<td><label >Nach Konto:</label></td>";
+    echo "<td><select name='nchkonto' size='1'>";
+    echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
+    while ($row = $results->fetchArray()) {
+      echo "<option style='background-color:#c0c0c0;' >".$row['fldKurz']."</option>";
+    }
+    echo "</select></td>";
+    echo "</tr>";
+
+  }
   echo "</table>";
 
   echo "<dd><input type='submit' value='Speichern' /></dd>";
   echo "</form>";
 }
 
-function statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechdat,$vonort,$nchort) {
+function statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechdat,$vonort,$nchort,$vonkonto,$nchkonto) {
   $db = new SQLite3('../data/joorgsqlite.db');
   if ($auswahltyp=="Status") {
     $sql="UPDATE tblfahrtenbuch SET fldStatus='".$nchstatus."' WHERE fldStatus='".$vonstatus."' AND fldVondatum>='".$vondatum."' AND fldVondatum<='".$bisdatum."'";
@@ -124,7 +153,11 @@ function statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechd
     if ($auswahltyp=="Einkaufsort") {
       $sql="UPDATE tblEinkauf_liste SET fldOrt='".$nchort."' WHERE fldOrt='".$vonort."'";
     } else {
-      $sql="UPDATE tblfahrtenbuch SET fldind_datum=".$rechdat." WHERE fldVondatum>='".$vondatum."' AND fldVondatum<='".$bisdatum."'";
+      if ($auswahltyp=="fldKonto") {
+        $sql="UPDATE tblEinkauf_liste SET fldKonto='".$nchkonto."' WHERE fldKonto='".$vonkonto."' AND fldEinkaufDatum>='".$vondatum."' AND fldEinkaufDatum<='".$bisdatum."'";
+      } else  {	
+        $sql="UPDATE tblfahrtenbuch SET fldind_datum=".$rechdat." WHERE fldVondatum>='".$vondatum."' AND fldVondatum<='".$bisdatum."'";
+      }
     }  
   }
   $reserr = $db->exec($sql);

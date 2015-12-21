@@ -160,7 +160,7 @@ function updatepreis($rowid) {
   }
 }
 
-function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_start,$menugrp) {
+function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_start,$menugrp,$auroinc_start) {
   echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 //  echo $db->lastErrorMsg()."<br>";
@@ -206,7 +206,11 @@ function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_star
       }
     }  
   }
-  $sql=substr($sql,0,-1).") VALUES (".$newrowid.",";
+  $sql=substr($sql,0,-1);
+  if ($pararray['dbsyncnr']=="J") {
+  	 $sql=$sql.",flddbsyncnr";
+  }  
+  $sql=$sql.") VALUES (".$newrowid.",";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )
@@ -239,8 +243,11 @@ function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_star
       }
     }
   }
-  $sql=substr($sql,0,-1).")";
-
+  $sql=substr($sql,0,-1);
+  if ($pararray['dbsyncnr']=="J") {
+  	 $sql=$sql.",".$autoinc_start;
+  }
+  $sql=$sql.")";
   //echo $sql."<br>";
   $db->exec($sql);
   $sqlid = "SELECT last_insert_rowid() as lastid FROM ".$pararray['dbtable'];

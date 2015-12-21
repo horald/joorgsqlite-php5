@@ -9,6 +9,15 @@ $listarray = array ( array ( 'label' => 'Vorname',
                              'width' => 100, 
                              'type' => 'text',
                              'dbfield' => 'fldlastname' ),
+                     array ( 'label' => 'Status',
+                             'name' => 'status',
+                             'width' => 10, 
+                             'default1' => 'offen',
+                             'type' => 'selectid',
+                             'dbtable' => 'tblstatus',
+                             'seldbfield' => 'fldbez',
+                             'seldbindex' => 'fldindex',
+                             'dbfield' => 'fldid_status' ),
                      array ( 'label' => 'Gruppe',
                              'name' => 'gruppe', 
                              'width' => 100, 
@@ -26,7 +35,8 @@ $listarray = array ( array ( 'label' => 'Vorname',
                              'type' => 'text',
                              'dbfield' => 'fldemail' ));
 
-$filterarray = array ( array ( 'label' => 'Gruppe:',
+$filterarray = array ( 
+                       array ( 'label' => 'Gruppe:',
                                'name' => 'fltgrp', 
                                'width' => 10, 
                                'type' => 'selectid',
@@ -34,7 +44,18 @@ $filterarray = array ( array ( 'label' => 'Gruppe:',
                                'dbtable' => 'tbladr_group',
                                'seldbindex' => 'fldindex',
                                'seldbfield' => 'fldbez',
-                               'dbfield' => 'fldid_group' ));
+                               'dbfield' => 'fldid_group' ),
+                               
+                       array ( 'label' => 'Status:',
+                               'name' => 'fltstatus', 
+                               'width' => 10, 
+                               'type' => 'selectid',
+                               'sign' => '=',
+                               'dbtable' => 'tblstatus',
+                               'seldbindex' => 'fldindex',
+                               'seldbfield' => 'fldbez',
+                               'dbfield' => 'fldid_status' ));
+
 
 $pararray = array ( 'headline' => 'Adressen',
                     'dbtable' => 'tbladr_liste',
@@ -42,6 +63,7 @@ $pararray = array ( 'headline' => 'Adressen',
                     'dbrefindex' => 'fldid_liste',
                     'orderby' => '',
                     'strwhere' => '',
+                    'getindex' => 'getindex',
                     'fldindex' => 'fldindex');
 
 ?>

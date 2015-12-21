@@ -5,14 +5,20 @@
   include("../sites/views/".$menu."/showtab.inc.php");
   bootstraphead();
   bootstrapbegin($pararray['headline']);
-//  echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
   $fuellen = $_GET['fuellen'];
   if ($fuellen==1) {
-    $fuell=$_POST['fuell'];
-    echo $fuell."=fuell";
-  	 fuellen($menu,$pararray);
+    $dbfield=$_POST['dbfield'];
+  	 fuellget($menu,$filterarray,$dbfield);
   } else {	
-    fuellask($menu,$filterarray);
+    if ($fuellen==2) {
+    	$dbwert=$_POST['dbwert'];
+    	$dbfield=$_POST['dbfield'];
+    	$dbtable=$pararray['dbtable'];
+    	//echo $dbfield.",".$dbwert.",".$dbtable;
+      fuellen($menu,$filterarray,$dbtable,$dbfield,$dbwert);
+    } else {	
+      fuellask($menu,$filterarray);
+    }
   }
   bootstrapend();
 ?>
