@@ -79,14 +79,21 @@ $listarray = array (
                              'dbtable' => 'tblstatus',
                              'seldbfield' => 'fldbez',
                              'dbfield' => 'fldStatus' ),
-                     array ( 'label' => 'RechDat',
-                             'name' => 'rechdat',
-                             'width' => 20, 
-                             'type' => 'selectid',
-                             'dbtable' => 'tblrechdat',
-                             'seldbfield' => 'flddatum',
-                             'seldbindex' => 'fldindex',
-                             'dbfield' => 'fldind_datum' ));
+//                     array ( 'label' => 'RechDat',
+//                             'name' => 'rechdat',
+//                             'width' => 20, 
+//                             'type' => 'selectid',
+//                             'dbtable' => 'tblrechdat',
+//                             'seldbfield' => 'flddatum',
+//                             'seldbindex' => 'fldindex',
+//                             'dbfield' => 'fldind_datum' ),
+                     array ( 'label' => 'Timestamp',
+                             'name' => 'fldtimestamp', 
+                             'width' => 100, 
+                             'type' => 'text',
+                             'fieldhide' => 'true1',
+                             'fieldsave' => 'NO',
+                             'dbfield' => 'fldtimestamp' ));
                              
 
 $filterarray = array ( array ( 'label' => 'Status:',
@@ -117,5 +124,6 @@ $pararray = array ( 'headline' => 'Fahrtenbuch',
                     'markfield' => 'fldStatus',
                     'marksign' => '=',
                     'marksuccess' => 'OK',
-                    'fldindex' => 'fldIndex');
+                    'dbsyncnr' => 'J',
+                    'fldindex' => 'fldindex');
 ?>

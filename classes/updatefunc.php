@@ -194,11 +194,12 @@ function updateinput($pararray,$listarray,$idwert,$menu,$menugrp) {
     echo "<input type='checkbox' name='chkpreis' value='preis' checked> Preis speichern<br>";
   }
   echo "<input type='checkbox' name='chkanzeigen' value='anzeigen'> Speichern anzeigen<br>";
+  echo "<input type='checkbox' name='resync' value='yes'> Resync<br>";
   echo "<dd><input type='submit' value='Speichern' /></dd>";
   echo "</form>";
 }
 
-function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc_start) {
+function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc_start,$resync) {
   echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 
@@ -270,7 +271,11 @@ function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc
   $sql=substr($sql,0,-2);
   if ($pararray['dbsyncnr']=="J") {
   	 $sql=$sql.",flddbsyncnr=".$autoinc_start;
+  	 $sql=$sql.",fldtimestamp=datetime('now', 'localtime')";
   }
+  if ($resync="yes") {
+    $sql=$sql.",flddbsyncstatus='SYNC'";
+  }  
   $sql=$sql." WHERE fldindex=".$_POST['id'];
   $query = $db->exec($sql);
   if ($pararray['chkpreis']=="J") {

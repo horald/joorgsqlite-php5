@@ -1,2 +1,3 @@
 versnr ='1.015';
 versdat='13.11.2015';
+versnrphpmysync='0.005';

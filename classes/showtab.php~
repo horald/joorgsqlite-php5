@@ -135,6 +135,7 @@ while ($row = $results->fetchArray()) {
   } else {
     $index=$row[$pararray['fldindex']];	
   }  
+  echo $index."=index<br>";
   if ($pararray['markseldb']=="J") {
   	 $summe=$summe+$row['fldBetrag'];
   	 //echo "#".number_format($row['fldFix'],2).",".$summe."#<br>";
