@@ -10,13 +10,13 @@ function showtabfunc($menu,$sql,$id,$menugrp) {
   $sql="SELECT * FROM tblfunc WHERE fldMenuID='".$menu."' ORDER BY fldName";
   //echo $sql."<br>";
   $results = $db->query($sql);
-  while ($row = $results->fetchArray()) {
-    //echo $row['fldBez']."<br>";  
+  while ($rowtab = $results->fetchArray()) {
+    //echo $rowtab['fldBez']."<br>";  
     $param="";
-    if ($row['fldParam']<>"") {
-    	$param="&".$row['fldParam'];
+    if ($rowtab['fldParam']<>"") {
+    	$param="&".$rowtab['fldParam'];
     }
-    echo "<a href='".$row['fldphp']."?menu=".$menu."&menugrp=".$menugrp.$param."' class='btn btn-primary btn-sm active' role='button'>".$row['fldBez']."</a> ";
+    echo "<a href='".$rowtab['fldphp']."?menu=".$menu."&menugrp=".$menugrp.$param."' class='btn btn-primary btn-sm active' role='button'>".$rowtab['fldBez']."</a> ";
   }  
   echo "<a href='schicken.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
   echo "<a href='empfangen.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
@@ -27,12 +27,16 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
   $dbtable=$pararray['dbtable'];
   $fldort="";
   $dbwhere="";
+  $refwert="";
   $selarr=array();
   $anzfilter = sizeof($filterarray);
   if ($filter==1) {
     //echo "filter==1<br>";
     foreach ( $filterarray as $arrelement ) {
       $wert=$_POST[$arrelement['name']];
+      if ($arrelement['type']=="selectref") {
+        $refwert=$wert;
+      }
       //$selarr[$arrelement['dbfield']]=$arr['fldwert'];
       //echo $arrelement['dbfield']."=".$wert."<br>";
       if (($wert<>"(ohne)") && ($arrelement['type']<>"prozref")) {
@@ -56,8 +60,8 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       $sql="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
       //echo $sql."<br>";
       $results = $db->query($sql);
-      while ($row = $results->fetchArray()) {
-        $arr=$row;
+      while ($rowarr = $results->fetchArray()) {
+        $arr=$rowarr;
       }  	
       if (isset($arr['fldwert'])) {
         //echo $arr['fldfeld'].",".$arr['fldtablename'].",".$arrelement['dbfield'].",".$pararray['dbtable']."<br>";
@@ -81,8 +85,8 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       $sql="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
       //echo $sql."<br>";
       $results = $db->query($sql);
-      while ($row = $results->fetchArray()) {
-        $arr=$row;
+      while ($rowarr = $results->fetchArray()) {
+        $arr=$rowarr;
       }	
       if (isset($arr['fldwert'])) {
         //echo $arr['fldfeld'].",".$arr['fldtablename'].",".$pararray['dbtable'].",".$arrelement['dbfield']."<br>";
@@ -117,16 +121,16 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
         echo $arrelement['label'];
         echo "<select name='".$arrelement['name']."' size='1'>";
         echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
-        while ($row = $results->fetchArray()) {
+        while ($rowsel = $results->fetchArray()) {
           if ($filter==1) {
             $wert=$_POST[$arrelement['name']];
           } else {
             $wert=$selarr[$arrelement['dbfield']];
           }
-          if ($wert==$row[$arrelement['seldbfield']]) {
-            echo "<option style='background-color:#c0c0c0;' selected>".$row[$arrelement['seldbfield']]."</option>";
+          if ($wert==$rowsel[$arrelement['seldbfield']]) {
+            echo "<option style='background-color:#c0c0c0;' selected>".$rowsel[$arrelement['seldbfield']]."</option>";
           } else {
-            echo "<option style='background-color:#c0c0c0;' >".$row[$arrelement['seldbfield']]."</option>";
+            echo "<option style='background-color:#c0c0c0;' >".$rowsel[$arrelement['seldbfield']]."</option>";
           }
         }
         echo "</select> ";
@@ -160,7 +164,7 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
         }
         echo "<select name='".$arrelement['name']."' ".$onchange." size='1'>";
         echo "<option style='background-color:#c0c0c0;' >(ohne)</option>";
-        while ($row = $results->fetchArray()) {
+        while ($rowsel = $results->fetchArray()) {
           if ($filter==1) {
             $wert=$_POST[$arrelement['name']];
           } else {
@@ -170,10 +174,10 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
               $wert=$selarr[$arrelement['dbfield']];
             }  
           }
-          if ($wert==$row[$arrelement['seldbindex']]) {
-            echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']]." selected>".$row[$arrelement['seldbfield']]."</option>";
+          if ($wert==$rowsel[$arrelement['seldbindex']]) {
+            echo "<option style='background-color:#c0c0c0;' value=".$rowsel[$arrelement['seldbindex']]." selected>".$rowsel[$arrelement['seldbfield']]."</option>";
           } else {
-            echo "<option style='background-color:#c0c0c0;' value=".$row[$arrelement['seldbindex']].">".$row[$arrelement['seldbfield']]."</option>";
+            echo "<option style='background-color:#c0c0c0;' value=".$rowsel[$arrelement['seldbindex']].">".$rowsel[$arrelement['seldbfield']]."</option>";
           }
         }  
         echo "</select> ";
@@ -210,7 +214,7 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
 
   $dbjoin="";
   if ($pararray['dbreftable']<>"") {
-  	 if ($wert<>"(ohne)") {
+  	 if ($refwert<>"(ohne)") {
       $dbjoin=" LEFT JOIN ".$pararray['dbreftable']." ON ".$pararray['dbreftable'].".".$pararray['dbrefindex']." = ".$pararray['dbtable'].".".$pararray['fldindex'];  
     }
   }
@@ -222,7 +226,11 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       $dbwhere=" WHERE ".$pararray['dbwhere'];
     }
   }
-  $sql="SELECT * FROM ".$dbtable.$dbjoin.$dbwhere.$dborder;
+  if ($pararray['getindex']<>"") {
+    $sql="SELECT *,".$dbtable.".".$pararray['fldindex']." AS ".$pararray['getindex']." FROM ".$dbtable.$dbjoin.$dbwhere.$dborder;
+  } else {
+    $sql="SELECT * FROM ".$dbtable.$dbjoin.$dbwhere.$dborder;
+  }  
   //echo $sql."<br>";
   $retarr=array ( 'sqlfilter' => $sql,
                   'sqlbetrag' => 'sqlbetrag');

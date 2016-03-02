@@ -22,7 +22,7 @@ function syncremote($menu,$dbtable,$urladr,$pfad,$fldindex,$nuranzeigen) {
   include($website);
 } 
 
-function syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen,$timestamp) {
+function syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen,$timestamp,$autoinc_start) {
   $db = new SQLite3('../data/joorgsqlite.db');
   echo "<div class='alert alert-success'>";
   echo $datcnt." Datensätze empfangen am ".$timestamp."<br>";
@@ -73,7 +73,7 @@ function syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nura
   echo "<input type='hidden' name='timestamp' value='".$timestamp."'/>";
   echo "<dd><input type='checkbox' name='nuranzeigen' value='anzeigen'/> nur anzeigen</dd>";
 
-  $qryval = "SELECT ".$col." FROM ".$dbtable." WHERE fldtimestamp>'".$timestamp."'";
+  $qryval = "SELECT ".$col." FROM ".$dbtable." WHERE fldtimestamp>'".$timestamp."' AND flddbsyncnr=".$autoinc_start;
   //echo $qryval."<br>";
   $results = $db->query($qryval);
   //echo "<input type='hidden' name='sql' value='".$qryval."'/>";

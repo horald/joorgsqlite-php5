@@ -51,13 +51,16 @@ function updatepreis($rowid,$show) {
 
 function updateinput($pararray,$listarray,$idwert,$menu,$menugrp) {
   $db = new SQLite3('../data/joorgsqlite.db');
-  $results = $db->query("SELECT * FROM ".$pararray['dbtable']." WHERE fldindex=".$idwert);
+  $sql="SELECT * FROM ".$pararray['dbtable']." WHERE fldindex=".$idwert;
+  //echo $sql."<br>";
+  $results = $db->query($sql);
   while ($row = $results->fetchArray()) {
     $arr=$row;
   }	
   echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Zurück</a>"; 
   echo "<form class='form-horizontal' method='post' action='update.php?update=1&menu=".$menu."&menugrp=".$menugrp."' role='form'>";
 
+  $count=sizeof($listarray);
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
     switch ( $arrelement['type'] )
@@ -191,11 +194,12 @@ function updateinput($pararray,$listarray,$idwert,$menu,$menugrp) {
     echo "<input type='checkbox' name='chkpreis' value='preis' checked> Preis speichern<br>";
   }
   echo "<input type='checkbox' name='chkanzeigen' value='anzeigen'> Speichern anzeigen<br>";
+  echo "<input type='checkbox' name='resync' value='yes'> Resync<br>";
   echo "<dd><input type='submit' value='Speichern' /></dd>";
   echo "</form>";
 }
 
-function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp) {
+function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc_start,$resync) {
   echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 
@@ -265,6 +269,13 @@ function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp) {
   }
 
   $sql=substr($sql,0,-2);
+  if ($pararray['dbsyncnr']=="J") {
+  	 $sql=$sql.",flddbsyncnr=".$autoinc_start;
+  	 $sql=$sql.",fldtimestamp=datetime('now', 'localtime')";
+  }
+  if ($resync="yes") {
+    $sql=$sql.",flddbsyncstatus='SYNC'";
+  }  
   $sql=$sql." WHERE fldindex=".$_POST['id'];
   $query = $db->exec($sql);
   if ($pararray['chkpreis']=="J") {

@@ -1,5 +1,6 @@
 <?php
 include("bootstrapfunc.php");
+include("../config.php");
 $menu=$_GET['menu'];
 $pfad=$_GET['pfad'];
 $dbtable=$_GET['dbtable'];
@@ -54,7 +55,7 @@ echo "<input type='hidden' name='nuranzeigen' value='".$nuranzeigen."'/>";
 echo "<input type='hidden' name='urladr' value='".$urladr."'/>"; 
 echo "<input type='hidden' name='timestamp' value='".$timestamp."'/>"; 
 
-$qryval = "SELECT ".$col." FROM ".$dbtable." WHERE fldtimestamp>'".$timestamp."'";
+$qryval = "SELECT ".$col." FROM ".$dbtable." WHERE fldtimestamp>'".$timestamp."' AND flddbsyncnr=".$autoinc_start;
 $results = $db->query($qryval);
 //echo "<input type='hidden' name='sql' value='".$qryval."'/>";
 $datcnt=0;

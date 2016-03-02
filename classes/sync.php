@@ -1,6 +1,7 @@
 <?php
 include("bootstrapfunc.php");
 include("syncfunc.php");
+include("../config.php");
 $menu=$_GET['menu'];
 include("../sites/views/".$menu."/showtab.inc.php");
 $status=$_POST['status'];
@@ -24,7 +25,7 @@ switch ( $status ) {
     $datcnt=$_POST['datcnt'];
     $nuranzeigen=$_POST['nuranzeigen'];
     $timestamp=$_POST['timestamp'];
-    syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen,$timestamp);
+    syncempfangen($menu,$urladr,$pfad,$sql,$datcnt,$dbtable,$fldindex,$nuranzeigen,$timestamp,$autoinc_start);
   break;
   case 'fertig':
     $nuranzeigen=$_POST['nuranzeigen'];
