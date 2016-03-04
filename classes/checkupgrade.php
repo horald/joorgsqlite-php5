@@ -46,6 +46,36 @@ function check_version() {
   $file = ($file===false) ? $serverpfad : (($file==='/') ? '' : substr($file, 1));
   $serverpfad = ($file==='') ? $serverpfad : substr($serverpfad, 0, -strlen($file));
 
+  $ini_verarr = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
+  $versnr=$ini_verarr['versnr'];
+
+  $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
+  $locvers=$ini_locarr['versnr'];
+  //$actvers=getactvers("data/");	
+//echo "locvers".$locvers.",".$versnr."<br>";
+  if ($locvers<$versnr) {
+    echo "<div class='alert alert-info'>";
+    echo "<a href='classes/checkdownload.php?neuevers=".$versnr."'>Neue Version ".$versnr." verfügbar</a>";
+    echo "</div>";
+/*    
+  } else {  
+//    if ($actvers<$versnr) {
+//      echo "<div class='alert alert-info'>";
+//      echo "<a href='classes/installupdate.php?newvers=".$versnr."&oldvers=".$actvers."&versdat=".$versdat."'>Auf neue Version ".$versnr." aktualisieren</a>";
+//      echo "</div>";
+      }
+*/
+  }
+}
+
+
+function check_version_alt() {
+  $servername=$_SERVER['HTTP_HOST'];
+  $serverpfad=$_SERVER['REQUEST_URI'];
+  $file = strrchr($serverpfad, '/');
+  $file = ($file===false) ? $serverpfad : (($file==='/') ? '' : substr($file, 1));
+  $serverpfad = ($file==='') ? $serverpfad : substr($serverpfad, 0, -strlen($file));
+
   ob_start();
   include("http://horald.github.io/joorgsqlite/classes/sendversion.php");
   flush();
