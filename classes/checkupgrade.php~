@@ -46,8 +46,8 @@ function check_version() {
   $file = ($file===false) ? $serverpfad : (($file==='/') ? '' : substr($file, 1));
   $serverpfad = ($file==='') ? $serverpfad : substr($serverpfad, 0, -strlen($file));
 
-  $ini_verarr = parse_ini_file("http://horald.github.io/joorgsqlite/versionphpmysync.txt");
-  $versnr=$ini_verarr['versnrphpmysync'];
+  $ini_verarr = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
+  $versnr=$ini_verarr['versnr'];
 
   $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
@@ -55,7 +55,7 @@ function check_version() {
 //echo "locvers".$locvers.",".$versnr."<br>";
   if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
-    echo "<a href='classes/checkupdate.php?neuevers=".$versnr."'>Neue Version ".$versnr." verfügbar</a>";
+    echo "<a href='classes/checkdownload.php?neuevers=".$versnr."'>Neue Version ".$versnr." verfügbar</a>";
     echo "</div>";
 /*    
   } else {  

@@ -52,7 +52,7 @@ function check_version() {
   $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
   //$actvers=getactvers("data/");	
-//echo "locvers".$locvers.",".$versnr."<br>";
+echo "locvers".$locvers.",".$versnr."<br>";
   if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
     echo "<a href='classes/checkdownload.php?neuevers=".$versnr."'>Neue Version ".$versnr." verfügbar</a>";
