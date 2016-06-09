@@ -39,15 +39,7 @@ $listarray = array ( array ( 'label' => 'ID',
                              'default' => 'N',
                              'width' => 50, 
                              'type' => 'text',
-                             'dbfield' => 'fldview' ),
-                     array ( 'label' => 'Menügruppe',
-                             'name' => 'menugrp',
-                             'width' => 20, 
-                             'type' => 'selectid',
-                             'dbtable' => 'tblmenu_grp',
-                             'seldbfield' => 'fldbez',
-                             'seldbindex' => 'fldindex',
-                             'dbfield' => 'fldid_menugrp' ));
+                             'dbfield' => 'fldview' ));
 
 
 $pararray = array ( 'headline' => 'Menü',

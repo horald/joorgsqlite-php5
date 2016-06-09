@@ -55,7 +55,11 @@ if ($check=="ok") {
       echo "<a href='index.php?id=".$row['fldindex']."&lastid=".$parentid."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
   	 } else {	
       if ($row['fldlink']<>"") {
-        echo "<a href='".$row['fldlink']."?id=".$parentid."&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
+        if ($row['fldparam']<>"") {
+          echo "<a href='".$row['fldlink']."?id=".$parentid."&".$row['fldparam']."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
+        } else {
+          echo "<a href='".$row['fldlink']."?id=".$parentid."&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
+        }
       } else {
         echo "<a href='classes/showtab.php?menu=".$row['fldmenu']."&id=".$parentid."&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
       }

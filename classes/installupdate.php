@@ -1,7 +1,6 @@
 <?php
 include("bootstrapfunc.php");
 include("upgradefunc.php");
-//include("../sites/update/sqlstruc.inc.php");
 bootstraphead();
 bootstrapbegin("Joorgportal<br>");
 echo "<a href='../index.php' class='btn btn-primary btn-sm active' role='button'>Menü</a><br> "; 
@@ -16,7 +15,7 @@ echo "</div>";
 //checktables($tablearray);
 //checkupdatefiles($newvers,$oldvers);
 //echo $newvers."=newvers<br>";
-updatetable($newvers);
-updatedbversion($newvers,$versdat);
+//updatetable($newvers);
+//updatedbversion($newvers,$versdat);
 bootstrapend();
 ?>

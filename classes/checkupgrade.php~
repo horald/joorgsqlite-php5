@@ -48,23 +48,23 @@ function check_version() {
 
   $ini_verarr = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
   $versnr=$ini_verarr['versnr'];
+  $versdat=$ini_verarr['versdat'];
 
   $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
-  //$actvers=getactvers("data/");	
-//echo "locvers".$locvers.",".$versnr."<br>";
+  $actvers=getactvers("data/");	
+echo "locvers".$locvers.",".$versnr."<br>";
   if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
     echo "<a href='classes/checkdownload.php?neuevers=".$versnr."'>Neue Version ".$versnr." verfügbar</a>";
     echo "</div>";
-/*    
   } else {  
-//    if ($actvers<$versnr) {
-//      echo "<div class='alert alert-info'>";
-//      echo "<a href='classes/installupdate.php?newvers=".$versnr."&oldvers=".$actvers."&versdat=".$versdat."'>Auf neue Version ".$versnr." aktualisieren</a>";
-//      echo "</div>";
-      }
-*/
+echo "actvers".$actvers.",".$versnr."<br>";
+    if ($actvers<$versnr) {
+      echo "<div class='alert alert-info'>";
+      echo "<a href='classes/installupdate.php?newvers=".$versnr."&oldvers=".$actvers."&versdat=".$versdat."'>Auf neue Version ".$versnr." aktualisieren</a>";
+      echo "</div>";
+    }
   }
 }
 
@@ -88,12 +88,13 @@ function check_version_alt() {
   $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
   $actvers=getactvers("data/");	
-echo "loc,vers".$locvers.",".$versnr."<br>";
+echo "locvers<versnr".$locvers.",".$versnr."<br>";
   if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
     echo "<a href='classes/checkupdate.php?actvers=".$locvers."'>Neue Version ".$versnr." verfügbar</a>";
     echo "</div>";
   } else {  
+echo "actvers<versnr".$locvers.",".$versnr."<br>";
     if ($actvers<$versnr) {
       echo "<div class='alert alert-info'>";
       echo "<a href='classes/installupdate.php?newvers=".$versnr."&oldvers=".$actvers."&versdat=".$versdat."'>Auf neue Version ".$versnr." aktualisieren</a>";

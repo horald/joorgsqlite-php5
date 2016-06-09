@@ -45,7 +45,7 @@ if ($typ<>"print") {
 echo "<p class='text-justify'>";
 if ($lok) { 
   $_SESSION["menu"]=$menu;
-  include("../help/de-DE/".$row['fldhelpurl']);
+  include("../sites/help/de-DE/".$row['fldhelpurl']);
   echo "<br> Seite ".$pageno;
 } else {
   echo "<div class='alert alert-error'>";

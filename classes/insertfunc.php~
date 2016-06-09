@@ -209,6 +209,7 @@ function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_star
   $sql=substr($sql,0,-1);
   if ($pararray['dbsyncnr']=="J") {
   	 $sql=$sql.",flddbsyncnr";
+  	 $sql=$sql.",fldtimestamp";
   }  
   $sql=$sql.") VALUES (".$newrowid.",";
   foreach ( $listarray as $arrelement ) {
@@ -246,6 +247,7 @@ function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_star
   $sql=substr($sql,0,-1);
   if ($pararray['dbsyncnr']=="J") {
   	 $sql=$sql.",".$autoinc_start;
+  	 $sql=$sql.",datetime('now', 'localtime')";
   }
   $sql=$sql.")";
   //echo $sql."<br>";

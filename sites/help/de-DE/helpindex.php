@@ -1,7 +1,7 @@
 <?php
 session_start();
 $menu=$_SESSION['menu'];
-echo $menu."=menu<br>";
+//echo $menu."=menu<br>";
 $db = new SQLite3('../data/joorgsqlite.db');
 echo "Helpindex - php<br><br>";
 $query="SELECT * FROM tblhelppage ORDER BY fldpageno";

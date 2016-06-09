@@ -93,7 +93,13 @@ $listarray = array (
                              'type' => 'text',
                              'fieldhide' => 'true1',
                              'fieldsave' => 'NO',
-                             'dbfield' => 'fldtimestamp' ));
+                             'dbfield' => 'fldtimestamp' ),
+                     array ( 'label' => 'dbsyncstatus',
+                             'name' => 'dbsyncstatus',
+                             'width' => 20, 
+                             'fieldsave' => 'NO',
+                             'type' => 'text',
+                             'dbfield' => 'flddbsyncstatus' ));
                              
 
 $filterarray = array ( array ( 'label' => 'Status:',
@@ -119,11 +125,12 @@ $pararray = array ( 'headline' => 'Fahrtenbuch',
                     'dbtable' => 'tblfahrtenbuch',
                     'orderby' => 'fldVondatum desc,fldFahrzeug',
                     'strwhere' => '',
+                    'DBSYNC' => 'OK',
                     'marktype' => 'text',
                     'markbgcolor' => '22ff22',
                     'markfield' => 'fldStatus',
                     'marksign' => '=',
                     'marksuccess' => 'OK',
                     'dbsyncnr' => 'J',
-                    'fldindex' => 'fldindex');
+                    'fldindex' => 'fldIndex');
 ?>

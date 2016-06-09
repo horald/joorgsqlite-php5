@@ -9,10 +9,11 @@ function insertinput($listarray,$idwert,$menu,$menugrp) {
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
     $default="";
+    $defwert='';
     if ($arrelement['default']!="") {
       $default=$arrelement['default'];
+      $defwert=$arrelement['default'];
     }
-    $defwert='';
     if ($arrelement['name']<>"") {
       if ($arrelement['getdefault']=="true") {
         $defquery="SELECT * FROM tblfilter WHERE fldmaske='".strtoupper($menu)."_DEFAULT' AND fldName='".$arrelement['name']."'";

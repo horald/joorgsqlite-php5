@@ -1,5 +1,11 @@
 <?php
-$listarray = array ( array ( 'label' => 'Vorname',
+$listarray = array ( 
+                     array ( 'label' => 'Nr',
+                             'name' => 'nr', 
+                             'width' => 20, 
+                             'type' => 'nummer',
+                             'dbfield' => 'flddummy2' ),
+                     array ( 'label' => 'Vorname',
                              'name' => 'vorname', 
                              'width' => 100, 
                              'type' => 'text',
