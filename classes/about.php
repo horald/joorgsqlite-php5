@@ -19,6 +19,7 @@ $neueversnr=$ini_locarr['versnr'];
 
 echo "<a href='../index.php' class='btn btn-primary btn-sm active' role='button'>Menü</a> "; 
 echo "<a href='checkupdate.php' class='btn btn-primary btn-sm active' role='button'>Update prüfen</a> ";
+echo "<a href='help.php' class='btn btn-primary btn-sm active' role='button'>Hilfe</a> ";
 $pfad=$_SERVER['PHP_SELF'];
 $pfad=substr($pfad,0,-9);
 $pfad="http://".$_SERVER['SERVER_NAME'].$pfad."checkupdate.php";

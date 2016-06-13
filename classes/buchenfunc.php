@@ -50,7 +50,8 @@ function buchenfunc($menu,$pararray,$inhaber,$art) {
       $Sumbetrag=$Sumbetrag+$Betrag;
       $datum=$row['fldEinkaufDatum'];
       $uhrzeit=$row['fldEinkaufUhrzeit'];
-      $qryins="INSERT INTO tblktosal (fldDatum,fldUhrzeit,fldBez,fldKonto,fldInhaber,fldBetrag) VALUES ('".$datum."','".$uhrzeit."','".$row['fldBez']."','".$row['fldKonto']."','".$inhaber."','-".$Betrag."')";
+      $timestamp="";
+      $qryins="INSERT INTO tblktosal (fldDatum,fldUhrzeit,fldBez,fldKonto,fldInhaber,fldBetrag,fldtimestamp,fldbsync) VALUES ('".$datum."','".$uhrzeit."','".$row['fldBez']."','".$row['fldKonto']."','".$inhaber."','-".$Betrag."','".$timestamp."','SYNC')";
       echo "<div class='alert alert-success'>";
       echo $qryins."<br>";
       echo "</div>";

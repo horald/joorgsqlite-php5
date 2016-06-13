@@ -25,6 +25,7 @@ echo "<a href='../classes/remotetool.php?menugrp=".$menugrp."' class='btn btn-de
 echo "<a href='../classes/showtab.php?menu=table&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block' role='button'>Tables</a>"; 
 echo "<a href='../classes/showtab.php?menu=helppage&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block' role='button'>Hilfeseiten</a>"; 
 echo "<a href='../classes/showtab.php?menu=helprows&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block' role='button'>Hilfeinhalt</a>"; 
+echo "<a href='../classes/dbadmin.php' class='btn btn-default btn-lg btn-block' role='button'>DB Admin</a>"; 
 echo "</div>";
 echo "</body>";
 echo "</html>";

@@ -48,6 +48,7 @@ function check_version() {
 
   $ini_verarr = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
   $versnr=$ini_verarr['versnr'];
+  //$versnr='1.016';
   $versdat=$ini_verarr['versdat'];
 
   $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
@@ -56,7 +57,7 @@ function check_version() {
 //echo "locvers".$locvers.",".$versnr."<br>";
   if ($locvers<$versnr) {
     echo "<div class='alert alert-info'>";
-    echo "<a href='classes/checkdownload.php?neuevers=".$versnr."'>Neue Version ".$versnr." verfügbar</a>";
+    echo "<a href='classes/checkdownload.php?neuevers=".$versnr."'>Neue Version ".$versnr." verfügbar</a><br>";
     echo "</div>";
   } else {  
 //echo "actvers".$actvers.",".$versnr."<br>";
@@ -66,6 +67,11 @@ function check_version() {
       echo "</div>";
     }
   }
+  if (file_exists("http://".$servername.$serverpfad."dbupdate.sql")) {
+    echo "<div class='alert alert-info'>";
+    echo "<a href='classes/dbupdate.php'>DB Update einspielen</a>";
+    echo "</div>";
+  }  
 }
 
 
