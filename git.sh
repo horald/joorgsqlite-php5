@@ -1,5 +1,6 @@
 version=$(awk -F "=" '/versnr/ {print $2}' version.txt)
 version=${version:1:5}
+git add /var/www/html/own/classes/stdlib
 git add --all
 if [ "$1" != "" ]; then
   echo "$1"
