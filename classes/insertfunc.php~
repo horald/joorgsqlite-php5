@@ -9,14 +9,20 @@ function insertinput($listarray,$idwert,$menu,$menugrp) {
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
     $default="";
+    $defwert='';
     if ($arrelement['default']!="") {
       $default=$arrelement['default'];
+      $defwert=$arrelement['default'];
     }
-    $defwert='';
     if ($arrelement['name']<>"") {
       if ($arrelement['getdefault']=="true") {
         $defquery="SELECT * FROM tblfilter WHERE fldmaske='".strtoupper($menu)."_DEFAULT' AND fldName='".$arrelement['name']."'";
         $defresult = $db->query($defquery);
+        //echo $defquery."<br>";
+        if ($defrow = $defresult->fetchArray()) {
+        	 $defwert=$defrow['fldwert'];
+        	 //echo $defwert."=defwert<br>";
+        }	
       }  
     }  
     switch ( $arrelement['type'] )
@@ -185,6 +191,9 @@ function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_star
         case 'text':
           $sql=$sql.$arrelement['dbfield'].",";
         break;
+        case 'zahl':
+          $sql=$sql.$arrelement['dbfield'].",";
+        break;
         case 'select':
           $sql=$sql.$arrelement['dbfield'].",";
         break;
@@ -214,9 +223,25 @@ function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_star
   $sql=$sql.") VALUES (".$newrowid.",";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
+          if ($arrelement['getdefault']=="true") {
+            $sqlflt="SELECT * FROM tblfilter WHERE fldmaske='".strtoupper($menu)."_DEFAULT' AND fldName='".$arrelement['name']."'";
+            //echo $sqlflt."<br>";
+            $resflt = $db->query($sqlflt);
+            if ($rowflt = $resflt->fetchArray()) {
+              $sqldef="UPDATE tblfilter SET fldwert='' WHERE fldmaske='".strtoupper($menu)."_DEFAULT' AND fldName='".$arrelement['name']."'"; 
+            } else {
+              $sqldef="INSERT INTO tblfilter (fldmaske,fldName,fldwert) VALUES('".strtoupper($menu)."_DEFAULT','".$arrelement['name']."','".$_POST[$arrelement['name']]."')";
+            }
+            //echo $sqldef."<br>";
+            $qrydef = $db->exec($sqldef);  
+          }
+
       switch ( $arrelement['type'] )
       {
         case 'text':
+          $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
+        break;
+        case 'zahl':
           $sql=$sql."'".$_POST[$arrelement['dbfield']]."',";
         break;
         case 'selectid':
