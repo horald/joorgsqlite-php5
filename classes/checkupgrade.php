@@ -67,46 +67,35 @@ function check_version() {
       echo "</div>";
     }
   }
+/*  
+echo "http://".$servername.$serverpfad."dbupdate.sql"."<br>";
   if (file_exists("http://".$servername.$serverpfad."dbupdate.sql")) {
     echo "<div class='alert alert-info'>";
     echo "<a href='classes/dbupdate.php'>DB Update einspielen</a>";
     echo "</div>";
   }  
+*/  
+  check_update();
 }
 
-
-function check_version_alt() {
-  $servername=$_SERVER['HTTP_HOST'];
-  $serverpfad=$_SERVER['REQUEST_URI'];
-  $file = strrchr($serverpfad, '/');
-  $file = ($file===false) ? $serverpfad : (($file==='/') ? '' : substr($file, 1));
-  $serverpfad = ($file==='') ? $serverpfad : substr($serverpfad, 0, -strlen($file));
-
-  ob_start();
-  include("http://horald.github.io/joorgsqlite/classes/sendversion.php");
-  flush();
-  $json=ob_get_contents();
-  ob_end_clean();  
-  $obj=json_decode($json,true);
-  $versnr=$obj['versnr'];
-  $versdat=$obj['versdat'];
-
-  $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
-  $locvers=$ini_locarr['versnr'];
-  $actvers=getactvers("data/");	
-echo "locvers<versnr".$locvers.",".$versnr."<br>";
-  if ($locvers<$versnr) {
-    echo "<div class='alert alert-info'>";
-    echo "<a href='classes/checkupdate.php?actvers=".$locvers."'>Neue Version ".$versnr." verfügbar</a>";
-    echo "</div>";
-  } else {  
-echo "actvers<versnr".$locvers.",".$versnr."<br>";
-    if ($actvers<$versnr) {
+function check_update() {
+  $pfad = getenv('SCRIPT_FILENAME');
+  $pfad = substr($pfad,0,strlen($pfad)-9); 
+  //echo $pfad."=pfad<br>";
+  if (file_exists($pfad."dbupdate.txt")) {
+	$vers = trim(file_get_contents($pfad."dbupdate.txt", true));
+    $db = new SQLite3('data/joorgsqlite.db');
+    $sql="SELECT count(*) as anz FROM tblversion WHERE fldversion>='".$vers."'";
+	//echo $sql."<br>";
+    $results = $db->query($sql);
+	$row = $results->fetchArray();
+	if ($row['anz']==0) {
       echo "<div class='alert alert-info'>";
-      echo "<a href='classes/installupdate.php?newvers=".$versnr."&oldvers=".$actvers."&versdat=".$versdat."'>Auf neue Version ".$versnr." aktualisieren</a>";
+	  //echo $row['anz']."=anz<br>";
+      echo "<a href='classes/dbupdate.php?vers=".$vers."'>Update für Version ".$vers." einspielen</a>";
       echo "</div>";
-    }
-  }  
+	}
+  }
 }
 
 ?>
