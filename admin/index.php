@@ -26,6 +26,7 @@ echo "<a href='../classes/showtab.php?menu=table&menugrp=".$menugrp."' class='bt
 echo "<a href='../classes/showtab.php?menu=helppage&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block' role='button'>Hilfeseiten</a>"; 
 echo "<a href='../classes/showtab.php?menu=helprows&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block' role='button'>Hilfeinhalt</a>"; 
 echo "<a href='../classes/dbadmin.php' class='btn btn-default btn-lg btn-block' role='button'>DB Admin</a>"; 
+echo "<a href='../classes/autoincupdate.php' class='btn btn-default btn-lg btn-block' role='button'>autoincupdate</a>"; 
 echo "</div>";
 echo "</body>";
 echo "</html>";
