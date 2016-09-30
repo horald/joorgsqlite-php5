@@ -54,5 +54,5 @@ $pararray = array ( 'headline' => 'Konten',
                     'dbtable' => 'tblktokonten',
                     'orderby' => 'fldBez',
                     'strwhere' => '',
-                    'fldindex' => 'fldIndex');
+                    'fldindex' => 'fldindex');
 ?>

@@ -11,12 +11,10 @@ bootstrapbegin($pararray['headline']);
 echo "<a class='btn btn-primary' href='showtab.php?menu=".$menu."&idwert=".$idwert."'>zurück</a> ";
 $grafik = $_GET['grafik'];
 if ($grafik==1) {
-  $jahr=$_POST['jahr'];
-  $monat=$_POST['monat'];
   $ktoinhaber=$_POST['ktoinhaber'];
   $vondatum = $_POST['vondatum'];	
   $bisdatum = $_POST['bisdatum'];	
-  grafikanzeigen($jahr,$monat,$ktoinhaber,$vondatum,$bisdatum);
+  grafikanzeigen($ktoinhaber,$vondatum,$bisdatum);
 } else {
   grafikauswahl($menu,$idwert);
 }

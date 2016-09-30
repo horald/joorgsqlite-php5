@@ -1,11 +1,11 @@
 <?php
 
-function showtabfunc($menu,$sql,$id,$menugrp) {
-  echo "<a href='../index.php?id=".$id."&menugrp=".$menugrp."'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
-  echo "<a href='insert.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Einfügen</a> ";
-  echo "<a href='import.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>import</a> ";
-  echo "<a href='export.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Export</a> ";
-  echo "<a href='leeren.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Leeren</a> ";
+function showtabfunc($menu,$sql,$id) {
+  echo "<a href='../index.php?id=".$id."'  class='btn btn-primary btn-sm active' role='button'>Menü</a> ";
+  echo "<a href='insert.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Einfügen</a> ";
+  echo "<a href='import.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>import</a> ";
+  echo "<a href='export.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Export</a> ";
+  echo "<a href='leeren.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Leeren</a> ";
   $db = new SQLite3('../data/joorgsqlite.db');
   $sql="SELECT * FROM tblfunc WHERE fldMenuID='".$menu."' ORDER BY fldName";
   //echo $sql."<br>";
@@ -16,10 +16,10 @@ function showtabfunc($menu,$sql,$id,$menugrp) {
     if ($rowtab['fldParam']<>"") {
     	$param="&".$rowtab['fldParam'];
     }
-    echo "<a href='".$rowtab['fldphp']."?menu=".$menu."&menugrp=".$menugrp.$param."' class='btn btn-primary btn-sm active' role='button'>".$rowtab['fldBez']."</a> ";
+    echo "<a href='".$rowtab['fldphp']."?menu=".$menu.$param."' class='btn btn-primary btn-sm active' role='button'>".$rowtab['fldBez']."</a> ";
   }  
-  echo "<a href='schicken.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
-  echo "<a href='empfangen.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
+  echo "<a href='schicken.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>senden</a> ";
+  echo "<a href='empfangen.php?menu=".$menu."' class='btn btn-primary btn-sm active' role='button'>Holen</a> ";
 }
 
 function showtabfilter($filter,$filterarray,$pararray,$menu) {
@@ -30,6 +30,7 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
   $refwert="";
   $selarr=array();
   $anzfilter = sizeof($filterarray);
+  //echo $filter."=filter<br>";
   if ($filter==1) {
     //echo "filter==1<br>";
     foreach ( $filterarray as $arrelement ) {
@@ -57,7 +58,8 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
         }  
       }
 
-      $sql="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
+      //$sql="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
+      $sql="SELECT * FROM tblfilter WHERE fldName='".$arrelement['name']."' AND fldtablename='".$dbtable."'";
       //echo $sql."<br>";
       $results = $db->query($sql);
       while ($rowarr = $results->fetchArray()) {
@@ -65,13 +67,13 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       }  	
       if (isset($arr['fldwert'])) {
         //echo $arr['fldfeld'].",".$arr['fldtablename'].",".$arrelement['dbfield'].",".$pararray['dbtable']."<br>";
-        if (($arr['fldtablename']==$pararray['dbtable']) && ($arr['fldfeld']==$arrelement['dbfield'])) {
+        if (($arr['fldtablename']==$pararray['dbtable']) && ($arr['fldName']==$arrelement['name'])) {
           $sql="UPDATE tblfilter SET fldwert='".$wert."' WHERE fldindex=".$arr['fldindex'];
         } else {
-          $sql="INSERT INTO tblfilter (fldfeld,fldwert,fldtablename) VALUES('".$arrelement['dbfield']."','".$wert."','".$dbtable."')";
+          $sql="INSERT INTO tblfilter (fldfeld,fldwert,fldtablename,fldName) VALUES('".$arrelement['dbfield']."','".$wert."','".$dbtable."','".$arrelement['name']."')";
         }
       } else {
-        $sql="INSERT INTO tblfilter (fldfeld,fldwert,fldtablename) VALUES('".$arrelement['dbfield']."','".$wert."','".$dbtable."')";
+        $sql="INSERT INTO tblfilter (fldfeld,fldwert,fldtablename,fldName) VALUES('".$arrelement['dbfield']."','".$wert."','".$dbtable."','".$arrelement['name']."')";
       }
       //echo $sql."<br>";
       $results = $db->query($sql);
@@ -80,9 +82,10 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
 
   } else {
     //echo "no filter<br>";
-
+    
     foreach ( $filterarray as $arrelement ) {
-      $sql="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
+      //$sql="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
+      $sql="SELECT * FROM tblfilter WHERE fldName='".$arrelement['name']."' AND fldtablename='".$dbtable."'";
       //echo $sql."<br>";
       $results = $db->query($sql);
       while ($rowarr = $results->fetchArray()) {
@@ -91,23 +94,37 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
       if (isset($arr['fldwert'])) {
         //echo $arr['fldfeld'].",".$arr['fldtablename'].",".$pararray['dbtable'].",".$arrelement['dbfield']."<br>";
         if (($arr['fldwert']<>"(ohne)") && ($arrelement['type']<>"prozref")) {
-          if ($dbwhere=="") { 
-            $dbwhere=" WHERE ".$arrelement['dbfield'].$arrelement['sign']."'".$arr['fldwert']."'";
-         } else {
-            $dbwhere=$dbwhere." AND ".$arrelement['dbfield'].$arrelement['sign']."'".$arr['fldwert']."'";
-          }
+          $lweiter="J";
+          if ($arrelement['type']=="date") {
+          	 if ($arr['fldwert']=="") {
+          	 	$lweiter="N";
+          	 }
+          }	
+          if ($lweiter=="J") {	
+            if ($dbwhere=="") { 
+              $dbwhere=" WHERE ".$arrelement['dbfield'].$arrelement['sign']."'".$arr['fldwert']."'";
+            } else {
+              $dbwhere=$dbwhere." AND ".$arrelement['dbfield'].$arrelement['sign']."'".$arr['fldwert']."'";
+            }
+          }  
         }
         $selarr[$arrelement['dbfield']]=$arr['fldwert'];
       }
     }
+
+
   }
 
   $etagenid=$_GET['ETAGENID'];
   if ($etagenid=="") {
   	 $etagenid=$_POST['ETAGENID'];
   }
-  //echo $anzfilter."=anz<br>";
-  echo "<form class='form-horizontal' method='post' action='showtab.php?filter=1&menu=".$menu."'>";
+  //echo $etagenid."=etagenid<br>";
+  if ($etagenid<>"" && $etagenid<>"(ohne)") {
+    echo "<form class='form-horizontal' method='post' action='showtab.php?filter=1&menu=".$menu."&ETAGENID=".$etagenid."'>";
+  } else {
+    echo "<form class='form-horizontal' method='post' action='showtab.php?filter=1&menu=".$menu."'>";
+  }  
   foreach ( $filterarray as $arrelement ) {
     switch ( $arrelement['type'] )
     {
@@ -140,11 +157,12 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
         if ($arrelement['seldbwhere']<>"") {
           $seldbwhere=" WHERE ".$arrelement['seldbwhere'];
         }
+        /*
         if ($arrelement['auswahl']=="ETAGEN" && $etagenid=="") {
           echo "<input type='hidden' name='ETAGENID' value=48>";
-          echo $selarr[$arrelement['dbfield']]."=wert<br>";
         }
-        if ($arrelement['idwhere']=="ETAGEN" && $etagenid<>"") {
+        */
+        if ($arrelement['idwhere']=="ETAGEN" && $etagenid<>"" && $etagenid<>"(ohne)") {
           if ($seldbwhere=="") {
           	$seldbwhere="WHERE fldid_etagen=".$etagenid;
           } else {
@@ -158,8 +176,9 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
         $onchange="";
         if ($arrelement['onchange']=="yes") {
         	 $auswahl='"'.$arrelement['auswahl'].'"'; 
+        	 $parmenu='"'.$menu.'"';
         	 //echo $auswahl."<br>";
-          $onchange="id='".$arrelement['auswahl']."' onchange='selectbox_auswahl(".$auswahl.")'"; 
+          $onchange="id='".$arrelement['auswahl']."' onchange='selectbox_auswahl(".$auswahl.",".$parmenu.")'"; 
           //echo $onchange."<br>";       
         }
         echo "<select name='".$arrelement['name']."' ".$onchange." size='1'>";
@@ -186,7 +205,7 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
         if ($filter==1) {
           $wert=$_POST[$arrelement['name']];
         } else {
-          $sqlfilter="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$dbtable."'";
+          $sqlfilter="SELECT * FROM tblfilter WHERE fldName='".$arrelement['name']."' AND fldtablename='".$dbtable."'";
           //echo $sql."<br>";
           $resfilter = $db->query($sqlfilter);
           if ($rowfilter = $resfilter->fetchArray()) {
@@ -194,8 +213,8 @@ function showtabfilter($filter,$filterarray,$pararray,$menu) {
           }
         }  
         echo $arrelement['label'];
-        echo "<span class='form_date' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input2' data-link-format='yyyy-mm-dd'>";
-        echo "<input id='dtp_input2' size='8' type='text' name='".$arrelement['name']."' value='".$wert."' >";
+        echo "<span class='form_date' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input".$arrelement['name']."' data-link-format='yyyy-mm-dd'>";
+        echo "<input id='dtp_input".$arrelement['name']."' size='8' type='text' name='".$arrelement['name']."' value='".$wert."' >";
         echo "<button><span class='glyphicon glyphicon-calendar'></span></button>";
         echo "</span>";
 

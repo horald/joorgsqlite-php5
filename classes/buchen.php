@@ -11,7 +11,9 @@ $buchen = $_GET['buchen'];
 if ($buchen==1) {
   $inhaber = $_POST['inhaber'];	
   $art = $_POST['art'];	
-  buchenfunc($menu,$pararray,$inhaber,$art);
+  $datum = $_POST['datum'];
+  $uhrzeit = $_POST['uhrzeit'];
+  buchenfunc($menu,$pararray,$inhaber,$art,$timezonediff,$datum,$uhrzeit);
 } else {
   buchenauswahl($menu);
 }  

@@ -25,6 +25,24 @@ function buchenauswahl($menu) {
         echo "<option style='background-color:#c0c0c0;' >Einkauf</option>";
         echo "</select></td> ";
         echo "</tr>";
+
+        $default = date('Y-m-d');
+        echo "<tr>";
+        echo "<td><label >Datum:</label></td>";
+        echo "<td><div class='input-group date form_date col-md-12' data-date='' data-date-format='yyyy-mm-dd' data-link-field='dtp_input2' data-link-format='yyyy-mm-dd'>";
+        echo "<input class='form-control' size='8' type='text' name='datum' value='".$default."' >";
+        echo "<span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span>";
+        echo "</div></td>";
+        echo "<input type='hidden' id='dtp_input2' value='' />";
+        echo "</tr>";
+
+        $default=date('H:i');
+        echo "<tr>";
+        echo "<td><label >Uhrzeit:</label></td>";
+        echo "<td><input class='form-control' size='8' type='text' name='uhrzeit' value='".$default."' ></td>";
+        echo "</tr>";
+
+
         echo "</table>";
 
   echo " <input type='submit' value='Speichern' />";
@@ -32,26 +50,33 @@ function buchenauswahl($menu) {
 
 }
 
-function buchenfunc($menu,$pararray,$inhaber,$art) {
+function buchenfunc($menu,$pararray,$inhaber,$art,$timezonediff,$datum,$uhrzeit) {
   $dbselarr = $_SESSION['DBSELARR'];
   $count=sizeof($dbselarr);
   $db = new SQLite3('../data/joorgsqlite.db');
   echo "<br>";
-//  $datum = date("Y-m-d");
-//  $timestamp = time();
-//  $uhrzeit = date("H:i",$timestamp);
+  //$datum = date("Y-m-d");
   $Sumbetrag=0;
   for ( $x = 0; $x < $count; $x++ ) {
+    $timestamp = time();
+    //$uhrzeit = date("H:i:s",$timestamp);
+    $timestamp=$datum." ".$uhrzeit;
   	 $query="SELECT * FROM tblEinkauf_liste WHERE fldindex=".$dbselarr[$x];
-  	 //echo $query."<br>";
+ 	 //echo $query."<br>";
+ 	 /*
+    if ($timezonediff<>"") {
+      $timestamp="datetime('now', 'localtime','".$timezonediff."')";
+    } else {  
+      $timestamp="datetime('now', 'localtime')";
+    } 
+    */ 
     $results = $db->query($query);
     if ($row = $results->fetchArray() ) { 
       $Betrag=$row['fldAnz']*$row['fldPreis'];
       $Sumbetrag=$Sumbetrag+$Betrag;
-      $datum=$row['fldEinkaufDatum'];
-      $uhrzeit=$row['fldEinkaufUhrzeit'];
-      $timestamp="";
-      $qryins="INSERT INTO tblktosal (fldDatum,fldUhrzeit,fldBez,fldKonto,fldInhaber,fldBetrag,fldtimestamp,fldbsync) VALUES ('".$datum."','".$uhrzeit."','".$row['fldBez']."','".$row['fldKonto']."','".$inhaber."','-".$Betrag."','".$timestamp."','SYNC')";
+      //$datum=$row['fldEinkaufDatum'];
+      //$uhrzeit=$row['fldEinkaufUhrzeit'];
+      $qryins="INSERT INTO tblktosal (fldDatum,fldUhrzeit,fldBez,fldKonto,fldInhaber,fldBetrag,fldtimestamp,flddbsyncstatus) VALUES ('".$datum."','".$uhrzeit."','".$row['fldBez']."','".$row['fldKonto']."','".$inhaber."','-".$Betrag."','".$timestamp."','SYNC')";
       echo "<div class='alert alert-success'>";
       echo $qryins."<br>";
       echo "</div>";
@@ -64,7 +89,7 @@ function buchenfunc($menu,$pararray,$inhaber,$art) {
     }  
   }	
   if ($art=="Einkauf") {
-      $qryins="INSERT INTO tblktosal (fldDatum,fldUhrzeit,fldBez,fldKonto,fldInhaber,fldBetrag) VALUES ('".$datum."','".$uhrzeit."','Einkauf','EINKAUF','".$inhaber."','".$Sumbetrag."')";
+      $qryins="INSERT INTO tblktosal (fldDatum,fldUhrzeit,fldBez,fldKonto,fldInhaber,fldBetrag,fldtimestamp,flddbsyncstatus) VALUES ('".$datum."','".$uhrzeit."','Einkauf','EINKAUF','".$inhaber."','".$Sumbetrag."','".$timestamp."','SYNC')";
       echo "<div class='alert alert-success'>";
       echo $qryins."<br>";
       echo "</div>";

@@ -15,6 +15,9 @@ echo "<script src='../includes/bootstrap/js/jquery-latest.js'></script>";
       //echo "      });";
       //echo "  </script>";
 
+//grafik
+echo "<script type='text/javascript' src='../includes/canvasjs/canvasjs.min.js'></script>";
+
 //fullcalendar
 echo "<link href='../includes/fullcalendar/fullcalendar/fullcalendar.css' rel='stylesheet' />";
 echo "<link href='../includes/fullcalendar/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />";
@@ -22,6 +25,9 @@ echo "<script src='../includes/fullcalendar/lib/jquery.min.js'></script>";
 echo "<script src='../includes/fullcalendar/lib/jquery-ui.custom.min.js'></script>";
 echo "<script src='../includes/fullcalendar/fullcalendar/fullcalendar.min.js'></script>";
 echo "<script src='../includes/fullcalendar/js/jsoncalendar.js'></script>";
+
+//auswahl
+echo "<script src='auswahl.js'></script>";
 
 echo "<title>Joorgsqlite</title>";
 echo "</head>";
@@ -38,14 +44,15 @@ function bootstrapbegin($headline,$showheadline) {
 }
 
 function bootstrapend() {
-?>        
+?>
 <script type="text/javascript" src="../includes/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../includes/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../includes/bootstrap/datetime/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../includes/bootstrap/datetime/js/locales/bootstrap-datetimepicker.de.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../includes/bootstrap/datetime/js/special/mydatetime.de.js"></script>
-<?php        
+<script type="text/javascript" src="../includes/canvasjs/canvasjs.min.js"></script>
 
+<?php
   echo "</div>";
   echo "</div>";
   echo "</body>";

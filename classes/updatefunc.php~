@@ -195,20 +195,27 @@ function updateinput($pararray,$listarray,$idwert,$menu,$menugrp) {
   }
   echo "<input type='checkbox' name='chkanzeigen' value='anzeigen'> Speichern anzeigen<br>";
   echo "<input type='checkbox' name='resync' value='yes'> Resync<br>";
+  echo "<input type='checkbox' name='dscopy'> Kopieren<br>";
+
   echo "<dd><input type='submit' value='Speichern' /></dd>";
   echo "</form>";
+
 }
 
-function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc_start,$resync) {
+function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc_start,$resync,$timezonediff,$autoinc) {
   echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 
+  $strset="";
+  $strfld="";
   $sql="UPDATE ".$pararray['dbtable']." SET ";
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
+  	 	$dbwert=$_POST[$arrelement['name']];
       switch ( $arrelement['type'] )
       {
         case 'text':
+      	 $dbwert=$_POST[$arrelement['dbfield']];
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
         case 'zahl':
@@ -225,9 +232,11 @@ function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['name']]."', ";
         break;
         case 'time':
+      	 $dbwert=$_POST[$arrelement['dbfield']];
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
         case 'date':
+      	 $dbwert=$_POST[$arrelement['dbfield']];
           $sql=$sql.$arrelement['dbfield']."='".$_POST[$arrelement['dbfield']]."', ";
         break;
         case 'calc':
@@ -265,16 +274,42 @@ function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc
           }  
         break;
       }
+      
+      switch ( $arrelement['type'] )
+      {
+        case 'calcsum':
+        break;
+        default:
+          if ($strset=="") {
+            $strset=$arrelement['dbfield']."='".$wert."'";
+          } else {
+            $strset=$strset.",".$arrelement['dbfield']."='".$wert."'";
+          }  
+          if ($strfld=="") {
+            $strfld=$arrelement['dbfield'];
+            $strval="'".$dbwert."'";
+          } else {
+            $strfld=$strfld.",".$arrelement['dbfield'];
+            $strval=$strval.",'".$dbwert."'";
+          }    
+          //echo $arrelement['dbfield']."=".$dbwert."<br>";  
+      }  
+      
+      
     }  
   }
 
   $sql=substr($sql,0,-2);
   if ($pararray['dbsyncnr']=="J") {
   	 $sql=$sql.",flddbsyncnr=".$autoinc_start;
-  	 $sql=$sql.",fldtimestamp=datetime('now', 'localtime')";
+  	 if ($timezonediff<>"") {
+  	   $sql=$sql.",fldtimestamp=datetime('now', 'localtime','".$timezonediff."')";
+  	 } else {
+  	   $sql=$sql.",fldtimestamp=datetime('now', 'localtime')";
+  	 }  
   }
   if ($resync="yes") {
-    $sql=$sql.",flddbsyncstatus=''";
+    $sql=$sql.",flddbsyncstatus='SYNC'";
   }  
   $sql=$sql." WHERE fldindex=".$_POST['id'];
   $query = $db->exec($sql);
@@ -284,10 +319,45 @@ function updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc
       updatepreis($rowid,$show);
     }
   }
+
+    $dscopy=$_POST['dscopy'];
+    if ($dscopy==true) {
+      if ($pararray['dbsyncnr']=="J") {
+        $strfld=$strfld.",flddbsyncnr,fldtimestamp,flddbsyncstatus";	
+        if ($timezonediff<>"") {
+          $strval=$strval.",".$autoinc_start.",datetime('now', 'localtime','".$timezonediff."'),'SYNC'";
+        } else {  
+          $strval=$strval.",".$autoinc_start.",datetime('now', 'localtime'),'SYNC'";
+        }  
+      }	
+      
+      if ($autoinc=="J") {
+        $sqlid="SELECT * FROM tblindex WHERE fldtable='".$pararray['dbtable']."'";
+        $results = $db->query($sqlid);
+        if ($row = $results->fetchArray()) {
+          $newrowid=$row['fldid'] + $autoinc_step;
+          //echo $newrowid."=newrowid<br>";
+        } else {
+          $newrowid=$autoinc_start;  
+        }
+        $strfld=$pararray['fldindex'].",".$strfld;
+        $strval=$newrowid.",".$strval;
+      }
+      
+      $qrycopy = "INSERT INTO ".$pararray['dbtable']." (".$strfld.") VALUES(".$strval.") ";
+      //echo $qrycopy."<br>";
+      //mysql_query($qrycopy) or die("Error using mysql_query($qrycopy): ".mysql_error());
+      $qryins = $db->exec($qrycopy);
+    }
+
+
   if ($show=="anzeigen") {
     echo "<div class='alert alert-success'>";
     echo $db->lastErrorMsg()."<br>";
     echo $sql."<br>";
+    if ($dscopy==true) {
+      echo $qrycopy."<br>";
+    }  
     echo "</div>";
   }
   $fldbez="fldbez";

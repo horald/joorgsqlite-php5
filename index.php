@@ -44,12 +44,7 @@ if ($check=="ok") {
   } else {
     echo "<h2 align='center'>Privat</h2>";
   }
-  $menugrp=$_GET['menugrp'];
-  if ($menugrp<>"") {
-    $results = dbquery('',$db,"SELECT list.fldlink AS fldlink,list.fldmenu AS fldmenu,list.fldglyphicon AS fldglyphicon,list.fldbez AS fldbez FROM tblmenu_liste AS list,tblmenu_zuord AS zuord,tblmenu_grp AS grp WHERE list.fldindex=zuord.fldid_menu AND grp.fldindex=zuord.fldid_menugrp AND grp.fldbez='".$menugrp."' AND fldview='J' AND fldid_parent='".$parentid."' ORDER BY fldsort");
-  } else {
-    $results = dbquery('',$db,"SELECT * FROM tblmenu_liste WHERE fldview='J' AND fldid_parent='".$parentid."' ORDER BY fldsort");
-  }
+  $results = dbquery('',$db,"SELECT * FROM tblmenu_liste WHERE fldview='J' AND fldid_parent='".$parentid."' ORDER BY fldsort");
   while ($row = dbfetch('',$results)) {
   	 if ($row['fldmenu']=="SUBMENU") {
       echo "<a href='index.php?id=".$row['fldindex']."&lastid=".$parentid."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
@@ -58,10 +53,10 @@ if ($check=="ok") {
         if ($row['fldparam']<>"") {
           echo "<a href='".$row['fldlink']."?id=".$parentid."&".$row['fldparam']."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
         } else {
-          echo "<a href='".$row['fldlink']."?id=".$parentid."&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
+          echo "<a href='".$row['fldlink']."?id=".$parentid."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
         }
       } else {
-        echo "<a href='classes/showtab.php?menu=".$row['fldmenu']."&id=".$parentid."&menugrp=".$menugrp."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
+        echo "<a href='classes/showtab.php?menu=".$row['fldmenu']."&id=".$parentid."' class='btn btn-default btn-lg btn-block glyphicon ".$row['fldglyphicon']."' role='button'> ".$row['fldbez']."</a>"; 
       }
     }
   }	

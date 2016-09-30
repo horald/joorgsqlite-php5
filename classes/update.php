@@ -13,7 +13,7 @@ if ($update==1) {
   $chkpreis = $_POST['chkpreis'];
   $show = $_POST['chkanzeigen'];
   $resync = $_POST['resync'];
-  updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc_start,$resync);
+  updatesave($pararray,$listarray,$menu,$show,$chkpreis,$menugrp,$autoinc_start,$resync,$timezonediff,$autoinc);
   if ($show<>"anzeigen") {
     echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."&menugrp=".$menugrp."'>";  
   } 

@@ -10,9 +10,12 @@ echo "<a href='showtab.php?menu=".$menu."' class='btn btn-primary btn-sm active'
 $stamm = $_GET['stamm'];
 if ($stamm==1) {
   $dbtable=$pararray['dbtable'];
-  $fldindex=$pararray['fldindex'];	
-  stammuebernehmen($fldindex,$dbtable,$autoinc_start,$autoinc_step);
-  echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
+  $fldindex=$pararray['fldindex'];
+  $show=$_POST['chkanzeigen'];	
+  stammuebernehmen($fldindex,$dbtable,$autoinc_start,$autoinc_step,$autoinc,$show,$timezonediff);
+  if ($show<>'anzeigen') {
+    echo "<meta http-equiv='refresh' content='0; URL=showtab.php?menu=".$menu."'>";  
+  }
 } else {
   stammauswahl($menu);
 }  

@@ -15,6 +15,7 @@ echo "<script src='../includes/bootstrap/js/jquery-latest.js'></script>";
       //echo "      });";
       //echo "  </script>";
 
+
 //fullcalendar
 echo "<link href='../includes/fullcalendar/fullcalendar/fullcalendar.css' rel='stylesheet' />";
 echo "<link href='../includes/fullcalendar/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />";
@@ -41,14 +42,14 @@ function bootstrapbegin($headline,$showheadline) {
 }
 
 function bootstrapend() {
-?>        
+?>
 <script type="text/javascript" src="../includes/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../includes/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../includes/bootstrap/datetime/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../includes/bootstrap/datetime/js/locales/bootstrap-datetimepicker.de.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../includes/bootstrap/datetime/js/special/mydatetime.de.js"></script>
-<?php        
 
+<?php
   echo "</div>";
   echo "</div>";
   echo "</body>";

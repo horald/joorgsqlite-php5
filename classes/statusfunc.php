@@ -12,13 +12,15 @@ function statusvorauswahl($menu,$filterarray) {
 //  echo "<option style='background-color:#c0c0c0;' >Status</option>";
 //  echo "<option style='background-color:#c0c0c0;' >Rechdatum</option>";
 //  echo "<option style='background-color:#c0c0c0;' >Einkaufsort</option>";
+  echo "<option style='background-color:#c0c0c0;' value='SYNC'>SYNC</option>";
+  echo "<option style='background-color:#c0c0c0;' value='NOSYNC'>NOSYNC</option>";
   echo "</select>";
 
   echo "<dd><input type='submit' value='Weiter' /></dd>";
   echo "</form>";
 }
 
-function statusauswahl($menu,$auswahltyp) {
+function statusauswahl($menu,$auswahltyp,$dbtable) {
 //echo $auswahltyp."=auswahltyp<br>";	
   $db = new SQLite3('../data/joorgsqlite.db');
   echo "<form class='form-horizontal' method='post' action='status.php?status=2&menu=".$menu."'>";
@@ -139,14 +141,23 @@ function statusauswahl($menu,$auswahltyp) {
     echo "</tr>";
 
   }
+  if ($auswahltyp=="SYNC") {
+  	//echo $dbtable."=dbtable<br>";
+    echo "<tr>";
+    echo "<td><label >flddatum:</label></td>";
+    echo "<td><input type='text' name='flddatum' value='fldDatum'/></dd>";
+    echo "</tr>";
+  	
+  }
   echo "</table>";
 
   echo "<dd><input type='submit' value='Speichern' /></dd>";
   echo "</form>";
 }
 
-function statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechdat,$vonort,$nchort,$vonkonto,$nchkonto) {
+function statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechdat,$vonort,$nchort,$vonkonto,$nchkonto,$dbtable,$timezonediff,$flddatum) {
   $db = new SQLite3('../data/joorgsqlite.db');
+  //echo $auswahltyp."=auswahltyp<br>";
   if ($auswahltyp=="Status") {
     $sql="UPDATE tblfahrtenbuch SET fldStatus='".$nchstatus."' WHERE fldStatus='".$vonstatus."' AND fldVondatum>='".$vondatum."' AND fldVondatum<='".$bisdatum."'";
   } else {
@@ -156,7 +167,19 @@ function statusfunc($vondatum,$bisdatum,$vonstatus,$nchstatus,$auswahltyp,$rechd
       if ($auswahltyp=="fldKonto") {
         $sql="UPDATE tblEinkauf_liste SET fldKonto='".$nchkonto."' WHERE fldKonto='".$vonkonto."' AND fldEinkaufDatum>='".$vondatum."' AND fldEinkaufDatum<='".$bisdatum."'";
       } else  {	
-        $sql="UPDATE tblfahrtenbuch SET fldind_datum=".$rechdat." WHERE fldVondatum>='".$vondatum."' AND fldVondatum<='".$bisdatum."'";
+        if ($auswahltyp=="NOSYNC") {
+        	 $sql="UPDATE ".$dbtable." SET flddbsyncstatus='NOSYNC'";
+        } else {	
+          if ($auswahltyp=="SYNC") {
+            if ($timezonediff<>"") {
+              $sql="UPDATE ".$dbtable." SET flddbsyncstatus='SYNC', fldtimestamp=datetime('now', 'localtime','".$timezonediff."') WHERE ".$flddatum.">='".$vondatum."' AND ".$flddatum."<='".$bisdatum."'";
+            } else {
+              $sql="UPDATE ".$dbtable." SET flddbsyncstatus='SYNC', fldtimestamp=datetime('now', 'localtime') WHERE ".$flddatum.">='".$vondatum."' AND ".$flddatum."<='".$bisdatum."'";
+            }
+          } else {	
+            $sql="UPDATE tblfahrtenbuch SET fldind_datum=".$rechdat." WHERE fldVondatum>='".$vondatum."' AND fldVondatum<='".$bisdatum."'";
+          }  
+        }
       }
     }  
   }

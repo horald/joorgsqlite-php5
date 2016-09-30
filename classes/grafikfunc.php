@@ -77,11 +77,11 @@ function grafikanzeigen($ktoinhaber,$vondatum,$bisdatum) {
   $result = $db->query($query);
 
   $qryein = "SELECT sum(fldBetrag) AS Betrag FROM tblktosal,tblktokonten WHERE fldKurz=fldKonto AND tblktokonten.fldTyp='EINNAHME' AND fldInhaber='".$ktoinhaber."' AND fldDatum>='".$vondatum."' AND fldDatum<='".$bisdatum."' AND flddel<>'J' ";
-  //$resein = $db->query($qryein);
+  $resein = $db->query($qryein);
   $einnahmen=0;
-  //if ($linein = $resein->fetchArray()) {
-  //	 $einnahmen=$linein['Betrag'];
-  //}
+  if ($linein = $resein->fetchArray()) {
+  	 $einnahmen=$linein['Betrag'];
+  }
 	
   $qrysum = "SELECT sum(fldBetrag) AS Betrag FROM tblktosal WHERE fldInhaber='".$ktoinhaber."' AND fldDatum>='".$vondatum."' AND fldDatum<='".$bisdatum."' AND flddel<>'J' ";
   $ressum = $db->query($qrysum);
@@ -155,7 +155,7 @@ echo "<body>";
    echo "<tr><td>Sonstiges</td><td> : ".sprintf("%.2f",$diff)."</td></tr>";
    echo "<tr><td>Summe</td><td> : ".sprintf("%.2f",$summe)."</td></tr>";
    echo "</table>";
-   echo $qryein."<br>";
+   //echo $qryein."<br>";
    echo "</div>";
 	
 echo "</body>";

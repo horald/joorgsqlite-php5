@@ -12,7 +12,9 @@ function stammauswahl($menu) {
     }	
   }	
 
-  $results = $db->query("SELECT * FROM tblktostamm AS st,tblktostamm_zuord AS zu WHERE zu.fldid_ktoinhaber=".$inhind." AND st.fldindex=zu.fldid_ktostamm");
+  $sql="SELECT * FROM tblktostamm AS st,tblktostamm_zuord AS zu WHERE zu.fldid_ktoinhaber=".$inhind." AND st.fldindex=zu.fldid_ktostamm";
+  //echo $sql."<br>";
+  $results = $db->query($sql);
   echo "<form class='form-horizontal' method='post' action='stammbuchen.php?stamm=1&menu=".$menu."'>";
   //echo "<input type='hidden' name='id' value=".$idwert.">";
   echo "<table class='table table-hover'>";
@@ -34,21 +36,24 @@ function stammauswahl($menu) {
     echo "</tr>"; 
   }	
   echo "</table>";
+  echo "<input type='checkbox' name='chkanzeigen' value='anzeigen'> Speichern anzeigen<br>";
   echo "<input type='hidden' name='count' value=".$cnt."/>";
   echo "<dd><input type='submit' value='Übernehmen' /></dd>";
   echo "</form>";
 }
 
-function stammuebernehmen($fldindex,$dbtable,$autoinc_start,$autoinc_step) {
+function stammuebernehmen($fldindex,$dbtable,$autoinc_start,$autoinc_step,$autoinc,$show,$timezonediff) {
   $db = new SQLite3('../data/joorgsqlite.db');
   
-  $sqlid="SELECT * FROM tblindex WHERE fldtable='".$dbtable."'";
-  $results = $db->query($sqlid);
-  if ($row = $results->fetchArray()) {
-    $newrowid=$row['fldid'] + $autoinc_step;
-    //echo $newrowid."=newrowid<br>";
-  } else {
-    $newrowid=$autoinc_start;  
+  if ($autoinc=="J") {
+    $sqlid="SELECT * FROM tblindex WHERE fldtable='".$dbtable."'";
+    $results = $db->query($sqlid);
+    if ($row = $results->fetchArray()) {
+      $newrowid=$row['fldid'] + $autoinc_step;
+      //echo $newrowid."=newrowid<br>";
+    } else {
+      $newrowid=$autoinc_start;  
+    }
   }
   
   $count = $_POST['count'];
@@ -71,13 +76,31 @@ function stammuebernehmen($fldindex,$dbtable,$autoinc_start,$autoinc_step) {
       if ($idcheck==1) {
 	     $cnt=$cnt+1;
         $idwert = $_POST['idwert'.$zaehl];
+
+        if ($timezonediff<>"") {
+          $timestamp="datetime('now', 'localtime','".$timezonediff."')";
+        } else {  
+          $timestamp="datetime('now', 'localtime')";
+        }  
+
         $query = "SELECT * FROM tblktostamm WHERE fldindex=".$idwert;
         //echo $query."<br>"; 
         $results = $db->query($query);
         while ($row = $results->fetchArray()) {
-          $qryins="INSERT INTO tblktosal (".$fldindex.",fldBez,fldDatum,fldUhrzeit,fldBetrag,fldKonto,fldInhaber,fldtimestamp,flddbsyncnr) VALUES(".$newrowid.",'$row[fldBez]','$datum','$uhrzeit','$row[fldBetrag]','$row[fldKonto]','$inhaber',CURRENT_TIMESTAMP,$autoinc_start)";
+          if ($autoinc=="J") {
+            $qryins="INSERT INTO tblktosal (".$fldindex.",fldBez,fldDatum,fldUhrzeit,fldBetrag,fldKonto,fldInhaber,fldtimestamp,flddbsyncnr) VALUES(".$newrowid.",'$row[fldBez]','$datum','$uhrzeit','$row[fldBetrag]','$row[fldKonto]','$inhaber',".$timestamp.",$autoinc_start)";
+          } else {
+            $qryins="INSERT INTO tblktosal (fldBez,fldDatum,fldUhrzeit,fldBetrag,fldKonto,fldInhaber,fldtimestamp,flddbsyncnr) VALUES('$row[fldBez]','$datum','$uhrzeit','$row[fldBetrag]','$row[fldKonto]','$inhaber',".$timestamp.",$autoinc_start)";
+          }
           //echo $qryins."=ins<br>"; 
           $db->exec($qryins);
+          if ($show=="anzeigen") {
+            echo "<div class='alert alert-success'>";
+            echo $db->lastErrorMsg()."<br>";
+            echo $qryins."<br>";
+            echo "</div>";
+          }
+
        }	
       }
     }
@@ -85,14 +108,15 @@ function stammuebernehmen($fldindex,$dbtable,$autoinc_start,$autoinc_step) {
     //echo $db->lastErrorMsg()."<br>";
     echo $cnt." Stammdaten wurden übernommen.";
     echo "</div>";
-    if ($newrowid==$autoinc_start) {
-      $sqlupd="INSERT INTO tblindex (fldtable,fldid) VALUES('".$dbtable."',".$newrowid.")";
-    } else {
-      $sqlupd="UPDATE tblindex SET fldid=".$newrowid."  WHERE fldtable='".$dbtable."'";
-    }
-    //echo $sqlupd."<br>";
-    $resupd = $db->exec($sqlupd);
-    
+    if ($autoinc=="J") {
+      if ($newrowid==$autoinc_start) {
+        $sqlupd="INSERT INTO tblindex (fldtable,fldid) VALUES('".$dbtable."',".$newrowid.")";
+      } else {
+        $sqlupd="UPDATE tblindex SET fldid=".$newrowid."  WHERE fldtable='".$dbtable."'";
+      }
+      //echo $sqlupd."<br>";
+      $resupd = $db->exec($sqlupd);
+    }  
   }
 }
 

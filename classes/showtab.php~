@@ -5,7 +5,6 @@ include("showtabfunc.php");
 $menu=$_GET['menu'];
 $filter=$_GET['filter'];
 $id=$_GET['id'];
-$menugrp=$_GET['menugrp'];
 //echo $menu."=menu<br>";
 include("../sites/views/".$menu."/showtab.inc.php");
 bootstraphead();
@@ -15,7 +14,7 @@ $db = new SQLite3('../data/joorgsqlite.db');
 
 $sql=showtabfilter($filter,$filterarray,$pararray,$menu);
 
-showtabfunc($menu,$sql,$id,$menugrp);
+showtabfunc($menu,$sql,$id);
 
 $dbselarr=array();
 $results = $db->query($sql);
@@ -85,12 +84,12 @@ echo "</tr>";
 $filterwhere="";
 foreach ( $filterarray as $arrelement ) {
   $wert="";	
-  $sqlfilter="SELECT * FROM tblfilter WHERE fldfeld='".$arrelement['dbfield']."' AND fldtablename='".$pararray['dbtable']."'";
+  $sqlfilter="SELECT * FROM tblfilter WHERE fldName='".$arrelement['name']."' AND fldtablename='".$pararray['dbtable']."'";
   $resfilter = $db->query($sqlfilter);
   if ($rowfilter = $resfilter->fetchArray()) {
     $wert=$rowfilter['fldwert'];
   }
-  if ($wert<>"(ohne)") { 
+  if ($wert<>"(ohne)" && $wert<>"") { 
     $sign=$arrelement['sign'];
     if ($sign==">=") {
       $sign="<";
@@ -111,7 +110,6 @@ if ($pararray['calcsum']=='J') {
       $filterwhere=$filterwhere." AND flddel='N'";
     }  
     $sqlbetrag="SELECT sum(fldBetrag) as sumbetrag FROM ".$pararray['dbtable'].$filterwhere;
-    //echo $sqlbetrag."<br>";
     $resbetrag = $db->query($sqlbetrag);
     if ($rowbetrag = $resbetrag->fetchArray()) {
       $calcsum=$rowbetrag['sumbetrag'];
@@ -128,6 +126,7 @@ $count=0;
 //$calcsum=8.16;
 $sum=$calcsum;
 $summe=$sum;
+$sumcalc=0;
 $sumdiff=0;
 while ($row = $results->fetchArray()) {
   if ($pararray['getindex']<>"") {	
@@ -135,7 +134,7 @@ while ($row = $results->fetchArray()) {
   } else {
     $index=$row[$pararray['fldindex']];	
   }  
-  echo $index."=index<br>";
+  //echo $index."=index<br>";
   if ($pararray['markseldb']=="J") {
   	 $summe=$summe+$row['fldBetrag'];
   	 //echo "#".number_format($row['fldFix'],2).",".$summe."#<br>";
@@ -271,6 +270,7 @@ while ($row = $results->fetchArray()) {
             $wert=$wert * strval($row[$arrelement['calcfield']]);
           }
           $sum=$sum+$wert;
+      	 $sumcalc=$sumcalc+$wert;
           echo "<td style='text-align:right;padding-right:10px;' width='".$arrelement['width']."'>".sprintf("%.".$nachkomma."f",$wert)."</td>";
         break;
         case 'calcsum':
@@ -324,9 +324,9 @@ while ($row = $results->fetchArray()) {
       }
     }
   }
-  echo "<td><a href='mark.php?menu=".$menu."&menugrp=".$menugrp."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>OK</a></td> ";
-  echo "<td><a href='update.php?menu=".$menu."&menugrp=".$menugrp."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>U</a></td> ";
-  echo "<td><a href='delete.php?menu=".$menu."&menugrp=".$menugrp."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>D</a></td>";
+  echo "<td><a href='mark.php?menu=".$menu."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>OK</a></td> ";
+  echo "<td><a href='update.php?menu=".$menu."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>U</a></td> ";
+  echo "<td><a href='delete.php?menu=".$menu."&id=".$index."' class='btn btn-primary btn-sm active' role='button'>D</a></td>";
   echo "</tr>";
   $menge = array_push ( $dbselarr, $row[$pararray['fldindex']] );
 }
@@ -363,7 +363,7 @@ foreach ( $listarray as $arrelement ) {
       break;
       case 'calc':
         $nachkomma=2;
-        echo "<td style='text-align:right;padding-right:10px;'>".sprintf("%.".$nachkomma."f",$sum)."</td>";
+        echo "<td style='text-align:right;padding-right:10px;'>".sprintf("%.".$nachkomma."f",$sumcalc)."</td>";
       break;
       case 'calcaddsum':
         $nachkomma=2;

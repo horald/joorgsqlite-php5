@@ -166,24 +166,30 @@ function updatepreis($rowid) {
   }
 }
 
-function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_start,$menugrp,$auroinc_start) {
+function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_start,$menugrp,$autoinc_start,$timezonediff,$autoinc) {
   echo "<a href='showtab.php?menu=".$menu."&menugrp=".$menugrp."' class='btn btn-primary btn-sm active' role='button'>Liste</a>"; 
   $db = new SQLite3('../data/joorgsqlite.db');
 //  echo $db->lastErrorMsg()."<br>";
 
   //$sqlid = "select ".$pararray['fldindex']." from ".$pararray['dbtable']." order by ".$pararray['fldindex']." desc limit 1";
-  $sqlid="SELECT * FROM tblindex WHERE fldtable='".$pararray['dbtable']."'";
-  $results = $db->query($sqlid);
-  if ($row = $results->fetchArray()) {
-    $newrowid=$row['fldid'] + $autoinc_step;
-    //echo $newrowid."=newrowid<br>";
-  } else {
-    $newrowid=$autoinc_start;  
+  if ($autoinc=="J") {
+    $sqlid="SELECT * FROM tblindex WHERE fldtable='".$pararray['dbtable']."'";
+    $results = $db->query($sqlid);
+    if ($row = $results->fetchArray()) {
+      $newrowid=$row['fldid'] + $autoinc_step;
+      //echo $newrowid."=newrowid<br>";
+    } else {
+      $newrowid=$autoinc_start;  
+    }
   }
 
   $prozref="N"; 
   $dbtable=$pararray['dbtable'];
-  $sql="INSERT INTO ".$dbtable." (".$pararray['fldindex'].",";
+  if ($autoinc=="J") {
+    $sql="INSERT INTO ".$dbtable." (".$pararray['fldindex'].",";
+  } else {
+    $sql="INSERT INTO ".$dbtable." (";
+  }  
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
       switch ( $arrelement['type'] )
@@ -220,7 +226,11 @@ function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_star
   	 $sql=$sql.",flddbsyncnr";
   	 $sql=$sql.",fldtimestamp";
   }  
-  $sql=$sql.") VALUES (".$newrowid.",";
+  if ($autoinc=="J") {
+    $sql=$sql.") VALUES (".$newrowid.",";
+  } else {
+    $sql=$sql.") VALUES (";
+  }  
   foreach ( $listarray as $arrelement ) {
   	 if ($arrelement['fieldsave']<>"NO") {
           if ($arrelement['getdefault']=="true") {
@@ -272,7 +282,11 @@ function insertsave($pararray,$listarray,$menu,$show,$autoinc_step,$autoinc_star
   $sql=substr($sql,0,-1);
   if ($pararray['dbsyncnr']=="J") {
   	 $sql=$sql.",".$autoinc_start;
-  	 $sql=$sql.",datetime('now', 'localtime')";
+  	 if ($timezonediff<>"") {
+  	   $sql=$sql.",datetime('now', 'localtime','".$timezonediff."')";
+  	 } else {
+      $sql=$sql.",datetime('now', 'localtime')";
+    }  
   }
   $sql=$sql.")";
   //echo $sql."<br>";

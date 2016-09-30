@@ -2,7 +2,7 @@
 header("content-type: text/html; charset=utf-8");
 session_start();
 
-function exportfunc($pfad,$pararray,$listarray,$menu) {
+function exportfunc($pfad,$pararray,$listarray,$menu,$exporthtml) {
   $db = new SQLite3('../data/joorgsqlite.db');
   $datnam="export";
   $slash="/";
@@ -59,10 +59,24 @@ function exportfunc($pfad,$pararray,$listarray,$menu) {
   }
   fclose($datei);  
   $sqlfile = $pfad."mysql-in-".$datnam."-".$pararray['dbtable']."-".$today.".sql";
+  $port=$_SERVER['SERVER_PORT'];
+  if ($port<>80) {
+    $htmlfile = "http://".$_SERVER['SERVER_ADDR'].":".$port.$exporthtml."mysql-in-".$datnam."-".$pararray['dbtable']."-".$today.".sql";
+  } else {
+    $htmlfile = "http://".$_SERVER['SERVER_ADDR'].$exporthtml."mysql-in-".$datnam."-".$pararray['dbtable']."-".$today.".sql";
+  }
   rename($tmpfile,$sqlfile);
   echo "<div class='alert alert-success'>";
   echo $sqlfile."#<br>";
+  //echo $_SERVER['SERVER_PORT']."=addr<br>";
   echo "</div>";
+  
+  echo "<form name='eingabe' class='form-horizontal' method='post' action='export.php?export=1&menu=".$menu."'>";
+  echo "<input type='hidden' name='file' value='".$sqlfile."' />";
+  echo "<input type='hidden' name='htmlfile' value='".$htmlfile."' />";
+  echo "<input type='submit' value='Download' />";
+  echo "</form>";  
+  
 }
 
 ?>

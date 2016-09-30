@@ -1,5 +1,5 @@
-function selectbox_auswahl(parauswahl) {
+function selectbox_auswahl(parauswahl,parmenu) {
   strval=document.getElementById(parauswahl).value;
-  //alert(strval);
-  window.location.href = "showtab.php?menu=moebel&"+parauswahl+"ID=" + strval; 
+  //alert(parauswahl+","+parmenu);
+  window.location.href = "showtab.php?menu="+parmenu+"&"+parauswahl+"ID=" + strval; 
 }
