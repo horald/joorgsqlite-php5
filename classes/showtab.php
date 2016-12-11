@@ -46,6 +46,9 @@ foreach ( $listarray as $arrelement ) {
       case 'selectref':
         echo "<th>".$arrelement['label']."</th>";
       break;
+      case 'selectshow':
+        echo "<th>".$arrelement['label']."</th>";
+      break;
       case 'time':
         echo "<th>".$arrelement['label']."</th>";
       break;
@@ -225,6 +228,16 @@ while ($row = $results->fetchArray()) {
           }
           echo "</select>";
           echo "</td>";
+        break;
+        case 'selectshow':
+		  $wert="";
+          $sqlsel = "SELECT * FROM ".$arrelement['dbtable']." WHERE ".$arrelement['seldbfield']."='".$row[$arrelement['selfield']]."'";
+          $ressel = $db->query($sqlsel);
+          if ($rowsel = $ressel->fetchArray()) {
+		    $wert=$rowsel[$arrelement['seldbbez']];
+		  }
+		  //echo $sqlsel."<br>";
+          echo "<td>".$wert."</td>";
         break;
         case 'time':
           echo "<td>".$row[$arrelement['dbfield']]."</td>";

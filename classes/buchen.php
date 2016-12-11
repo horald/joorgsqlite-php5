@@ -13,7 +13,9 @@ if ($buchen==1) {
   $art = $_POST['art'];	
   $datum = $_POST['datum'];
   $uhrzeit = $_POST['uhrzeit'];
-  buchenfunc($menu,$pararray,$inhaber,$art,$timezonediff,$datum,$uhrzeit);
+  $chkktosum = $_POST['chkktosum'];
+  $ort = $_POST['ort'];
+  buchenfunc($menu,$pararray,$inhaber,$art,$timezonediff,$datum,$uhrzeit,$chkktosum,$ort);
 } else {
   buchenauswahl($menu);
 }  

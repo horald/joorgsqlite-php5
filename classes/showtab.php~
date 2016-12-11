@@ -18,7 +18,7 @@ showtabfunc($menu,$sql,$id);
 
 $dbselarr=array();
 $results = $db->query($sql);
-echo $sql."<br>";
+//echo $sql."<br>";
 echo "<table class='table table-hover'>";
 echo "<tr>";
 foreach ( $listarray as $arrelement ) {

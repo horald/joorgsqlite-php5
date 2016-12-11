@@ -46,12 +46,37 @@ function check_version() {
   $file = ($file===false) ? $serverpfad : (($file==='/') ? '' : substr($file, 1));
   $serverpfad = ($file==='') ? $serverpfad : substr($serverpfad, 0, -strlen($file));
 
-  $ini_verarr = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
-  $versnr=$ini_verarr['versnr'];
-  //$versnr='1.016';
-  $versdat=$ini_verarr['versdat'];
+  include("config.php");
+  if ($proxy=="J") {
+    $versnr=$_GET['neuevers'];
+	//echo $versnr."=neuevers<br>";
+	if ($versnr=="") {
 
-  $ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
+      echo "<form class='form-horizontal' method='post' action='http://www.horald.de/own/joorgsqlite/classes/getversion.php'>";
+      echo "<fieldset>";
+      echo "<div class='control-group'>";
+      echo "<input type='hidden' name='locpfad' value='http://".$servername.$serverpfad."' />";
+      echo "<input type='hidden' name='projpfad' value='http://horald.github.io/joorgsqlite/version.txt'/>";
+      echo "<input type='hidden' name='projname' value='joorgsqlite'/>";
+      echo "  <div class='form-actions'>";
+      echo "     <button type='submit' name='submit' class='btn btn-primary'>Get Version</button>";
+      //  echo "     <button class='btn'>Abbruch</button>";
+      echo "  </div>";
+      echo "</div>";
+      echo "</fieldset>";
+      echo "</form>";
+
+      //	echo "<a href='classes/getversion.php' class='btn btn-primary btn-sm active' role='button'>Get Version</a> "; 
+	}
+  } else {
+    $ini_verarr = parse_ini_file("http://horald.github.io/joorgsqlite/version.txt");
+    $versnr=$ini_verarr['versnr'];
+    //$versnr='1.016';
+    $versdat=$ini_verarr['versdat'];
+  }	
+
+  //$ini_locarr = parse_ini_file("http://".$servername.$serverpfad."version.txt");
+  $ini_locarr = parse_ini_file($_SERVER['DOCUMENT_ROOT'].$serverpfad."version.txt");
   $locvers=$ini_locarr['versnr'];
   $actvers=getactvers("data/");	
 //echo "locvers".$locvers.",".$versnr."<br>";
