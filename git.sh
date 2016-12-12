@@ -1,4 +1,4 @@
-version=$(awk -F "=" '/versnr/ {print $2}' version.txt)
+version=$(awk -F ":" '/versnr/ {print $2}' version.json)
 version=${version:1:5}
 git add --all
 if [ "$1" != "" ]; then
